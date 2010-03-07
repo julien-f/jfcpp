@@ -25,7 +25,7 @@ LDFLAGS  += $(PROFILING)
 
 # Per project configuration.
 matrix_SRCS     := $(wildcard src/*.cpp)
-#matrix_CXXFLAGS := -DEXDEBUG
+matrix_CXXFLAGS := -DEXDEBUG
 matrix_LDFLAGS  :=
 
 

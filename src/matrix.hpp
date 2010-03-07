@@ -27,6 +27,10 @@
 
 /**
  *
+ *
+ * General requirements:
+ * - T must have a default constructor;
+ * - the method “T &T::operator=(const T &)” must be defined.
  */
 template<typename T>
 class matrix : private CertifiedObject
@@ -34,18 +38,27 @@ class matrix : private CertifiedObject
 public:
 
 	/**
-	 * Constructs a matrix with a given size.
+	 * Constructs a square matrix with a given dimension.
+	 *
+	 * The values inside it are constructed using T's default constructor.
+	 *
+	 * @param dim The number of rows and columns.
+	 */
+	matrix(size_t dim = 0);
+
+	/**
+	 * Constructs a matrix with given dimensions.
 	 *
 	 * The values inside it are constructed using T's default constructor.
 	 *
 	 * @param rows    The number of rows.
 	 * @param columns The number of columns.
 	 */
-	matrix(size_t rows = 0, size_t columns = 0);
+	matrix(size_t rows, size_t columns);
 
 	/**
-	 * Constructs a matrix with a given size and initializes each cell with a
-	 * given value.
+	 * Constructs a matrix with given dimensions and initializes each cell with
+	 * a given value.
 	 *
 	 * @param rows    The number of rows.
 	 * @param columns The number of columns.
@@ -90,22 +103,52 @@ public:
 	const T &at(size_t i, size_t j) const;
 
 	/**
+	 * Gets the number of columns of this matrix.
 	 *
+	 * @return The number of columns of this matrix.
 	 */
 	size_t columns() const;
 
 	/**
+	 * Fills this matrix with “value”.
 	 *
+	 * @param value
 	 */
 	void fill(const T &value);
 
 	/**
+	 * Tests whether this matrix and “m” have same dimensions (i.e. number of
+	 * rows and columns).
 	 *
+	 * @param m
+	 *
+	 * @return Whether they have same dimensions.
+	 */
+	template<typename U>
+	bool has_same_dimensions(const matrix<U> &m) const;
+
+	/**
+	 * Tests whether this matrix is square (i.e. has the same number of rows
+	 * than columns).
+	 *
+	 * @return Whether this matrix is square.
 	 */
 	bool is_square() const;
 
 	/**
 	 *
+	 *
+	 * @param i
+	 * @param j
+	 *
+	 * @return Whether this matrix is square.
+	 */
+	bool is_valid_subscript(size_t i, size_t j) const;
+
+	/**
+	 * Gets the number of rows of this matrix.
+	 *
+	 * @return The number of rows of this matrix.
 	 */
 	size_t rows() const;
 
@@ -122,10 +165,11 @@ public:
 	 * Computes the trace of this matrix, i.e. the sum of the elements which are
 	 * on the diagonal.
 	 *
-	 * The matrix must be square.
+	 * Requirements:
+	 * - this matrix must be square;
+	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 *
-	 * @template R The type of the result, the function operator+=(R &, const T&)
-	 *             must be defined.
+	 * @template R The type of the result.
 	 *
 	 * @return The trace of this matrix.
 	 */
@@ -156,31 +200,59 @@ public:
 
 	/**
 	 *
+	 * Requirements:
+	 * - the method “T &T::operator+=(const T &)” must be defined;
+	 * - the function “T operator*(const T &, const T &)” must be defined.
 	 */
 	matrix<T> operator*(const matrix<T> &m) const;
 
 	/**
 	 *
+	 * Requirements:
+	 * - the method “T &T::operator+=(const T &)” must be defined;
+	 * - the function “T operator*(const T &, const T &)” must be defined.
 	 */
 	matrix<T> &operator*=(const matrix<T> &m);
 
 	/**
+	 * Scalar multiplication: multiplies each elements of this matrix by
+	 * “value”.
 	 *
+	 * Requirement:
+	 * - the function “T operator*(const T &, const T &)” must be defined.
+	 *
+	 * @param value A value by which every elements of this matrix will be
+	 *              multiplied.
+	 *
+	 * @return The result of this operation.
 	 */
 	matrix<T> operator*(const T &value) const;
 
 	/**
+	 * Scalar multiplication: multiplies each elements of this matrix by
+	 * “value”.
 	 *
+	 * Requirement:
+	 * - the function “T operator*(const T &, const T &)” must be defined.
+	 *
+	 * @param value A value by which every elements of this matrix will be
+	 *              multiplied.
+	 *
+	 * @return This matrix.
 	 */
 	matrix<T> &operator*=(const T &value);
 
 	/**
 	 *
+	 * Requirement:
+	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
 	matrix<T> operator+(const matrix<T> &m) const;
 
 	/**
 	 *
+	 * Requirement:
+	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
 	matrix<T> &operator+=(const matrix<T> &m);
 
@@ -293,6 +365,16 @@ operator<<(std::ostream &os, const matrix<T> &m);
 
 
 template<typename T> inline
+matrix<T>::matrix(size_t dim)
+	: _rows(dim), _columns(dim), _size(dim * dim), values(NULL),
+	  values_by_rows(NULL)
+{
+	this->allocate();
+
+	ensures(this->is_square());
+}
+
+template<typename T> inline
 matrix<T>::matrix(size_t rows, size_t columns)
 	: _rows(rows), _columns(columns), _size(rows * columns), values(NULL),
 	  values_by_rows(NULL)
@@ -330,7 +412,7 @@ template<typename T> inline
 T &
 matrix<T>::at(size_t i, size_t j)
 {
-	if ((i >= this->_rows) || (j >= this->_columns))
+	if (!this->is_valid_subscript(i, j))
 	{
 		throw std::out_of_range("No such index");
 	}
@@ -360,6 +442,21 @@ matrix<T>::fill(const T &value)
 	std::fill(this->values, this->values + this->_size, value);
 }
 
+template<typename T>
+template<typename U> inline
+bool
+matrix<T>::has_same_dimensions(const matrix<U> &m) const
+{
+	return ((this->_rows == m._rows) && (this->_columns == m._columns));
+}
+
+template<typename T> inline
+bool
+matrix<T>::is_valid_subscript(size_t i, size_t j) const
+{
+	return ((i < this->_rows) && (j < this->_columns));
+}
+
 template<typename T> inline
 bool
 matrix<T>::is_square() const
@@ -372,6 +469,13 @@ size_t
 matrix<T>::rows() const
 {
 	return this->_rows;
+}
+
+template<typename T> inline
+size_t
+matrix<T>::size() const
+{
+	return this->_size;
 }
 
 template<typename T>
@@ -423,12 +527,7 @@ template<typename T> inline
 bool
 matrix<T>::operator==(const matrix<T> &m) const
 {
-	if ((this->_rows != m._rows) || (this->_columns != m._columns))
-	{
-		return false;
-	}
-
-	return this->compare_values(m);
+	return (this->has_same_dimensions(m) && this->compare_values(m));
 }
 
 template<typename T> inline
@@ -505,8 +604,7 @@ template<typename T> inline
 matrix<T> &
 matrix<T>::operator+=(const matrix<T> &m)
 {
-	requires(this->_rows == m._rows);
-	requires(this->_columns == m._columns);
+	requires(this->has_same_dimensions(m));
 
 	for (size_t i = 0; i < this->_size; ++i)
 	{
@@ -520,8 +618,7 @@ template<typename T> inline
 T &
 matrix<T>::operator()(size_t i, size_t j)
 {
-	requires(i < this->_rows);
-	requires(j < this->_columns);
+	requires(this->is_valid_subscript(i, j));
 
 	return this->values_by_rows[i][j];
 }
@@ -559,8 +656,7 @@ template<typename T> inline
 bool
 matrix<T>::compare_values(const matrix<T> &m) const
 {
-	requires(this->_rows == m._rows);
-	requires(this->_columns == m._columns);
+	requires(this->has_same_dimensions(m));
 
 	for (size_t i = 0; i < this->_rows; ++i)
 	{
@@ -580,8 +676,7 @@ template<typename T> inline
 void
 matrix<T>::copy_values(const matrix<T> &m)
 {
-	requires(this->_rows == m._rows);
-	requires(this->_columns == m._columns);
+	requires(this->has_same_dimensions(m));
 
 	std::copy(m.values, m.values + m._size, this->values);
 

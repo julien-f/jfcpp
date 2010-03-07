@@ -4,37 +4,53 @@
  *
  * Copyleft 2010 - Julien Fontanet <julien.fontanet@isonoe.net>
  *
+ * v1.4 - 2010-03-07
+ * - Tout comme l'en-tête standard « assert.h » il est possible d'inclure
+ *   plusieurs fois « contracts.h » en modifiant son comportement à l'aide des
+ *   macros NDEBUG et EXDEBUG.
+ * - La macro « assert_exception » produit maintenant des messages d'erreurs
+ *   clairs en cas d'échec.
+ *
  * v1.3 - 2010-02-23
  * - Nouvelle macro pour C++ : assert_exception qui assure qu'une exception d'un
  *   certain type est levée lorsqu'un bout de code est executé (utile pour les
  *   jeux de tests).
  *
  * v1.2 - 2010-02-09
- * - Si la macro EXDEBUG est définie en plus de DEBUG alors les macros ensures,
- *   requires et validate n'interrompent plus l'exécution du programme en cas
- *   d'erreur mais lèvent une exception de type ContractViolated.
+ * - En mode debug (si NDEBUG n'est pas défini), si la macro EXDEBUG est définie
+ *   alors macros ensures, requires et validate n'interrompent plus l'exécution
+ *   de programme en cas d'erreur mais lèvent une exception de type
+ *   ContractViolated ayant pour message la condition qui a échouée.
  * - debug_stmt a été renommé en debug_code.
  *
  * v1.1 - 2010-01-27
  * -  Un destructeur virtuel a été ajouté à la classe CertifiedObject.
  */
 
-#ifndef H_CONTRACTS
-#define H_CONTRACTS
-
 #ifdef __cplusplus
 #  include <cassert>
+#  include <cstddef>
+#  include <cstdlib>
+#  include <cstdio>
 #else
 #  include <assert.h>
+#  include <stddef.h>
+#  include <stdlib.h>
+#  include <stdio.h>
+#endif
+
+#ifdef H_CONTRACTS
+#  undef CONTRACTS_ASSERT
+#  undef debug_code
 #endif
 
 #ifdef NDEBUG
-#  define CONTRATS_ASSERT(expr) ((void) 0)
-#  define debug_code(code) ((void) 0)
+#  define CONTRACTS_ASSERT(ignore) ((void) 0)
+#  define debug_code(ignore) ((void) 0)
 #elif defined(EXDEBUG) && defined(__cplusplus)
-#  define CONTRATS_ASSERT(expr) ((expr) ? (void) 0 : throw ContractViolated(#expr))
+#  define CONTRACTS_ASSERT(expr) ((expr) ? (void) 0 : throw ContractViolated(#expr))
 #else
-#  define CONTRATS_ASSERT(expr) assert(expr)
+#  define CONTRACTS_ASSERT(expr) assert(expr)
 #endif
 
 #ifndef NDEBUG
@@ -50,6 +66,9 @@
 #define debug_code(code) code
 #endif
 
+#ifndef H_CONTRACTS
+#define H_CONTRACTS
+
 /**
  * Cette macro permet de spécifier une pré-condition, c'est-à-dire une condition
  * nécessaire pour que la fonction/méthode s'éxecute correctement.
@@ -57,7 +76,7 @@
  * Exemple :
  *   requires(solde > 0);
  */
-#define requires(exp) (CONTRATS_ASSERT(exp))
+#define requires(exp) (CONTRACTS_ASSERT(exp))
 
 /**
  * Cette macro permet de spécifier une post-condition, c'est-à-dire une
@@ -66,7 +85,7 @@
  * Exemple :
  *   ensures(solde > 0);
  */
-#define ensures(exp) (CONTRATS_ASSERT(exp))
+#define ensures(exp) (CONTRACTS_ASSERT(exp))
 
 
 // Définitions supplémentaires pour le C++
@@ -75,6 +94,7 @@
 #ifdef __cplusplus
 
 #include <stdexcept>
+#include <string>
 
 /**
  * Tout objet descendant de celui-ci doit fournir une implémentation de la
@@ -98,9 +118,8 @@ public:
 };
 
 /**
- * Quand la macro EXDEBUG est définie en plus de DEBUG, les macros validate,
- * ensures, requires n'arrêtent plus le programme mais lancent une exception de
- * ce type.
+ * Quand la macro EXDEBUG est définie, les macros validate, ensures, requires
+ * n'arrêtent plus le programme mais lancent une exception de ce type.
  */
 class ContractViolated : public std::logic_error
 {
@@ -123,7 +142,7 @@ public:
  *
  * @param object L'objet à vérifier.
  */
-#define validate(object) (CONTRATS_ASSERT((object).isValid()))
+#define validate(object) (CONTRACTS_ASSERT((object).isValid()))
 
 /**
  * Cette macro assure que l'exécution du code 'code' lève une exception de type
@@ -134,11 +153,29 @@ public:
  */
 #define assert_exception(code, ex) \
 	if (true) \
-		try {code; assert(false);} \
+		try { \
+			code; \
+			__contracts_assert_failed(__FILE__, __LINE__, \
+			                          "No exceptions has been thrown " \
+			                          "(expected: “" #ex "”)."); \
+		} \
 		catch (ex) {} \
-		catch (...) {assert(false);} \
+		catch (...) { \
+			__contracts_assert_failed(__FILE__, __LINE__ , \
+			                          "An unexpected exception has been " \
+			                          "thrown (expected: “" #ex "”)."); \
+		} \
 	else ((void) 0)
 
 #endif // __cplusplus
+
+
+static
+void
+__contracts_assert_failed(const char *file, size_t line, const char *msg)
+{
+	fprintf(stderr, "*** assertion failed at %s:%u\n%s\n", file, line, msg);
+	abort();
+}
 
 #endif // H_CONTRACTS
