@@ -38,6 +38,31 @@ class matrix : private CertifiedObject
 public:
 
 	/**
+	 *
+	 */
+	typedef const T *const_iterator;
+
+	/**
+	 *
+	 */
+	typedef const T &const_reference;
+
+	/**
+	 *
+	 */
+	typedef T *iterator;
+
+	/**
+	 *
+	 */
+	typedef T &reference;
+
+	/**
+	 *
+	 */
+	typedef T value_type;
+
+	/**
 	 * Constructs a square matrix with a given dimension.
 	 *
 	 * The values inside it are constructed using T's default constructor.
@@ -64,7 +89,7 @@ public:
 	 * @param columns The number of columns.
 	 * @param value   The initial value.
 	 */
-	matrix(size_t rows, size_t columns, const T &value);
+	matrix(size_t rows, size_t columns, const_reference value);
 
 	/**
 	 * Constructs a matrix from another.
@@ -88,7 +113,7 @@ public:
 	 *
 	 * @return The item contained at the specified position.
 	 */
-	T &at(size_t i, size_t j);
+	reference at(size_t i, size_t j);
 
 	/**
 	 * Gets the item contained at the specified position.
@@ -100,7 +125,17 @@ public:
 	 *
 	 * @return The item contained at the specified position.
 	 */
-	const T &at(size_t i, size_t j) const;
+	const_reference at(size_t i, size_t j) const;
+
+	/**
+	 *
+	 */
+	iterator begin();
+
+	/**
+	 *
+	 */
+	const_iterator begin() const;
 
 	/**
 	 * Gets the number of columns of this matrix.
@@ -110,11 +145,21 @@ public:
 	size_t columns() const;
 
 	/**
+	 *
+	 */
+	iterator end();
+
+	/**
+	 *
+	 */
+	const_iterator end() const;
+
+	/**
 	 * Fills this matrix with “value”.
 	 *
 	 * @param value
 	 */
-	void fill(const T &value);
+	void fill(const_reference value);
 
 	/**
 	 * Tests whether this matrix and “m” have same dimensions (i.e. number of
@@ -160,6 +205,35 @@ public:
 	 * @return The size of this matrix.
 	 */
 	size_t size() const;
+
+	/**
+	 * Swaps the content between this matrix and another.
+	 *
+	 * Calculus complexity: O(1)
+	 *
+	 * @return m The other matrix.
+	 */
+	void swap(matrix<T> &m);
+
+	/**
+	 *
+	 *
+	 * Calculus complexity: O(number of rows).
+	 *
+	 * @param i
+	 * @param j
+	 */
+	void swap_columns(size_t i, size_t j);
+
+	/**
+	 *
+	 *
+	 * Calculus complexity: O(number of columns).
+	 *
+	 * @param i
+	 * @param j
+	 */
+	void swap_rows(size_t i, size_t j);
 
 	/**
 	 * Computes the trace of this matrix, i.e. the sum of the elements which are
@@ -226,7 +300,7 @@ public:
 	 *
 	 * @return The result of this operation.
 	 */
-	matrix<T> operator*(const T &value) const;
+	matrix<T> operator*(const_reference value) const;
 
 	/**
 	 * Scalar multiplication: multiplies each elements of this matrix by
@@ -240,7 +314,7 @@ public:
 	 *
 	 * @return This matrix.
 	 */
-	matrix<T> &operator*=(const T &value);
+	matrix<T> &operator*=(const_reference value);
 
 	/**
 	 *
@@ -266,7 +340,7 @@ public:
 	 *
 	 * @return The item contained at the specified position.
 	 */
-	T &operator()(size_t i, size_t j);
+	reference operator()(size_t i, size_t j);
 
 	/**
 	 * Gets the item contained at the specified position.
@@ -278,7 +352,7 @@ public:
 	 *
 	 * @return The item contained at the specified position.
 	 */
-	const T &operator()(size_t i, size_t j) const;
+	const_reference operator()(size_t i, size_t j) const;
 
 private:
 
@@ -300,26 +374,17 @@ private:
 	/**
 	 *
 	 */
-	T *values;
+	T *_values;
 
 	/**
 	 *
 	 */
-	T **values_by_rows;
+	T **_values_by_rows;
 
 	/**
 	 *
 	 */
 	void allocate();
-
-	/**
-	 * Checks if this matrix's values and m's are equal.
-	 *
-	 * @param The matrix (must have the same dimension than this matrix).
-	 *
-	 * @return True if they are, otherwise false.
-	 */
-	bool compare_values(const matrix<T> &m) const;
 
 	/**
 	 * Sets the values of this matrix with the values of 'm'.
@@ -334,6 +399,15 @@ private:
 	 * This method does not garantee a coherent state.
 	 */
 	void deallocate();
+
+	/**
+	 * Checks if this matrix's values and m's are equal.
+	 *
+	 * @param The matrix (must have the same dimension than this matrix).
+	 *
+	 * @return True if they are, otherwise false.
+	 */
+	bool has_same_values(const matrix<T> &m) const;
 
 	/**
 	 * @see CertifiedObject::isValid() const
@@ -351,7 +425,7 @@ private:
  */
 template<typename T>
 matrix<T>
-operator*(const T &value, const matrix<T> &m);
+operator*(typename matrix<T>::const_reference value, const matrix<T> &m);
 
 /**
  *
@@ -366,8 +440,8 @@ operator<<(std::ostream &os, const matrix<T> &m);
 
 template<typename T> inline
 matrix<T>::matrix(size_t dim)
-	: _rows(dim), _columns(dim), _size(dim * dim), values(NULL),
-	  values_by_rows(NULL)
+	: _rows(dim), _columns(dim), _size(dim * dim), _values(NULL),
+	  _values_by_rows(NULL)
 {
 	this->allocate();
 
@@ -376,16 +450,16 @@ matrix<T>::matrix(size_t dim)
 
 template<typename T> inline
 matrix<T>::matrix(size_t rows, size_t columns)
-	: _rows(rows), _columns(columns), _size(rows * columns), values(NULL),
-	  values_by_rows(NULL)
+	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
+	  _values_by_rows(NULL)
 {
 	this->allocate();
 }
 
 template<typename T> inline
-matrix<T>::matrix(size_t rows, size_t columns, const T &value)
-	: _rows(rows), _columns(columns), _size(rows * columns), values(NULL),
-	  values_by_rows(NULL)
+matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
+	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
+	  _values_by_rows(NULL)
 {
 	this->allocate();
 
@@ -394,12 +468,14 @@ matrix<T>::matrix(size_t rows, size_t columns, const T &value)
 
 template<typename T> inline
 matrix<T>::matrix(const matrix<T> &m)
-	: _rows(m._rows), _columns(m._columns), _size(m._size), values(NULL),
-	  values_by_rows(NULL)
+	: _rows(m._rows), _columns(m._columns), _size(m._size), _values(NULL),
+	  _values_by_rows(NULL)
 {
 	this->allocate();
 
 	this->copy_values(m);
+
+	ensures(*this == m);
 }
 
 template<typename T>
@@ -409,7 +485,7 @@ matrix<T>::~matrix()
 }
 
 template<typename T> inline
-T &
+typename matrix<T>::reference
 matrix<T>::at(size_t i, size_t j)
 {
 	if (!this->is_valid_subscript(i, j))
@@ -421,11 +497,25 @@ matrix<T>::at(size_t i, size_t j)
 }
 
 template<typename T> inline
-const T &
+typename matrix<T>::const_reference
 matrix<T>::at(size_t i, size_t j) const
 {
 	// Reuse the implementation of at(size_t, size_t).
 	return const_cast<matrix<T> *>(this)->at(i, j);
+}
+
+template<typename T> inline
+typename matrix<T>::iterator
+matrix<T>::begin()
+{
+	return this->_values;
+}
+
+template<typename T> inline
+typename matrix<T>::const_iterator
+matrix<T>::begin() const
+{
+	return const_cast<matrix<T> *>(this)->begin();
 }
 
 template<typename T> inline
@@ -436,10 +526,24 @@ matrix<T>::columns() const
 }
 
 template<typename T> inline
-void
-matrix<T>::fill(const T &value)
+typename matrix<T>::iterator
+matrix<T>::end()
 {
-	std::fill(this->values, this->values + this->_size, value);
+	return this->_values + this->_size;
+}
+
+template<typename T> inline
+typename matrix<T>::const_iterator
+matrix<T>::end() const
+{
+	return const_cast<matrix<T> *>(this)->end();
+}
+
+template<typename T> inline
+void
+matrix<T>::fill(typename matrix<T>::const_reference value)
+{
+	std::fill(this->begin(), this->end(), value);
 }
 
 template<typename T>
@@ -476,6 +580,44 @@ size_t
 matrix<T>::size() const
 {
 	return this->_size;
+}
+
+template<typename T> inline
+void
+matrix<T>::swap(matrix<T> &m)
+{
+	std::swap(this->_rows, m._rows);
+	std::swap(this->_columns, m._columns);
+	std::swap(this->_size, m._size);
+	std::swap(this->_values, m._values);
+	std::swap(this->_values_by_rows, m._values_by_rows);
+}
+
+template<typename T> inline
+void
+matrix<T>::swap_columns(size_t i, size_t j)
+{
+	requires(i != j);
+	requires(i < this->_columns);
+	requires(j < this->_columns);
+
+	for (size_t k = 0; k < this->_rows; ++k)
+	{
+		std::swap((*this)(k, i), (*this)(k, j));
+	}
+}
+
+template<typename T> inline
+void
+matrix<T>::swap_rows(size_t i, size_t j)
+{
+	requires(i != j);
+	requires(i < this->_rows);
+	requires(j < this->_rows);
+
+	std::swap_ranges(this->_values_by_rows[i],
+	                 this->_values_by_rows[i] + this->_columns,
+	                 this->_values_by_rows[j]);
 }
 
 template<typename T>
@@ -527,7 +669,7 @@ template<typename T> inline
 bool
 matrix<T>::operator==(const matrix<T> &m) const
 {
-	return (this->has_same_dimensions(m) && this->compare_values(m));
+	return (this->has_same_dimensions(m) && this->has_same_values(m));
 }
 
 template<typename T> inline
@@ -568,7 +710,7 @@ matrix<T>::operator*=(const matrix<T> &m)
 
 template<typename T> inline
 matrix<T>
-matrix<T>::operator*(const T &value) const
+matrix<T>::operator*(const_reference value) const
 {
 	matrix<T> result(*this);
 
@@ -579,11 +721,11 @@ matrix<T>::operator*(const T &value) const
 
 template<typename T> inline
 matrix<T> &
-matrix<T>::operator*=(const T &value)
+matrix<T>::operator*=(const_reference value)
 {
 	for (size_t i = 0; i < this->_size; ++i)
 	{
-		this->values[i] *= value;
+		this->_values[i] *= value;
 	}
 
 	return *this;
@@ -608,23 +750,23 @@ matrix<T>::operator+=(const matrix<T> &m)
 
 	for (size_t i = 0; i < this->_size; ++i)
 	{
-		this->values[i] += m.values[i];
+		this->_values[i] += m._values[i];
 	}
 
 	return *this;
 }
 
 template<typename T> inline
-T &
+typename matrix<T>::reference
 matrix<T>::operator()(size_t i, size_t j)
 {
 	requires(this->is_valid_subscript(i, j));
 
-	return this->values_by_rows[i][j];
+	return this->_values_by_rows[i][j];
 }
 
 template<typename T> inline
-const T &
+typename matrix<T>::const_reference
 matrix<T>::operator()(size_t i, size_t j) const
 {
 	// Reuse the implementation of operator()(size_t, size_t).
@@ -635,26 +777,48 @@ template<typename T> inline
 void
 matrix<T>::allocate()
 {
-	requires(this->values == NULL);
+	requires(this->_values == NULL);
 
 	assert(this->_size == (this->_rows * this->_columns));
-	assert(this->values_by_rows == NULL);
+	assert(this->_values_by_rows == NULL);
 
-	this->values = new T[this->_size];
-	this->values_by_rows = new T*[this->_rows];
+	this->_values = new T[this->_size];
+	this->_values_by_rows = new T*[this->_rows];
 
-	T *p = this->values;
+	T *p = this->_values;
 	for (size_t i = 0; i < this->_rows; ++i, p += this->_columns)
 	{
-		this->values_by_rows[i] = p;
+		this->_values_by_rows[i] = p;
 	}
 
 	validate(*this);
 }
 
 template<typename T> inline
+void
+matrix<T>::copy_values(const matrix<T> &m)
+{
+	requires(this->has_same_dimensions(m));
+
+	std::copy(m.begin(), m.end(), this->begin());
+
+	ensures(this->has_same_values(m));
+}
+
+template<typename T> inline
+void
+matrix<T>::deallocate()
+{
+	delete[] this->_values_by_rows;
+	this->_values_by_rows = NULL;
+
+	delete[] this->_values;
+	this->_values = NULL;
+}
+
+template<typename T> inline
 bool
-matrix<T>::compare_values(const matrix<T> &m) const
+matrix<T>::has_same_values(const matrix<T> &m) const
 {
 	requires(this->has_same_dimensions(m));
 
@@ -673,35 +837,13 @@ matrix<T>::compare_values(const matrix<T> &m) const
 }
 
 template<typename T> inline
-void
-matrix<T>::copy_values(const matrix<T> &m)
-{
-	requires(this->has_same_dimensions(m));
-
-	std::copy(m.values, m.values + m._size, this->values);
-
-	ensures(*this == m);
-}
-
-template<typename T> inline
-void
-matrix<T>::deallocate()
-{
-	delete[] this->values_by_rows;
-	this->values_by_rows = NULL;
-
-	delete[] this->values;
-	this->values = NULL;
-}
-
-template<typename T> inline
 bool
 matrix<T>::isValid() const
 {
 	return ((this->_size == (this->_rows * this->_columns))
-	        && ((this->values != NULL) || (this->_size == 0))
-	        && (((this->values == NULL) && (this->values_by_rows == NULL))
-	            || ((this->values_by_rows != NULL))));
+	        && ((this->_values != NULL) || (this->_size == 0))
+	        && (((this->_values == NULL) && (this->_values_by_rows == NULL))
+	            || ((this->_values_by_rows != NULL))));
 }
 
 template<typename T> inline
@@ -722,7 +864,7 @@ matrix<T>::resize(size_t rows, size_t columns)
 
 template<typename T> inline
 matrix<T>
-operator*(const T &value, const matrix<T> &m)
+operator*(typename matrix<T>::const_reference value, const matrix<T> &m)
 {
 	return (m * value);
 }
