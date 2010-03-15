@@ -27,13 +27,29 @@ int main(void)
 	{
 		matrix<unsigned short> m(10, 5);
 
-		// Fills the matrix with random values.
-		std::generate(m.begin(), m.end(), RandomGenerator());
-
 		assert(!m.is_square());
 		assert(m.rows() == 10);
 		assert(m.columns() == 5);
 		assert(m.size() == 50);
+
+		// matrix<T>::has_same_dimensions(const matrix<T> &m) const
+		{
+			matrix<unsigned short> m1(10, 5);
+
+			assert(m1.rows() == 10);
+			assert(m1.columns() == 5);
+
+			assert(m1.has_same_dimensions(m));
+			assert(m.has_same_dimensions(m1));
+
+			matrix<unsigned short> m2(5, 10);
+
+			assert(m2.rows() == 5);
+			assert(m2.columns() == 10);
+
+			assert(!m2.has_same_dimensions(m));
+			assert(!m.has_same_dimensions(m2));
+		}
 
 		assert(m.is_valid_subscript(0, 0));
 		assert(!m.is_valid_subscript(10, 5));
@@ -48,6 +64,26 @@ int main(void)
 		assert(m.at(1, 0) == 2); // Crossed checking.
 
 		assert_exception(m.trace<unsigned int>(), ContractViolated);
+
+		// Iterators
+		{
+			matrix<unsigned short>::const_iterator
+				it = m.begin(),
+				end = m.end();
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(it != end);
+					assert(m(i, j) == *it);
+					++it;
+				}
+			}
+			assert(it == end);
+		}
+
+		// Fills the matrix with random values.
+		std::generate(m.begin(), m.end(), RandomGenerator());
 
 		// Copy constructor
 		{

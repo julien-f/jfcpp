@@ -174,12 +174,12 @@ public:
 	bool is_square() const;
 
 	/**
+	 * Checks if (i, j) is a valid subscript for this matrix.
 	 *
+	 * @param i The row's index.
+	 * @param j The column's index.
 	 *
-	 * @param i
-	 * @param j
-	 *
-	 * @return Whether this matrix is square.
+	 * @return Whether this subscript (row/column indexes) are valid.
 	 */
 	bool is_valid_subscript(size_t i, size_t j) const;
 
@@ -209,22 +209,22 @@ public:
 	void swap(matrix<T> &m);
 
 	/**
-	 *
+	 * Swaps two columns of this matrix.
 	 *
 	 * Calculus complexity: O(number of rows).
 	 *
-	 * @param i
-	 * @param j
+	 * @param i The first column's index.
+	 * @param j The second column's index.
 	 */
 	void swap_columns(size_t i, size_t j);
 
 	/**
-	 *
+	 * Swaps two rows of this matrix.
 	 *
 	 * Calculus complexity: O(number of columns).
 	 *
-	 * @param i
-	 * @param j
+	 * @param i The first row's index.
+	 * @param j The second row's index.
 	 */
 	void swap_rows(size_t i, size_t j);
 
@@ -267,6 +267,7 @@ public:
 
 	/**
 	 *
+	 *
 	 * Requirements:
 	 * - the method “T &T::operator+=(const T &)” must be defined;
 	 * - the function “T operator*(const T &, const T &)” must be defined.
@@ -274,6 +275,7 @@ public:
 	matrix<T> operator*(const matrix<T> &m) const;
 
 	/**
+	 *
 	 *
 	 * Requirements:
 	 * - the method “T &T::operator+=(const T &)” must be defined;
@@ -317,6 +319,7 @@ public:
 	matrix<T> operator+(const matrix<T> &m) const;
 
 	/**
+	 *
 	 *
 	 * Requirement:
 	 * - the method “R &R::operator+=(const T &)” must be defined.
