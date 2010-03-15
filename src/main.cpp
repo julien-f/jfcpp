@@ -1,15 +1,34 @@
+#include <algorithm>
 #include <cstddef>
-#include <iostream>
+#include <cstdlib>
 #include <stdexcept>
 
 #include "contracts.h"
 #include "matrix.hpp"
+
+struct RandomGenerator
+{
+	RandomGenerator() : seed(1)
+	{}
+
+	unsigned short operator()()
+	{
+		return rand_r(&(this->seed)) % 100;
+	}
+
+ private:
+
+	unsigned int seed;
+};
 
 int main(void)
 {
 	// Ordinary matrix.
 	{
 		matrix<unsigned short> m(10, 5);
+
+		// Fills the matrix with random values.
+		std::generate(m.begin(), m.end(), RandomGenerator());
 
 		assert(!m.is_square());
 		assert(m.rows() == 10);
@@ -48,21 +67,6 @@ int main(void)
 
 			// Equality
 			assert(c == m);
-		}
-
-		// Fill
-		{
-			matrix<unsigned short> f(m);
-
-			f.fill(356);
-
-			for (size_t i = 0; i < m.rows(); ++i)
-			{
-				for (size_t j = 0; j < m.columns(); ++j)
-				{
-					assert(f(i, j) == 356);
-				}
-			}
 		}
 
 		// Transpose

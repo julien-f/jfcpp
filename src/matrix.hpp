@@ -155,13 +155,6 @@ public:
 	const_iterator end() const;
 
 	/**
-	 * Fills this matrix with “value”.
-	 *
-	 * @param value
-	 */
-	void fill(const_reference value);
-
-	/**
 	 * Tests whether this matrix and “m” have same dimensions (i.e. number of
 	 * rows and columns).
 	 *
@@ -463,7 +456,7 @@ matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
 {
 	this->allocate();
 
-	this->fill(value);
+	std::fill(this->begin(), this->end(), value);
 }
 
 template<typename T> inline
@@ -537,13 +530,6 @@ typename matrix<T>::const_iterator
 matrix<T>::end() const
 {
 	return const_cast<matrix<T> *>(this)->end();
-}
-
-template<typename T> inline
-void
-matrix<T>::fill(typename matrix<T>::const_reference value)
-{
-	std::fill(this->begin(), this->end(), value);
 }
 
 template<typename T>
