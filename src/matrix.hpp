@@ -745,9 +745,10 @@ template<typename T> inline
 matrix<T>
 matrix<T>::operator*(const_reference value) const
 {
-	matrix<T> result(*this);
+	matrix<T> result(this->_rows, this->_columns);
 
-	result *= value;
+	std::transform(this->begin(), this->end(), result.begin(),
+	               std::bind1st(std::multiplies<T>(), value));
 
 	return result;
 }
@@ -766,9 +767,10 @@ template<typename T> inline
 matrix<T>
 matrix<T>::operator/(const_reference value) const
 {
-	matrix<T> result(*this);
+	matrix<T> result(this->_rows, this->_columns);
 
-	result /= value;
+	std::transform(this->begin(), this->end(), result.begin(),
+	               std::bind2nd(std::divides<T>(), value));
 
 	return result;
 }
@@ -778,7 +780,7 @@ matrix<T> &
 matrix<T>::operator/=(const_reference value)
 {
 	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind1st(std::divides<T>(), value));
+	               std::bind2nd(std::divides<T>(), value));
 
 	return *this;
 }
@@ -787,9 +789,10 @@ template<typename T> inline
 matrix<T>
 matrix<T>::operator+(const matrix<T> &m) const
 {
-	matrix<T> result(*this);
+	matrix<T> result(this->_rows, this->_columns);
 
-	result += m;
+	std::transform(this->begin(), this->end(), m.begin(), result.begin(),
+	               std::plus<T>());
 
 	return result;
 }
@@ -810,9 +813,10 @@ template<typename T> inline
 matrix<T>
 matrix<T>::operator+(const_reference value) const
 {
-	matrix<T> result(*this);
+	matrix<T> result(this->_rows, this->_columns);
 
-	result += value;
+	std::transform(this->begin(), this->end(), result.begin(),
+	               std::bind1st(std::plus<T>(), value));
 
 	return result;
 }
