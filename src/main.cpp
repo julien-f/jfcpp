@@ -8,9 +8,20 @@
 
 struct RandomGenerator
 {
-	unsigned short operator()()
+	template<typename T> static
+	void
+	fill(matrix<T> &m)
 	{
-		return rand() % 100;
+		std::generate(m.begin(), m.end(), RandomGenerator());
+	}
+
+	/**
+	 * Generates a random integer between 2 and 100.
+	 */
+	unsigned int
+	operator()()
+	{
+		return ((rand() % 99) + 2);
 	}
 };
 
@@ -18,32 +29,35 @@ int main(void)
 {
 	// Ordinary matrix.
 	{
-		matrix<unsigned short> m(10, 5);
+		const size_t rows = 100;
+		const size_t columns = 500;
+
+		matrix<int> m(rows, columns);
 
 		assert(!m.is_square());
-		assert(m.rows() == 10);
-		assert(m.columns() == 5);
-		assert(m.size() == 50);
+		assert(m.rows() == rows);
+		assert(m.columns() == columns);
+		assert(m.size() == (rows * columns));
 
 		// matrix<T>::has_same_dimensions(const matrix<T> &m) const
 		{
 			// Same dimensions.
-			matrix<unsigned short> m1(m.rows(), m.columns());
+			matrix<int> m1(m.rows(), m.columns());
 			assert(m1.has_same_dimensions(m));
 			assert(m.has_same_dimensions(m1));
 
 			// Same number of rows.
-			matrix<unsigned short> m2(m.rows(), rand() % 50);
+			matrix<int> m2(m.rows(), rand() % 50);
 			assert(!m2.has_same_dimensions(m));
 			assert(!m.has_same_dimensions(m2));
 
 			// Same number of columns.
-			matrix<unsigned short> m3(rand() % 50, m.columns());
+			matrix<int> m3(rand() % 50, m.columns());
 			assert(!m3.has_same_dimensions(m));
 			assert(!m.has_same_dimensions(m3));
 
 			// Same size.
-			matrix<unsigned short> m4(m.columns(), m.rows());
+			matrix<int> m4(m.columns(), m.rows());
 			assert(!m4.has_same_dimensions(m));
 			assert(!m.has_same_dimensions(m4));
 		}
@@ -62,9 +76,12 @@ int main(void)
 
 		assert_exception(m.trace<unsigned int>(), ContractViolated);
 
+		// Fills the matrix with random values.
+		RandomGenerator::fill(m);
+
 		// Iterators
 		{
-			matrix<unsigned short>::const_iterator
+			matrix<int>::const_iterator
 				it = m.begin(),
 				end = m.end();
 			for (size_t i = 0; i < m.rows(); ++i)
@@ -79,12 +96,9 @@ int main(void)
 			assert(it == end);
 		}
 
-		// Fills the matrix with random values.
-		std::generate(m.begin(), m.end(), RandomGenerator());
-
 		// Copy constructor
 		{
-			matrix<unsigned short> c(m);
+			matrix<int> c(m);
 
 			assert(c.rows() == m.rows());
 			assert(c.columns() == m.columns());
@@ -104,7 +118,7 @@ int main(void)
 
 		// Transpose
 		{
-			matrix<unsigned short> t(m.transpose());
+			matrix<int> t(m.transpose());
 
 			assert(t.rows() == m.columns());
 			assert(t.columns() == m.rows());
@@ -124,7 +138,8 @@ int main(void)
 
 		// Scalar multiplication
 		{
-			matrix<unsigned short> p(m * 2);
+			int value = RandomGenerator()();
+			matrix<int> p(m * value);
 
 			assert(p.has_same_dimensions(m));
 
@@ -132,7 +147,7 @@ int main(void)
 			{
 				for (size_t j = 0; j < m.columns(); ++j)
 				{
-					assert(p(i, j) == (2 * m(i, j)));
+					assert(p(i, j) == (m(i, j) * value));
 				}
 			}
 
@@ -142,7 +157,7 @@ int main(void)
 
 		// Addition
 		{
-			matrix<unsigned short> s(m + m);
+			matrix<int> s(m + m);
 
 			assert(s.has_same_dimensions(m));
 
@@ -154,11 +169,43 @@ int main(void)
 				}
 			}
 		}
+
+		// Scalar addition
+		{
+			int value = RandomGenerator()();
+			matrix<int> p(m + value);
+
+			assert(p.has_same_dimensions(m));
+
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(p(i, j) == (m(i, j) + value));
+				}
+			}
+		}
+
+		// Scalar division
+		{
+			int value = RandomGenerator()();
+			matrix<int> p(m / value);
+
+			assert(p.has_same_dimensions(m));
+
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(p(i, j) == (m(i, j) / value));
+				}
+			}
+		}
 	}
 
 	// Test on a square matrix.
 	{
-		matrix<unsigned short> m(10);
+		matrix<int> m(10);
 
 		assert(m.is_square());
 		assert(m.rows() == 10);
@@ -167,7 +214,7 @@ int main(void)
 
 		// Multiplication
 		{
-			matrix<unsigned short> p(m * m);
+			matrix<int> p(m * m);
 
 			assert(p.has_same_dimensions(m));
 		}
