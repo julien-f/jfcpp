@@ -52,10 +52,10 @@ int main(void)
 		}
 
 		assert(m.is_valid_subscript(0, 0));
-		assert(!m.is_valid_subscript(10, 5));
+		assert(!m.is_valid_subscript(m.rows(), m.columns()));
 
-		assert_exception(m.at(10, 5), std::out_of_range);
-		assert_exception(m(10, 5), ContractViolated);
+		assert_exception(m.at(m.rows(), m.columns()), std::out_of_range);
+		assert_exception(m(m.rows(), m.columns()), ContractViolated);
 
 		m.at(0, 0) = 1;
 		assert(m(0, 0) == 1); // Crossed checking.

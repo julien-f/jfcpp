@@ -20,6 +20,7 @@
 #define H_MATRIX
 
 #include <cstddef>
+#include <functional>
 #include <ostream>
 #include <stdexcept>
 
@@ -61,6 +62,21 @@ public:
 	 *
 	 */
 	typedef T value_type;
+
+	/**
+	 * Constructs the identity matrix for a given dimension.
+	 *
+	 * Requirement:
+	 * - The constructor “T::T(int)” must exists and accepts 0 and 1.
+	 *
+	 * Calculus complexity: O(dim²).
+	 *
+	 * @param dim  The number of rows and columns.
+	 * @param zero The value which will be used to fill the matrix.
+	 * @param one  The value which will be used to fill the matrix's diagonal.
+	 */
+	static matrix<T> identity(size_t dim, const_reference zero = T(0),
+	                          const_reference one = T(1));
 
 	/**
 	 * Constructs a square matrix with a given dimension.
@@ -312,6 +328,16 @@ public:
 	matrix<T> &operator*=(const_reference value);
 
 	/**
+	 * Scalar division.
+	 */
+	matrix<T> operator/(const_reference value) const;
+
+	/**
+	 * Scalar division.
+	 */
+	matrix<T> &operator/=(const_reference value);
+
+	/**
 	 *
 	 * Requirement:
 	 * - the method “R &R::operator+=(const T &)” must be defined.
@@ -325,6 +351,16 @@ public:
 	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
 	matrix<T> &operator+=(const matrix<T> &m);
+
+	/**
+	 * Scalar addition.
+	 */
+	matrix<T> operator+(const_reference value) const;
+
+	/**
+	 * Scalar addition.
+	 */
+	matrix<T> &operator+=(const_reference value);
 
 	/**
 	 * Gets the item contained at the specified position.
@@ -420,18 +456,26 @@ private:
  *
  */
 template<typename T>
-matrix<T>
-operator*(typename matrix<T>::const_reference value, const matrix<T> &m);
-
-/**
- *
- */
-template<typename T>
 std::ostream &
 operator<<(std::ostream &os, const matrix<T> &m);
 
 
 // Implementations.
+
+
+template<typename T>
+matrix<T>
+matrix<T>::identity(size_t dim, const_reference zero, const_reference one)
+{
+	matrix<T> id(dim, dim, zero);
+
+	for (size_t i = 0; i < id._rows; ++i)
+	{
+		id(i, i) = one;
+	}
+
+	return id;
+}
 
 
 template<typename T> inline
@@ -712,10 +756,29 @@ template<typename T> inline
 matrix<T> &
 matrix<T>::operator*=(const_reference value)
 {
-	for (size_t i = 0; i < this->_size; ++i)
-	{
-		this->_values[i] *= value;
-	}
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind1st(std::multiplies<T>(), value));
+
+	return *this;
+}
+
+template<typename T> inline
+matrix<T>
+matrix<T>::operator/(const_reference value) const
+{
+	matrix<T> result(*this);
+
+	result /= value;
+
+	return result;
+}
+
+template<typename T> inline
+matrix<T> &
+matrix<T>::operator/=(const_reference value)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind1st(std::divides<T>(), value));
 
 	return *this;
 }
@@ -737,10 +800,29 @@ matrix<T>::operator+=(const matrix<T> &m)
 {
 	requires(this->has_same_dimensions(m));
 
-	for (size_t i = 0; i < this->_size; ++i)
-	{
-		this->_values[i] += m._values[i];
-	}
+	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
+	               std::plus<T>());
+
+	return *this;
+}
+
+template<typename T> inline
+matrix<T>
+matrix<T>::operator+(const_reference value) const
+{
+	matrix<T> result(*this);
+
+	result += value;
+
+	return result;
+}
+
+template<typename T> inline
+matrix<T> &
+matrix<T>::operator+=(const_reference value)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind1st(std::plus<T>(), value));
 
 	return *this;
 }
@@ -762,7 +844,7 @@ matrix<T>::operator()(size_t i, size_t j) const
 	return (*const_cast<matrix<T> *>(this))(i, j);
 }
 
-template<typename T> inline
+template<typename T>
 void
 matrix<T>::allocate()
 {
@@ -811,21 +893,10 @@ matrix<T>::has_same_values(const matrix<T> &m) const
 {
 	requires(this->has_same_dimensions(m));
 
-	for (size_t i = 0; i < this->_rows; ++i)
-	{
-		for (size_t j = 0; j < this->_columns; ++j)
-		{
-			if ((*this)(i, j) != m(i, j))
-			{
-				return false;
-			}
-		}
-	}
-
-	return true;
+	return std::equal(this->begin(), this->end(), m.begin());
 }
 
-template<typename T> inline
+template<typename T>
 bool
 matrix<T>::isValid() const
 {
@@ -849,13 +920,6 @@ matrix<T>::resize(size_t rows, size_t columns)
 	this->allocate();
 
 	validate(*this);
-}
-
-template<typename T> inline
-matrix<T>
-operator*(typename matrix<T>::const_reference value, const matrix<T> &m)
-{
-	return (m * value);
 }
 
 template<typename T>
