@@ -8,17 +8,10 @@
 
 struct RandomGenerator
 {
-	RandomGenerator() : seed(1)
-	{}
-
 	unsigned short operator()()
 	{
-		return rand_r(&(this->seed)) % 100;
+		return rand() % 100;
 	}
-
- private:
-
-	unsigned int seed;
 };
 
 int main(void)
@@ -34,21 +27,25 @@ int main(void)
 
 		// matrix<T>::has_same_dimensions(const matrix<T> &m) const
 		{
-			matrix<unsigned short> m1(10, 5);
-
-			assert(m1.rows() == 10);
-			assert(m1.columns() == 5);
-
+			// Same dimensions.
+			matrix<unsigned short> m1(m.rows(), m.columns());
 			assert(m1.has_same_dimensions(m));
 			assert(m.has_same_dimensions(m1));
 
-			matrix<unsigned short> m2(5, 10);
-
-			assert(m2.rows() == 5);
-			assert(m2.columns() == 10);
-
+			// Same number of rows.
+			matrix<unsigned short> m2(m.rows(), rand() % 50);
 			assert(!m2.has_same_dimensions(m));
 			assert(!m.has_same_dimensions(m2));
+
+			// Same number of columns.
+			matrix<unsigned short> m3(rand() % 50, m.columns());
+			assert(!m3.has_same_dimensions(m));
+			assert(!m.has_same_dimensions(m3));
+
+			// Same size.
+			matrix<unsigned short> m4(m.columns(), m.rows());
+			assert(!m4.has_same_dimensions(m));
+			assert(!m.has_same_dimensions(m4));
 		}
 
 		assert(m.is_valid_subscript(0, 0));
