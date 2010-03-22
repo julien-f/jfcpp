@@ -12,21 +12,13 @@
 # The C++ prefix is ".cpp".
 ##
 
-#PROFILING := -g
-
 # Projects list.
-PROJECTS := matrix
+PROJECTS := circular_buffer matrix
 
 # Global configuration.
 PREFIX   := /usr/local
-CXXFLAGS += -std=c++98 -pedantic -Wall -Wextra -Winline -Wconversion -ggdb3 $(PROFILING)
-#CXXFLAGS += -DNDEBUG -fno-strict-aliasing -funroll-loops -O3 -g0
-LDFLAGS  += $(PROFILING)
-
-# Per project configuration.
-matrix_SRCS     := $(wildcard src/*.cpp)
-matrix_CXXFLAGS := -DEXDEBUG
-matrix_LDFLAGS  :=
+CXXFLAGS += -DEXDEBUG -Iinclude/ -Icontracts/include/
+CXXFLAGS += -std=c++98 -pedantic -Wall -Wextra -Winline -Wconversion -ggdb3
 
 
 
@@ -49,7 +41,7 @@ define PROJECT_TPL
 $(1)_TARGET ?= bin/$(1)
 
 # The default source is "src/PROJECT_NAME.cpp".
-$(1)_SRCS ?= src/$(1).cpp
+$(1)_SRCS ?= tests/$(1).cpp
 
 # The default install directory is "PREFIX/bin".
 $(1)_INSTALL ?= $(PREFIX)/bin

@@ -25,7 +25,7 @@ struct RandomGenerator
 	}
 };
 
-int main(void)
+int main()
 {
 	// Ordinary matrix.
 	{

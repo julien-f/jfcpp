@@ -1,0 +1,3 @@
+[submodule "contracts"]
+	path = contracts
+	url = git://git.isonoe.net/perso/contracts.git
