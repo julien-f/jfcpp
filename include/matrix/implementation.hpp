@@ -16,6 +16,13 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
+#include <algorithm>
+#include <functional>
+#include <ostream>
+#include <stdexcept>
+
+#include "contracts.h"
+
 template<typename T>
 matrix<T>
 matrix<T>::identity(size_t dim, const_reference zero, const_reference one)

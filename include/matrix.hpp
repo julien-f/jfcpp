@@ -19,13 +19,17 @@
 #ifndef H_MATRIX
 #define H_MATRIX
 
-#include <algorithm>
 #include <cstddef>
-#include <functional>
-#include <ostream>
-#include <stdexcept>
+#include <utility>
 
-#include "contracts.h"
+namespace matrix_details
+{
+	template<typename T>
+	class column_iterator;
+
+	template<typename T>
+	class const_column_iterator;
+}
 
 /**
  *
@@ -63,6 +67,16 @@ public:
 	 *
 	 */
 	typedef T value_type;
+
+	/**
+	 *
+	 */
+	typedef matrix_details::column_iterator<T> column_iterator;
+
+	/**
+	 *
+	 */
+	typedef matrix_details::const_column_iterator<T> const_column_iterator;
 
 	/**
 	 * Constructs the identity matrix for a given dimension.
@@ -131,27 +145,16 @@ public:
 	 * @return The item contained at the specified position.
 	 */
 	reference at(size_t i, size_t j);
-
-	/**
-	 * Gets the item contained at the specified position.
-	 *
-	 * @param i The row.
-	 * @param j The column.
-	 *
-	 * @throw std::out_of_range If this subscript is not valid.
-	 *
-	 * @return The item contained at the specified position.
-	 */
 	const_reference at(size_t i, size_t j) const;
 
 	/**
+	 * Gets an iterator referring to the first element in this matrix.
 	 *
+	 * This iterator iterates line by line.
+	 *
+	 * @return A random access iterator positioned on the first element.
 	 */
 	iterator begin();
-
-	/**
-	 *
-	 */
 	const_iterator begin() const;
 
 	/**
@@ -162,13 +165,13 @@ public:
 	size_t columns() const;
 
 	/**
+	 * Gets an iterator referring to the past-the-end element in this matrix.
 	 *
+	 * This iterator iterates line by line.
+	 *
+	 * @return A random access iterator positioned on the past-the-end element.
 	 */
 	iterator end();
-
-	/**
-	 *
-	 */
 	const_iterator end() const;
 
 	/**
@@ -566,7 +569,7 @@ private:
 	/**
 	 *
 	 *
-	 * This method does not garantee a coherent state.
+	 * This method does not guarantee a coherent state.
 	 */
 	void deallocate();
 
@@ -596,6 +599,10 @@ private:
 template<typename T>
 std::ostream &
 operator<<(std::ostream &os, const matrix<T> &m);
+
+#include "matrix/column_iterator.hpp"
+
+#include "matrix/const_column_iterator.hpp"
 
 #include "matrix/implementation.hpp"
 
