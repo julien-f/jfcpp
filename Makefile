@@ -13,7 +13,7 @@
 ##
 
 # Projects list.
-PROJECTS := circular_buffer matrix
+PROJECTS := circular_buffer functional matrix
 
 # Global configuration.
 PREFIX   := /usr/local

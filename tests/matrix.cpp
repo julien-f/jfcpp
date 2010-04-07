@@ -21,7 +21,7 @@ struct RandomGenerator
 	unsigned int
 	operator()()
 	{
-		return ((rand() % 99) + 2);
+		return ((rand() % 299) + 2);
 	}
 };
 
@@ -96,6 +96,34 @@ int main()
 			assert(it == end);
 		}
 
+		// Default constructor + affectation
+		{
+			matrix<int> a;
+
+			assert(a.is_square());
+			assert(a.rows() == 0);
+			assert(a.columns() == 0);
+			assert(a.size() == 0);
+			assert(!a.is_valid_subscript(0, 0));
+
+			a = m;
+
+			assert(a.rows() == m.rows());
+			assert(a.columns() == m.columns());
+			assert(a.has_same_dimensions(m));
+
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(a(i, j) == m(i, j));
+				}
+			}
+
+			// Equality
+			assert(a == m);
+		}
+
 		// Copy constructor
 		{
 			matrix<int> c(m);
@@ -111,9 +139,6 @@ int main()
 					assert(c(i, j) == m(i, j));
 				}
 			}
-
-			// Equality
-			assert(c == m);
 		}
 
 		// Transpose
@@ -206,6 +231,8 @@ int main()
 	// Test on a square matrix.
 	{
 		matrix<int> m(10);
+
+		RandomGenerator::fill(m);
 
 		assert(m.is_square());
 		assert(m.rows() == 10);

@@ -126,8 +126,18 @@ public:
 	 * Constructs a matrix from another.
 	 *
 	 * @param m The matrix.
+	 *
+	 * @ensures *this == m
 	 */
 	matrix(const matrix<T> &m);
+
+	/**
+	 * Constructs a matrix from another.
+	 *
+	 * @param m The matrix.
+	 */
+	template<typename U>
+	matrix(const matrix<U> &m);
 
 	/**
 	 *
@@ -388,18 +398,30 @@ public:
 
 	/**
 	 *
+	 *
+	 * @param m
+	 *
+	 * @ensures *this == m
 	 */
 	matrix<T> &operator=(const matrix<T> &m);
 
 	/**
 	 *
 	 */
-	bool operator==(const matrix<T> &m) const;
+	template<typename U>
+	matrix<T> &operator=(const matrix<U> &m);
 
 	/**
 	 *
 	 */
-	bool operator!=(const matrix<T> &m) const;
+	template<typename U>
+	bool operator==(const matrix<U> &m) const;
+
+	/**
+	 *
+	 */
+	template<typename U>
+	bool operator!=(const matrix<U> &m) const;
 
 	/**
 	 *
@@ -408,7 +430,8 @@ public:
 	 * - the method “T &T::operator+=(const T &)” must be defined;
 	 * - the function “T operator*(const T &, const T &)” must be defined.
 	 */
-	matrix<T> operator*(const matrix<T> &m) const;
+	template<typename U>
+	matrix<T> operator*(const matrix<U> &m) const;
 
 	/**
 	 *
@@ -417,7 +440,8 @@ public:
 	 * - the method “T &T::operator+=(const T &)” must be defined;
 	 * - the function “T operator*(const T &, const T &)” must be defined.
 	 */
-	matrix<T> &operator*=(const matrix<T> &m);
+	template<typename U>
+	matrix<T> &operator*=(const matrix<U> &m);
 
 	/**
 	 * Scalar multiplication: multiplies each elements of this matrix by
@@ -462,7 +486,8 @@ public:
 	 * Requirement:
 	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
-	matrix<T> operator+(const matrix<T> &m) const;
+	template<typename U>
+	matrix<T> operator+(const matrix<U> &m) const;
 
 	/**
 	 *
@@ -470,7 +495,8 @@ public:
 	 * Requirement:
 	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
-	matrix<T> &operator+=(const matrix<T> &m);
+	template<typename U>
+	matrix<T> &operator+=(const matrix<U> &m);
 
 	/**
 	 * Scalar addition.
@@ -563,8 +589,18 @@ private:
 	 * Sets the values of this matrix with the values of 'm'.
 	 *
 	 * @param The matrix (must have the same dimension than this matrix).
+	 *
+	 * @ensures *this == m
 	 */
 	void copy_values(const matrix<T> &m);
+
+	/**
+	 * Sets the values of this matrix with the values of 'm'.
+	 *
+	 * @param The matrix (must have the same dimension than this matrix).
+	 */
+	template<typename U>
+	void copy_values(const matrix<U> &m);
 
 	/**
 	 *
@@ -580,7 +616,8 @@ private:
 	 *
 	 * @return True if they are, otherwise false.
 	 */
-	bool has_same_values(const matrix<T> &m) const;
+	template<typename U>
+	bool has_same_values(const matrix<U> &m) const;
 
 	/**
 	 * @see CertifiedObject::isValid() const

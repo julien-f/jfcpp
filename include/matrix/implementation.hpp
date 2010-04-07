@@ -22,6 +22,7 @@
 #include <stdexcept>
 
 #include "contracts.h"
+#include "functional.hpp"
 
 template<typename T>
 matrix<T>
@@ -74,8 +75,17 @@ matrix<T>::matrix(const matrix<T> &m)
 	this->allocate();
 
 	this->copy_values(m);
+}
 
-	ensures(*this == m);
+template<typename T>
+template<typename U> inline
+matrix<T>::matrix(const matrix<U> &m)
+	: _rows(m.rows()), _columns(m.columns()), _size(m.size()), _values(NULL),
+	  _values_by_rows(NULL)
+{
+	this->allocate();
+
+	this->copy_values(m);
 }
 
 template<typename T>
@@ -144,7 +154,7 @@ template<typename U> inline
 bool
 matrix<T>::has_same_dimensions(const matrix<U> &m) const
 {
-	return ((this->_rows == m._rows) && (this->_columns == m._columns));
+	return ((this->_rows == m.rows()) && (this->_columns == m.columns()));
 }
 
 template<typename T> inline
@@ -175,23 +185,6 @@ bool
 matrix<T>::is_square() const
 {
 	return (this->_rows == this->_columns);
-}
-
-template<typename T> inline
-std::pair<matrix<T>, matrix<T> >
-matrix<T>::lu() const
-{
-	requires(this->is_square());
-
-	matrix<T> u(*this);
-	matrix<T> l(this->_rows, this->_columns);
-
-	for (size_t i = 0; i < this->_rows; ++i)
-	{
-		for (size_t j = i + 1; j < this->_columns; ++j)
-		{
-		}
-	}
 }
 
 template<typename T>
@@ -391,10 +384,11 @@ matrix<T>::transpose() const
 }
 
 template<typename T>
+template<typename U> inline
 matrix<T> &
-matrix<T>::operator=(const matrix<T> &m)
+matrix<T>::operator=(const matrix<U> &m)
 {
-	this->resize(m._rows, m._columns);
+	this->resize(m.rows(), m.columns());
 
 	this->copy_values(m);
 
@@ -402,26 +396,36 @@ matrix<T>::operator=(const matrix<T> &m)
 }
 
 template<typename T> inline
+matrix<T> &
+matrix<T>::operator=(const matrix<T> &m)
+{
+	return this->operator= <T>(m);
+}
+
+template<typename T>
+template<typename U> inline
 bool
-matrix<T>::operator==(const matrix<T> &m) const
+matrix<T>::operator==(const matrix<U> &m) const
 {
 	return (this->has_same_dimensions(m) && this->has_same_values(m));
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 bool
-matrix<T>::operator!=(const matrix<T> &m) const
+matrix<T>::operator!=(const matrix<U> &m) const
 {
 	return !(*this == m);
 }
 
 template<typename T>
+template<typename U>
 matrix<T>
-matrix<T>::operator*(const matrix<T> &m) const
+matrix<T>::operator*(const matrix<U> &m) const
 {
-	requires(this->_columns == m._rows);
+	requires(this->_columns == m.rows());
 
-	matrix<T> result(this->_rows, m._columns);
+	matrix<T> result(this->_rows, m.columns());
 	for (size_t i = 0; i < result._rows; ++i)
 	{
 		for (size_t j = 0; j < result._columns; ++j)
@@ -437,9 +441,10 @@ matrix<T>::operator*(const matrix<T> &m) const
 	return result;
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 matrix<T> &
-matrix<T>::operator*=(const matrix<T> &m)
+matrix<T>::operator*=(const matrix<U> &m)
 {
 	return (*this = *this * m);
 }
@@ -488,26 +493,28 @@ matrix<T>::operator/=(const_reference value)
 	return *this;
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 matrix<T>
-matrix<T>::operator+(const matrix<T> &m) const
+matrix<T>::operator+(const matrix<U> &m) const
 {
 	matrix<T> result(this->_rows, this->_columns);
 
 	std::transform(this->begin(), this->end(), m.begin(), result.begin(),
-	               std::plus<T>());
+	               plus<T, U>());
 
 	return result;
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 matrix<T> &
-matrix<T>::operator+=(const matrix<T> &m)
+matrix<T>::operator+=(const matrix<U> &m)
 {
 	requires(this->has_same_dimensions(m));
 
 	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               std::plus<T>());
+	               plus<T, U>());
 
 	return *this;
 }
@@ -572,13 +579,21 @@ matrix<T>::allocate()
 	validate(*this);
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 void
-matrix<T>::copy_values(const matrix<T> &m)
+matrix<T>::copy_values(const matrix<U> &m)
 {
 	requires(this->has_same_dimensions(m));
 
 	std::copy(m.begin(), m.end(), this->begin());
+}
+
+template<typename T> inline
+void
+matrix<T>::copy_values(const matrix<T> &m)
+{
+	this->copy_values<T>(m);
 
 	ensures(this->has_same_values(m));
 }
@@ -594,9 +609,10 @@ matrix<T>::deallocate()
 	this->_values = NULL;
 }
 
-template<typename T> inline
+template<typename T>
+template<typename U> inline
 bool
-matrix<T>::has_same_values(const matrix<T> &m) const
+matrix<T>::has_same_values(const matrix<U> &m) const
 {
 	requires(this->has_same_dimensions(m));
 
