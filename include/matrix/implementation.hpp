@@ -249,28 +249,28 @@ template<typename T> inline
 typename matrix<T>::reverse_iterator
 matrix<T>::rbegin()
 {
-	return std::reverse_iterator(this->end());
+	return reverse_iterator(this->end());
 }
 
 template<typename T> inline
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rbegin() const
 {
-	return std::reverse_iterator(this->end());
+	return reverse_iterator(this->end());
 }
 
 template<typename T> inline
 typename matrix<T>::reverse_iterator
 matrix<T>::rend()
 {
-	return std::reverse_iterator(this->begin());
+	return reverse_iterator(this->begin());
 }
 
 template<typename T> inline
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rend() const
 {
-	return std::reverse_iterator(this->begin());
+	return reverse_iterator(this->begin());
 }
 
 template<typename T> inline
