@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iterator>
 #include <ostream>
 #include <stdexcept>
 
@@ -37,7 +38,6 @@ matrix<T>::identity(size_t dim, const_reference zero, const_reference one)
 
 	return id;
 }
-
 
 template<typename T> inline
 matrix<T>::matrix(size_t dim)
@@ -243,6 +243,34 @@ matrix<T>::op_row(size_t i, size_t j, size_t k, BinaryOperator op)
 
 	std::transform(it, it + this->_columns, this->_values + this->_columns * j,
 	               this->_values + this->_columns * k, op);
+}
+
+template<typename T> inline
+typename matrix<T>::reverse_iterator
+matrix<T>::rbegin()
+{
+	return std::reverse_iterator(this->end());
+}
+
+template<typename T> inline
+typename matrix<T>::const_reverse_iterator
+matrix<T>::rbegin() const
+{
+	return std::reverse_iterator(this->end());
+}
+
+template<typename T> inline
+typename matrix<T>::reverse_iterator
+matrix<T>::rend()
+{
+	return std::reverse_iterator(this->begin());
+}
+
+template<typename T> inline
+typename matrix<T>::const_reverse_iterator
+matrix<T>::rend() const
+{
+	return std::reverse_iterator(this->begin());
 }
 
 template<typename T> inline

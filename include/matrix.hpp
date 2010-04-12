@@ -20,6 +20,7 @@
 #define H_MATRIX
 
 #include <cstddef>
+#include <iterator>
 #include <utility>
 
 namespace matrix_details
@@ -62,6 +63,16 @@ public:
 	 *
 	 */
 	typedef T &reference;
+
+	/**
+	 *
+	 */
+	typedef std::reverse_iterator<iterator> reverse_iterator;
+
+	/**
+	 *
+	 */
+	typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
 	/**
 	 *
@@ -293,6 +304,18 @@ public:
 	 */
 	template<class BinaryOperator>
 	void op_row(size_t i, size_t j, size_t k, BinaryOperator op);
+
+	/**
+	 *
+	 */
+	reverse_iterator rbegin();
+	const_reverse_iterator rbegin() const;
+
+	/**
+	 *
+	 */
+	reverse_iterator rend();
+	const_reverse_iterator rend() const;
 
 	/**
 	 * Gets the number of rows of this matrix.
