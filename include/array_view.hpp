@@ -92,6 +92,7 @@ public:
 		: _raw(raw), _size(size)
 	{
 		requires(raw != NULL);
+		requires(size != 0);
 	}
 
 	/**
@@ -152,6 +153,22 @@ public:
 	inline const_reverse_iterator rend() const
 	{
 		return reverse_iterator(this->begin());
+	}
+
+	/**
+	 *
+	 */
+	void set(size_t size, pointer raw)
+	{
+		requires(raw != NULL);
+		requires(size != 0);
+
+		this->_raw = raw;
+		this->_size = size;
+	}
+	void set(const array_view<T> &ar)
+	{
+		this->set(ar._size, ar._raw);
 	}
 
 	/**
@@ -279,6 +296,7 @@ public:
 		: _raw(raw), _size(size)
 	{
 		requires(raw != NULL);
+		requires(size != 0);
 	}
 
 	/**
@@ -303,6 +321,26 @@ public:
 	inline const_pointer raw() const
 	{
 		return this->_raw;
+	}
+
+	/**
+	 *
+	 */
+	void set(size_t size, const_pointer raw)
+	{
+		requires(raw != NULL);
+		requires(size != 0);
+
+		this->_raw = raw;
+		this->_size = size;
+	}
+	void set(const array_view<T> &ar)
+	{
+		this->set(ar._size, ar._raw);
+	}
+	void set(const array_view<const T> &ar)
+	{
+		this->set(ar._size, ar._raw);
 	}
 
 	/**
