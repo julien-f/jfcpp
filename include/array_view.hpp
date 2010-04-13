@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <istream>
+#include <iterator>
 #include <ostream>
 
 #include "contracts.h"
@@ -29,6 +30,10 @@
 /**
  * This class is a simple wrapper around a C array which provides helper for
  * copying, comparing and accessing elements.
+ *
+ * Be careful, this class does not own the memory, it only provides a way to
+ * manipulates the data in it, consequently, it will not free the memory when
+ * destroyed.
  */
 template<typename T>
 class array_view
@@ -53,6 +58,11 @@ public:
 	/**
 	 *
 	 */
+	typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
+	/**
+	 *
+	 */
 	typedef const value_type *const_pointer;
 
 	/**
@@ -68,12 +78,17 @@ public:
 	/**
 	 *
 	 */
+	typedef std::reverse_iterator<iterator> reverse_iterator;
+
+	/**
+	 *
+	 */
 	typedef value_type *pointer;
 
 	/**
 	 *
 	 */
-	array_view(size_t size, pointer raw)
+	inline array_view(size_t size, pointer raw)
 		: _raw(raw), _size(size)
 	{
 		requires(raw != NULL);
@@ -82,11 +97,11 @@ public:
 	/**
 	 *
 	 */
-	iterator begin()
+	inline iterator begin()
 	{
 		return this->_raw;
 	}
-	const_iterator begin() const
+	inline const_iterator begin() const
 	{
 		return this->_raw;
 	}
@@ -94,11 +109,11 @@ public:
 	/**
 	 *
 	 */
-	iterator end()
+	inline iterator end()
 	{
 		return (this->_raw + this->_size);
 	}
-	const_iterator end() const
+	inline const_iterator end() const
 	{
 		return (this->_raw + this->_size);
 	}
@@ -106,11 +121,11 @@ public:
 	/**
 	 *
 	 */
-	pointer raw()
+	inline pointer raw()
 	{
 		return this->_raw;
 	}
-	const_pointer raw() const
+	inline const_pointer raw() const
 	{
 		return this->_raw;
 	}
@@ -118,7 +133,31 @@ public:
 	/**
 	 *
 	 */
-	size_t size() const
+	inline reverse_iterator rbegin()
+	{
+		return reverse_iterator(this->end());
+	}
+	inline const_reverse_iterator rbegin() const
+	{
+		return reverse_iterator(this->end());
+	}
+
+	/**
+	 *
+	 */
+	inline reverse_iterator rend()
+	{
+		return reverse_iterator(this->begin());
+	}
+	inline const_reverse_iterator rend() const
+	{
+		return reverse_iterator(this->begin());
+	}
+
+	/**
+	 *
+	 */
+	inline size_t size() const
 	{
 		return this->_size;
 	}
@@ -126,7 +165,7 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
+	template<typename U> inline
 	bool operator==(const array_view<U> &a) const
 	{
 		return ((this->_size == a.size()) &&
@@ -136,7 +175,7 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
+	template<typename U> inline
 	bool operator<(const array_view<U> &a) const
 	{
 		return std::lexicographical_compare(this->begin(), this->end(),
@@ -146,7 +185,7 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
+	template<typename U> inline
 	array_view &operator=(const array_view<U> &a)
 	{
 		requires(this->_size == a.size());
@@ -159,17 +198,32 @@ public:
 	/**
 	 *
 	 */
-	reference operator[](size_t i)
+	inline reference at(size_t i)
+	{
+		if (i >= this->size())
+		{
+			throw std::out_of_range("no such index");
+		}
+
+		return (*this)[i];
+	}
+	inline const_reference at(size_t i) const
+	{
+		return const_cast<array_view<T> *>(this)->at(i);
+	}
+
+	/**
+	 *
+	 */
+	inline reference operator[](size_t i)
 	{
 		requires(i < this->_size);
 
 		return this->_raw[i];
 	}
-	const_reference operator[](size_t i) const
+	inline const_reference operator[](size_t i) const
 	{
-		requires(i < this->_size);
-
-		return this->_raw[i];
+		return const_cast<array_view<T> &>(*this)[i];
 	}
 
 private:
@@ -211,9 +265,17 @@ public:
 	typedef const value_type *const_pointer;
 
 	/**
+	 * Allows to create an array_view on constant values from one on
+	 * non-constant values.
+	 */
+	inline array_view(const array_view<T> &a)
+		: _raw(a.raw()), _size(a.size())
+	{}
+
+	/**
 	 *
 	 */
-	array_view(size_t size, const_pointer raw)
+	inline array_view(size_t size, const_pointer raw)
 		: _raw(raw), _size(size)
 	{
 		requires(raw != NULL);
@@ -222,7 +284,7 @@ public:
 	/**
 	 *
 	 */
-	const_iterator begin() const
+	inline const_iterator begin() const
 	{
 		return this->_raw;
 	}
@@ -230,7 +292,7 @@ public:
 	/**
 	 *
 	 */
-	const_iterator end() const
+	inline const_iterator end() const
 	{
 		return (this->_raw + this->_size);
 	}
@@ -238,7 +300,7 @@ public:
 	/**
 	 *
 	 */
-	const_pointer raw() const
+	inline const_pointer raw() const
 	{
 		return this->_raw;
 	}
@@ -246,7 +308,7 @@ public:
 	/**
 	 *
 	 */
-	size_t size() const
+	inline size_t size() const
 	{
 		return this->_size;
 	}
@@ -254,7 +316,7 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
+	template<typename U> inline
 	bool operator==(const array_view<U> &a) const
 	{
 		return ((this->_size == a.size()) &&
@@ -264,17 +326,31 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
+	template<typename U> inline
 	bool operator<(const array_view<U> &a) const
 	{
 		return std::lexicographical_compare(this->begin(), this->end(),
 		                                    a.begin(), a .end());
 	}
 
+
 	/**
 	 *
 	 */
-	const_reference operator[](size_t i) const
+	inline const_reference at(size_t i) const
+	{
+		if (i >= this->_size)
+		{
+			throw std::out_of_range("no such index");
+		}
+
+		return (*this)[i];
+	}
+
+	/**
+	 *
+	 */
+	inline const_reference operator[](size_t i) const
 	{
 		requires(i < this->_size);
 
@@ -296,7 +372,7 @@ private:
 	/**
 	 * No copy for the constant version.
 	 */
-	array_view<const T> &operator=(const array_view<const T> &)
+	inline array_view<const T> &operator=(const array_view<const T> &)
 	{return *this;}
 };
 

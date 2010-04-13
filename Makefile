@@ -13,7 +13,7 @@
 ##
 
 # Projects list.
-PROJECTS := circular_buffer functional matrix
+PROJECTS := $(basename $(notdir $(wildcard examples/*.cpp tests/*.cpp)))
 
 # Global configuration.
 PREFIX   := /usr/local
@@ -41,7 +41,7 @@ define PROJECT_TPL
 $(1)_TARGET ?= bin/$(1)
 
 # The default source is "src/PROJECT_NAME.cpp".
-$(1)_SRCS ?= tests/$(1).cpp
+$(1)_SRCS ?= $(wildcard */$(1).cpp)
 
 # The default install directory is "PREFIX/bin".
 $(1)_INSTALL ?= $(PREFIX)/bin

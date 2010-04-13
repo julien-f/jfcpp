@@ -40,12 +40,10 @@ template <class F1, class F2>
 class unary_composer : public std::unary_function<typename F2::argument_type,
                                                   typename F1::result_type>
 {
-private:
+public:
 
 	typedef typename F2::argument_type argument_type;
 	typedef typename F1::result_type result_type;
-
-public:
 
 	unary_composer(F1 f1, F2 f2) : _f1(f1), _f2(f2)
 	{}
@@ -66,9 +64,27 @@ private:
  */
 template <class F1, class F2>
 unary_composer<F1, F2>
-unary_compose(F1 f1, F2 f2)
+compose(F1 f1, F2 f2) // functor & functor
 {
 	return unary_composer<F1, F2>(f1, f2);
+}
+template <class Arg1, class Result1, class F2>
+unary_composer<std::pointer_to_unary_function<Arg1, Result1>, F2>
+compose(Result1 (*f1)(Arg1), F2 f2) // pointer & functor
+{
+	return unary_composer<std::pointer_to_unary_function<Arg1, Result1>, F2>(std::ptr_fun(f1), f2);
+}
+template <class F1, class Arg2, class Result2>
+unary_composer<F1, std::pointer_to_unary_function<Arg2, Result2> >
+compose(F1 f1, Result2 (*f2)(Arg2)) // functor & pointer
+{
+	return unary_composer<F1, std::pointer_to_unary_function<Arg2, Result2> >(f1, std::ptr_fun(f2));
+}
+template <class Arg1, class Result1, class Arg2, class Result2>
+unary_composer<std::pointer_to_unary_function<Arg1, Result1>, std::pointer_to_unary_function<Arg2, Result2> >
+compose(Result1 (*f1)(Arg1), Result2 (*f2)(Arg2)) // pointer & pointer
+{
+	return unary_composer<std::pointer_to_unary_function<Arg1, Result1>, std::pointer_to_unary_function<Arg2, Result2> >(std::ptr_fun(f1), std::ptr_fun(f2));
 }
 
 /**
@@ -80,13 +96,11 @@ class binary_composer : public std::binary_function<typename F2::argument_type,
                                                     typename F3::argument_type,
                                                     typename F1::result_type>
 {
-private:
+public:
 
 	typedef typename F2::argument_type first_argument_type;
 	typedef typename F3::argument_type second_argument_type;
 	typedef typename F1::result_type result_type;
-
-public:
 
 	binary_composer(F1 f1, F2 f2, F3 f3) : _f1(f1), _f2(f2), _f3(f3)
 	{}
@@ -107,11 +121,68 @@ private:
 /**
  *
  */
+// functor & functor & functor
 template <class F1, class F2, class F3>
 binary_composer<F1, F2, F3>
-binary_compose(F1 f1, F2 f2, F3 f3)
+compose(F1 f1, F2 f2, F3 f3)
 {
 	return binary_composer<F1, F2, F3>(f1, f2, f3);
+}
+
+// pointer & functor & functor
+template <class Arg11, class Arg12, class Result1, class F2, class F3>
+binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>, F2, F3>
+compose(Result1 (*f1)(Arg11, Arg12), F2 f2, F3 f3)
+{
+	return binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>, F2, F3>(std::ptr_fun(f1), f2, f3);
+}
+
+// pointer & pointer & functor
+template <class Arg11, class Arg12, class Result1, class Arg2, class Result2, class F3>
+binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
+                std::pointer_to_unary_function<Arg2, Result2>, F3>
+compose(Result1 (*f1)(Arg11, Arg12), Result2 (*f2)(Arg2), F3 f3)
+{
+	return binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
+		std::pointer_to_unary_function<Arg2, Result2>, F3>(std::ptr_fun(f1), std::ptr_fun(f2), f3);
+}
+
+// pointer & pointer & pointer
+template <class Arg11, class Arg12, class Result1, class Arg2, class Result2, class Arg3, class Result3>
+binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
+                std::pointer_to_unary_function<Arg2, Result2>,
+                std::pointer_to_unary_function<Arg3, Result3> >
+compose(Result1 (*f1)(Arg11, Arg12), Result2 (*f2)(Arg2), Result3 (*f3)(Arg3))
+{
+	return binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
+		std::pointer_to_unary_function<Arg2, Result2>,
+		std::pointer_to_unary_function<Arg3, Result3> >(std::ptr_fun(f1), std::ptr_fun(f2), std::ptr_fun(f3));
+}
+
+// functor & pointer & functor
+template <class F1, class Arg2, class Result2, class F3>
+binary_composer<F1, std::pointer_to_unary_function<Arg2, Result2>, F3>
+compose(F1 f1, Result2 (*f2)(Arg2), F3 f3)
+{
+	return binary_composer<F1, std::pointer_to_unary_function<Arg2, Result2>, F3>(f1, std::ptr_fun(f2), f3);
+}
+
+// functor & pointer & pointer
+template <class F1, class Arg2, class Result2, class Arg3, class Result3>
+binary_composer<F1, std::pointer_to_unary_function<Arg2, Result2>,
+                std::pointer_to_unary_function<Arg3, Result3> >
+compose(F1 f1, Result2 (*f2)(Arg2), Result3 (*f3)(Arg3))
+{
+	return binary_composer<F1, std::pointer_to_unary_function<Arg2, Result2>,
+		std::pointer_to_unary_function<Arg3, Result3> >(f1, std::ptr_fun(f2), std::ptr_fun(f3));
+}
+
+// functor & functor & pointer
+template <class F1, class F2, class Arg3, class Result3>
+binary_composer<F1, F2, std::pointer_to_unary_function<Arg3, Result3> >
+compose(F1 f1, F2 f2, Result3 (*f3)(Arg3))
+{
+	return binary_composer<F1, F2, std::pointer_to_unary_function<Arg3, Result3> >(f1, f2, std::ptr_fun(f3));
 }
 
 /**
