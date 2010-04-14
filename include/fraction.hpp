@@ -14,6 +14,7 @@ public:
 		: _denominator(denominator), _numerator(numerator)
 	{
 		requires(denominator != 0);
+
 		this->simplify();
 	}
 
@@ -137,7 +138,15 @@ private:
 template <typename T>
 std::ostream &operator<<(std::ostream &s, const fraction<T> &f)
 {
-	s << f.numerator() << "/" << f.denominator();
+	const T &num = f.numerator();
+	const T &den = f.denominator();
+
+	s << num;
+
+	if ((num != 0) && (den != 1))
+	{
+		s << "/" << den;
+	}
 
 	return s;
 }

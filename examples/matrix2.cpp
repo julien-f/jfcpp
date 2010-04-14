@@ -26,13 +26,13 @@ struct RandomGenerator
 	fraction<long>
 	operator()()
 	{
-		return fraction<long>((rand() % 300), (rand() % 299) + 2);
+		return fraction<long>((rand() % 10), 1);
 	}
 };
 
 int main()
 {
-	matrix<fraction<long> > m(10);
+	matrix<fraction<long> > m(4);
 
 	RandomGenerator::fill(m);
 

@@ -22,7 +22,7 @@
 template<typename T>
 circular_buffer<T>::const_iterator::const_iterator(size_type iteration,
                                                    const circular_buffer<T> *cbuffer)
-	: _iteration(iteration), _cbuffer(cbuffer)
+	: _cbuffer(cbuffer), _iteration(iteration)
 {
 	requires(this->_cbuffer != NULL);
 	requires(this->_iteration <= this->_cbuffer->size());
