@@ -1,3 +1,21 @@
+/**
+ * This file is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this file.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Julien Fontanet <julien.fontanet@isonoe.net>
+ */
+
 #ifndef H_MATH
 #define H_MATH
 
@@ -5,14 +23,14 @@ template <typename T>
 bool
 is_even(const T &x)
 {
-	return ((x % 2) == 0);
+	return ((x % 2) == T(0));
 }
 
 template <>
 bool
 is_even<unsigned int>(const unsigned int &x)
 {
-	return ((x & 1u) == 0);
+	return ((x & 1u) == 0u);
 }
 
 #ifdef __GMP_PLUSPLUS__
@@ -35,11 +53,13 @@ template <typename T>
 T
 exp_mod(const T &x, const T &k, const T &n)
 {
-	requires(n != 0);
+	const T zero(0);
+
+	requires(n != zero);
 
 	T base(x), exp(k), result(1);
 
-	while (exp != 0)
+	while (exp != zero)
 	{
 		if (is_odd<T>(exp))
 		{
@@ -56,15 +76,17 @@ template <typename T>
 T
 gcd_helper(T a, T b)
 {
+	const T zero(0);
+
 	while (true)
 	{
-		if (a == 0)
+		if (a == zero)
 		{
 			return b;
 		}
 		b %= a;
 
-		if (b == 0)
+		if (b == zero)
 		{
 			return a;
 		}
@@ -87,13 +109,15 @@ template <typename T>
 T
 inverse_mod(const T &x, const T &n)
 {
+	const T zero(0);
+
 	T
 		r(x), rp(n),
 		u(1), up(0),
 		v(0), vp(1),
 		q, rs, us, vs;
 
-	while (rp != 0)
+	while (rp != zero)
 	{
 		q = r / rp;
 		rs = r;
@@ -107,7 +131,7 @@ inverse_mod(const T &x, const T &n)
 		vp = vs - q * vp;
 	}
 
-	if (u < 0)
+	if (u < zero)
 	{
 		u += n;
 	}
@@ -120,8 +144,9 @@ T
 lcm(const T &a, const T &b)
 {
 	const T g = gcd<T>(a, b);
+	const T zero(0);
 
-	return (g != 0 ? a / g * b : 0);
+	return (g != zero ? a / g * b : zero);
 }
 
 #endif // H_MATH

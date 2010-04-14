@@ -529,7 +529,7 @@ matrix<T>::operator+(const matrix<U> &m) const
 	matrix<T> result(this->_rows, this->_columns);
 
 	std::transform(this->begin(), this->end(), m.begin(), result.begin(),
-	               plus<T, U>());
+	               functional::plus<T, U>());
 
 	return result;
 }
@@ -542,7 +542,7 @@ matrix<T>::operator+=(const matrix<U> &m)
 	requires(this->has_same_dimensions(m));
 
 	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               plus<T, U>());
+	               functional::plus<T, U>());
 
 	return *this;
 }

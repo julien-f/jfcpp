@@ -5,6 +5,8 @@ using namespace std;
 
 #include "functional.hpp"
 
+using namespace functional;
+
 int unary1(int x)
 {
 	return (x + 1);
