@@ -6,7 +6,7 @@
 
 #include "contracts.h"
 
-#include "fraction.hpp"
+#include "rational.hpp"
 #include "matrix.hpp"
 
 using namespace std;
@@ -23,22 +23,22 @@ struct RandomGenerator
 	/**
 	 * Generates a random integer between 2 and 100.
 	 */
-	fraction<long>
+	rational<long>
 	operator()()
 	{
-		return fraction<long>((rand() % 10), 1);
+		return rational<long>((rand() % 10), 1);
 	}
 };
 
 int main()
 {
-	matrix<fraction<long> > m(4);
+	matrix<rational<long> > m(4);
 
 	RandomGenerator::fill(m);
 
 	cout << m;
 
-	fraction<long> tr = m.trace();
+	rational<long> tr = m.trace();
 
 	cout << tr << endl;
 

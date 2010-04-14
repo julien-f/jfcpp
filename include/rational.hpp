@@ -1,19 +1,19 @@
-#ifndef H_FRACTION
-#define H_FRACTION
+#ifndef H_RATIONAL
+#define H_RATIONAL
 
 #include "contracts.h"
 
 #include "math.hpp"
 
 template <typename T = long int>
-class fraction
+class rational
 {
 public:
 
-	fraction(const T &numerator = 0, const T &denominator = 1)
+	rational(const T &numerator = 0, const T &denominator = 1)
 		: _denominator(denominator), _numerator(numerator)
 	{
-		requires(denominator != 0);
+		requires(denominator != T(0));
 
 		this->simplify();
 	}
@@ -23,9 +23,9 @@ public:
 		return this->_denominator;
 	}
 
-	fraction<T> inverse() const
+	rational<T> inverse() const
 	{
-		return fraction<T>(this->_denominator, this->_numerator);
+		return rational<T>(this->_denominator, this->_numerator);
 	}
 
 	const T &numerator() const
@@ -35,6 +35,12 @@ public:
 
 	void simplify()
 	{
+		if (this->_denominator < T(0))
+		{
+			this->_denominator = -this->_denominator;
+			this->_numerator = -this->_numerator;
+		}
+
 		const T g = gcd<T>(this->_numerator, this->_denominator);
 
 		this->_numerator /= g;
@@ -43,14 +49,14 @@ public:
 	}
 
 	template <typename T2>
-	bool operator==(const fraction<T2> &f) const
+	bool operator==(const rational<T2> &f) const
 	{
 		return ((this->_numerator == f.numerator()) &&
 		        (this->_denominator == f.denominator()));
 	}
 
 	template <typename T2>
-	bool operator!=(const fraction<T2> &f) const
+	bool operator!=(const rational<T2> &f) const
 	{
 		return !(*this == f);
 	}
@@ -67,48 +73,48 @@ public:
 		return !(*this == x);
 	}
 
-	fraction<T> operator-() const
+	rational<T> operator-() const
 	{
-		return fraction<T>(-this->_numerator, this->_denominator);
+		return rational<T>(-this->_numerator, this->_denominator);
 	}
 
 	template <typename T2>
-	fraction<T> operator+(const fraction<T2> &f) const
+	rational<T> operator+(const rational<T2> &f) const
 	{
-		return fraction<T>(this->_numerator * f.denominator()
+		return rational<T>(this->_numerator * f.denominator()
 		                   + f.numerator() * this->_denominator,
 		                   this->_denominator * f.denominator());
 	}
 
 	template <typename T2>
-	fraction<T> &operator+=(const fraction<T2> &f)
+	rational<T> &operator+=(const rational<T2> &f)
 	{
 		*this = *this + f;
 		return *this;
 	}
 
 	template <typename T2>
-	fraction<T> operator-(const fraction<T2> &f) const
+	rational<T> operator-(const rational<T2> &f) const
 	{
 		return (*this + -f);
 	}
 
 	template <typename T2>
-	fraction<T> &operator-=(const fraction<T2> &f)
+	rational<T> &operator-=(const rational<T2> &f)
 	{
 		*this += - f;
 		return *this;
 	}
 
 	template <typename T2>
-	fraction<T> operator*(const fraction<T2> &f) const
+	rational<T> operator*(const rational<T2> &f) const
 	{
-		return fraction<T>(this->_numerator * f.numerator(),
+		return rational<T>(this->_numerator * f.numerator(),
 		                   this->_denominator * f.denominator());
 	}
 
 	template <typename T2>
-	fraction<T> &operator*=(const fraction<T2> &f)
+	rational<T> &operator*=(const rational<T2> &f)
 	{
 		*this = *this * f;
 
@@ -116,13 +122,13 @@ public:
 	}
 
 	template <typename T2>
-	fraction<T> operator/(const fraction<T2> &f) const
+	rational<T> operator/(const rational<T2> &f) const
 	{
 		return (*this * f.inverse());
 	}
 
 	template <typename T2>
-	fraction<T> &operator/=(const fraction<T2> &f)
+	rational<T> &operator/=(const rational<T2> &f)
 	{
 		*this *= f.inverse();
 		return *this;
@@ -136,7 +142,7 @@ private:
 };
 
 template <typename T>
-std::ostream &operator<<(std::ostream &s, const fraction<T> &f)
+std::ostream &operator<<(std::ostream &s, const rational<T> &f)
 {
 	const T &num = f.numerator();
 	const T &den = f.denominator();
@@ -151,4 +157,4 @@ std::ostream &operator<<(std::ostream &s, const fraction<T> &f)
 	return s;
 }
 
-#endif // H_FRACTION
+#endif // H_RATIONAL

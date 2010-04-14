@@ -12,8 +12,17 @@ template <>
 bool
 is_even<unsigned int>(const unsigned int &x)
 {
-	return ((x & 1) == 0);
+	return ((x & 1u) == 0);
 }
+
+#ifdef __GMP_PLUSPLUS__
+template <>
+bool
+is_even<mpz_class>(const mpz_class &x)
+{
+	return mpz_even_p(x.get_mpz_t());
+}
+#endif
 
 template <typename T>
 bool
@@ -32,7 +41,7 @@ exp_mod(const T &x, const T &k, const T &n)
 
 	while (exp != 0)
 	{
-		if (is_odd(exp))
+		if (is_odd<T>(exp))
 		{
 			result = (result * base) % n;
 		}
@@ -45,16 +54,33 @@ exp_mod(const T &x, const T &k, const T &n)
 
 template <typename T>
 T
+gcd_helper(T a, T b)
+{
+	while (true)
+	{
+		if (a == 0)
+		{
+			return b;
+		}
+		b %= a;
+
+		if (b == 0)
+		{
+			return a;
+		}
+		a %= b;
+	}
+}
+
+
+template <typename T>
+T
 gcd(T a, T b)
 {
-	T c;
-	while (b != 0)
-	{
-		c = b;
-		b = a % b;
-		a = c;
-	}
-	return a;
+	const T g = gcd_helper<T>(a, b);
+	const T zero(0);
+
+	return (g < zero ? -g : g);
 }
 
 template <typename T>
@@ -89,5 +115,13 @@ inverse_mod(const T &x, const T &n)
 	return u;
 }
 
+template <typename T>
+T
+lcm(const T &a, const T &b)
+{
+	const T g = gcd<T>(a, b);
+
+	return (g != 0 ? a / g * b : 0);
+}
 
 #endif // H_MATH

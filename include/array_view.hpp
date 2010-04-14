@@ -465,7 +465,6 @@ std::ostream &operator<<(std::ostream &s, const array_view<T> &a)
 		}
 	}
 
-	s << std::endl;
 	return s;
 }
 

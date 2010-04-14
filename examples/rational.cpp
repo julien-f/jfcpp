@@ -7,13 +7,13 @@
 
 using namespace std;
 
-#include "fraction.hpp"
+#include "rational.hpp"
 
 #define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
 
 int main()
 {
-	fraction<int> a(-5, 2), b(3, 9);
+	rational<int> a(-5, 2), b(3, 9);
 
 	PRINT(a);
 	PRINT(b);

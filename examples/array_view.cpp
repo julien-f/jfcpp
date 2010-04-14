@@ -47,13 +47,13 @@ int main()
 	PRINT(ar_c);
 
 	// Are ar_a's values equals to ar_b's?
-	PRINT(ar_a == ar_b) << endl;
+	PRINT(ar_a == ar_b);
 
 	// Is ar_a lexicographically lesser than ar_b?
-	PRINT(ar_a < ar_b) << endl;
+	PRINT(ar_a < ar_b);
 
 	// Are ar_a's values equals to ar_c's?
-	PRINT(ar_a == ar_c) << endl;
+	PRINT(ar_a == ar_c);
 
 	return EXIT_SUCCESS;
 }
