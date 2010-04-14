@@ -39,7 +39,7 @@ namespace matrix_details
  * - T must have a default constructor;
  * - the method “T &T::operator=(const T &)” must be defined.
  */
-template<typename T>
+template<typename T = double>
 class matrix : private CertifiedObject
 {
 public:

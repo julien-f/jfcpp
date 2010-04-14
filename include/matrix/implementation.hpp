@@ -304,7 +304,7 @@ matrix<T>::solve_perf(matrix<T> B)
 	// Row echelon form.
 	for (size_t i = 0; i < this->_rows; ++i)
 	{
-		T pivot = (*this)(i, i);
+		const T pivot = (*this)(i, i);
 
 		for (size_t j = i + 1; j < this->_rows; ++j)
 		{

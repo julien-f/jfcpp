@@ -8,7 +8,7 @@ using namespace std;
 
 #include "array_view.hpp"
 
-#define PRINT(VAR) (cout << #VAR ":\n  " << (VAR))
+#define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
 
 int main()
 {
