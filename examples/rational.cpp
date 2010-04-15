@@ -13,13 +13,13 @@ using namespace std;
 
 int main()
 {
-	rational<int> a(-5, 2), b(3, 9);
+	rational<int> a(5, -2), b(3, 9), c(3);
 
-	PRINT(a);
-	PRINT(b);
-
-	a.simplify();
-	b.simplify();
+	PRINT(a == -2.5);
+	PRINT(c == 3);
+	PRINT(3 == c);
+	PRINT(3 != c);
+	PRINT(a == c);
 
 	PRINT(a);
 	PRINT(b);

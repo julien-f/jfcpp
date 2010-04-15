@@ -22,9 +22,10 @@
 #include "contracts.h"
 
 #include "math.hpp"
+#include "operators.hpp"
 
 template <typename T = long int>
-class rational
+class rational : public operators::equality_comparable<rational<T> >
 {
 public:
 
@@ -33,7 +34,7 @@ public:
 	{
 		requires(denominator != T(0));
 
-		this->simplify();
+		this->normalize();
 	}
 
 	const T &denominator() const
@@ -51,7 +52,7 @@ public:
 		return this->_numerator;
 	}
 
-	void simplify()
+	void normalize()
 	{
 		if (this->_denominator < T(0))
 		{
@@ -74,21 +75,9 @@ public:
 	}
 
 	template <typename T2>
-	bool operator!=(const rational<T2> &f) const
-	{
-		return !(*this == f);
-	}
-
-	template <typename T2>
 	bool operator==(const T2 &x) const
 	{
 		return (this->_numerator == (this->_denominator * x));
-	}
-
-	template <typename T2>
-	bool operator!=(const T2 &x) const
-	{
-		return !(*this == x);
 	}
 
 	rational<T> operator-() const

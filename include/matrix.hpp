@@ -346,7 +346,7 @@ public:
 	 *
 	 * @return The matrix X.
 	 */
-	matrix<T> solve(const matrix<T> &B) const;
+	void solve(matrix<T> &B) const;
 
 	/**
 	 * Solves the following equations where A is this matrix and X the solution:
@@ -361,7 +361,7 @@ public:
 	 *
 	 * @return The matrix X.
 	 */
-	matrix<T> solve_perf(matrix<T> B);
+	void solve_perf(matrix<T> &B);
 
 	/**
 	 * Swaps the content between this matrix and another.

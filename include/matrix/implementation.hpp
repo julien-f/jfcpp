@@ -25,7 +25,7 @@
 #include "contracts.h"
 #include "functional.hpp"
 
-template<typename T>
+template <typename T>
 matrix<T>
 matrix<T>::identity(size_t dim, const_reference zero, const_reference one)
 {
@@ -39,7 +39,7 @@ matrix<T>::identity(size_t dim, const_reference zero, const_reference one)
 	return id;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>::matrix(size_t dim)
 	: _rows(dim), _columns(dim), _size(dim * dim), _values(NULL),
 	  _values_by_rows(NULL)
@@ -49,7 +49,7 @@ matrix<T>::matrix(size_t dim)
 	ensures(this->is_square());
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>::matrix(size_t rows, size_t columns)
 	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
 	  _values_by_rows(NULL)
@@ -57,7 +57,7 @@ matrix<T>::matrix(size_t rows, size_t columns)
 	this->allocate();
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
 	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
 	  _values_by_rows(NULL)
@@ -67,7 +67,7 @@ matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
 	std::fill(this->begin(), this->end(), value);
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>::matrix(const matrix<T> &m)
 	: _rows(m._rows), _columns(m._columns), _size(m._size), _values(NULL),
 	  _values_by_rows(NULL)
@@ -77,8 +77,8 @@ matrix<T>::matrix(const matrix<T> &m)
 	this->copy_values(m);
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 matrix<T>::matrix(const matrix<U> &m)
 	: _rows(m.rows()), _columns(m.columns()), _size(m.size()), _values(NULL),
 	  _values_by_rows(NULL)
@@ -88,13 +88,13 @@ matrix<T>::matrix(const matrix<U> &m)
 	this->copy_values(m);
 }
 
-template<typename T>
+template <typename T>
 matrix<T>::~matrix()
 {
 	this->deallocate();
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::reference
 matrix<T>::at(size_t i, size_t j)
 {
@@ -106,7 +106,7 @@ matrix<T>::at(size_t i, size_t j)
 	return (*this)(i, j);
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_reference
 matrix<T>::at(size_t i, size_t j) const
 {
@@ -114,73 +114,77 @@ matrix<T>::at(size_t i, size_t j) const
 	return const_cast<matrix<T> *>(this)->at(i, j);
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::iterator
 matrix<T>::begin()
 {
 	return this->_values;
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_iterator
 matrix<T>::begin() const
 {
 	return const_cast<matrix<T> *>(this)->begin();
 }
 
-template<typename T> inline
+template <typename T> inline
 size_t
 matrix<T>::columns() const
 {
 	return this->_columns;
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::iterator
 matrix<T>::end()
 {
 	return this->_values + this->_size;
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_iterator
 matrix<T>::end() const
 {
 	return const_cast<matrix<T> *>(this)->end();
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 bool
 matrix<T>::has_same_dimensions(const matrix<U> &m) const
 {
 	return ((this->_rows == m.rows()) && (this->_columns == m.columns()));
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>
 matrix<T>::inverse() const
 {
 	return matrix<T>(*this).inverse_perf();
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>
 matrix<T>::inverse_perf()
 {
 	requires(this->is_square());
 
-	return this->solve_perf(matrix<T>::identity(this->_rows));
+	matrix<T> inverse = matrix<T>::identity(this->_rows);
+
+	this->solve_perf(inverse);
+
+	return inverse;
 }
 
-template<typename T> inline
+template <typename T> inline
 bool
 matrix<T>::is_valid_subscript(size_t i, size_t j) const
 {
 	return ((i < this->_rows) && (j < this->_columns));
 }
 
-template<typename T> inline
+template <typename T> inline
 bool
 matrix<T>::is_square() const
 {
@@ -201,7 +205,7 @@ matrix<T>::op_column(size_t i, size_t j, UnaryOperator op)
 	}
 }
 
-template<typename T>
+template <typename T>
 template<class BinaryOperator>
 void
 matrix<T>::op_column(size_t i, size_t j, size_t k, BinaryOperator op)
@@ -216,7 +220,7 @@ matrix<T>::op_column(size_t i, size_t j, size_t k, BinaryOperator op)
 	}
 }
 
-template<typename T>
+template <typename T>
 template<class UnaryOperator> inline
 void
 matrix<T>::op_row(size_t i, size_t j, UnaryOperator op)
@@ -230,7 +234,7 @@ matrix<T>::op_row(size_t i, size_t j, UnaryOperator op)
 	               op);
 }
 
-template<typename T>
+template <typename T>
 template<class BinaryOperator> inline
 void
 matrix<T>::op_row(size_t i, size_t j, size_t k, BinaryOperator op)
@@ -245,58 +249,58 @@ matrix<T>::op_row(size_t i, size_t j, size_t k, BinaryOperator op)
 	               this->_values + this->_columns * k, op);
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::reverse_iterator
 matrix<T>::rbegin()
 {
 	return reverse_iterator(this->end());
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rbegin() const
 {
 	return reverse_iterator(this->end());
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::reverse_iterator
 matrix<T>::rend()
 {
 	return reverse_iterator(this->begin());
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rend() const
 {
 	return reverse_iterator(this->begin());
 }
 
-template<typename T> inline
+template <typename T> inline
 size_t
 matrix<T>::rows() const
 {
 	return this->_rows;
 }
 
-template<typename T> inline
+template <typename T> inline
 size_t
 matrix<T>::size() const
 {
 	return this->_size;
 }
 
-template<typename T> inline
-matrix<T>
-matrix<T>::solve(const matrix<T> &B) const
+template <typename T> inline
+void
+matrix<T>::solve(matrix<T> &B) const
 {
-	return matrix<T>(*this).solve_perf(B);
+	matrix<T>(*this).solve_perf(B);
 }
 
-template<typename T>
-matrix<T>
-matrix<T>::solve_perf(matrix<T> B)
+template <typename T>
+void
+matrix<T>::solve_perf(matrix<T> &B)
 {
 	requires(this->is_square());
 	requires(this->_columns == B._rows);
@@ -328,11 +332,9 @@ matrix<T>::solve_perf(matrix<T> B)
 		}
 		B.op_row(i, i, std::bind2nd(std::divides<T>(), (*this)(i, i)));
 	}
-
-	return B;
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::swap(matrix<T> &m)
 {
@@ -343,7 +345,7 @@ matrix<T>::swap(matrix<T> &m)
 	std::swap(this->_values_by_rows, m._values_by_rows);
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::swap_columns(size_t i, size_t j)
 {
@@ -357,7 +359,7 @@ matrix<T>::swap_columns(size_t i, size_t j)
 	}
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::swap_rows(size_t i, size_t j)
 {
@@ -370,15 +372,37 @@ matrix<T>::swap_rows(size_t i, size_t j)
 	                 this->_values_by_rows[j]);
 }
 
-template<typename T> inline
+template <typename T>
+void
+matrix<T>::to_row_echelon_form(matrix<T> &B)
+{
+	requires(this->is_square());
+	requires(this->_columns == B._rows);
+
+	// Row echelon form.
+	for (size_t i = 0; i < this->_rows; ++i)
+	{
+		const T pivot = (*this)(i, i);
+
+		for (size_t j = i + 1; j < this->_rows; ++j)
+		{
+			my_op op((*this)(j, i) / pivot);
+
+			this->op_row(j, i, j, op);
+			B.op_row(j, i, j, op);
+		}
+	}
+}
+
+template <typename T> inline
 T
 matrix<T>::trace() const
 {
 	return this->trace<T>();
 }
 
-template<typename T>
-template<typename R>
+template <typename T>
+template <typename R>
 R
 matrix<T>::trace() const
 {
@@ -394,7 +418,7 @@ matrix<T>::trace() const
 	return result;
 }
 
-template<typename T>
+template <typename T>
 matrix<T>
 matrix<T>::transpose() const
 {
@@ -411,8 +435,8 @@ matrix<T>::transpose() const
 	return result;
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 matrix<T> &
 matrix<T>::operator=(const matrix<U> &m)
 {
@@ -423,31 +447,31 @@ matrix<T>::operator=(const matrix<U> &m)
 	return *this;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T> &
 matrix<T>::operator=(const matrix<T> &m)
 {
 	return this->operator= <T>(m);
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 bool
 matrix<T>::operator==(const matrix<U> &m) const
 {
 	return (this->has_same_dimensions(m) && this->has_same_values(m));
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 bool
 matrix<T>::operator!=(const matrix<U> &m) const
 {
 	return !(*this == m);
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 matrix<T>
 matrix<T>::operator*(const matrix<U> &m) const
 {
@@ -469,15 +493,15 @@ matrix<T>::operator*(const matrix<U> &m) const
 	return result;
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 matrix<T> &
 matrix<T>::operator*=(const matrix<U> &m)
 {
 	return (*this = *this * m);
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>
 matrix<T>::operator*(const_reference value) const
 {
@@ -489,7 +513,7 @@ matrix<T>::operator*(const_reference value) const
 	return result;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T> &
 matrix<T>::operator*=(const_reference value)
 {
@@ -499,7 +523,7 @@ matrix<T>::operator*=(const_reference value)
 	return *this;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>
 matrix<T>::operator/(const_reference value) const
 {
@@ -511,7 +535,7 @@ matrix<T>::operator/(const_reference value) const
 	return result;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T> &
 matrix<T>::operator/=(const_reference value)
 {
@@ -521,8 +545,8 @@ matrix<T>::operator/=(const_reference value)
 	return *this;
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 matrix<T>
 matrix<T>::operator+(const matrix<U> &m) const
 {
@@ -534,8 +558,8 @@ matrix<T>::operator+(const matrix<U> &m) const
 	return result;
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 matrix<T> &
 matrix<T>::operator+=(const matrix<U> &m)
 {
@@ -547,7 +571,7 @@ matrix<T>::operator+=(const matrix<U> &m)
 	return *this;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T>
 matrix<T>::operator+(const_reference value) const
 {
@@ -559,7 +583,7 @@ matrix<T>::operator+(const_reference value) const
 	return result;
 }
 
-template<typename T> inline
+template <typename T> inline
 matrix<T> &
 matrix<T>::operator+=(const_reference value)
 {
@@ -569,7 +593,7 @@ matrix<T>::operator+=(const_reference value)
 	return *this;
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::reference
 matrix<T>::operator()(size_t i, size_t j)
 {
@@ -578,7 +602,7 @@ matrix<T>::operator()(size_t i, size_t j)
 	return this->_values_by_rows[i][j];
 }
 
-template<typename T> inline
+template <typename T> inline
 typename matrix<T>::const_reference
 matrix<T>::operator()(size_t i, size_t j) const
 {
@@ -586,7 +610,7 @@ matrix<T>::operator()(size_t i, size_t j) const
 	return (*const_cast<matrix<T> *>(this))(i, j);
 }
 
-template<typename T>
+template <typename T>
 void
 matrix<T>::allocate()
 {
@@ -607,8 +631,8 @@ matrix<T>::allocate()
 	validate(*this);
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 void
 matrix<T>::copy_values(const matrix<U> &m)
 {
@@ -617,7 +641,7 @@ matrix<T>::copy_values(const matrix<U> &m)
 	std::copy(m.begin(), m.end(), this->begin());
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::copy_values(const matrix<T> &m)
 {
@@ -626,7 +650,7 @@ matrix<T>::copy_values(const matrix<T> &m)
 	ensures(this->has_same_values(m));
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::deallocate()
 {
@@ -637,8 +661,8 @@ matrix<T>::deallocate()
 	this->_values = NULL;
 }
 
-template<typename T>
-template<typename U> inline
+template <typename T>
+template <typename U> inline
 bool
 matrix<T>::has_same_values(const matrix<U> &m) const
 {
@@ -647,7 +671,7 @@ matrix<T>::has_same_values(const matrix<U> &m) const
 	return std::equal(this->begin(), this->end(), m.begin());
 }
 
-template<typename T>
+template <typename T>
 bool
 matrix<T>::isValid() const
 {
@@ -657,7 +681,7 @@ matrix<T>::isValid() const
 	            || ((this->_values_by_rows != NULL))));
 }
 
-template<typename T> inline
+template <typename T> inline
 void
 matrix<T>::resize(size_t rows, size_t columns)
 {
@@ -673,7 +697,7 @@ matrix<T>::resize(size_t rows, size_t columns)
 	validate(*this);
 }
 
-template<typename T>
+template <typename T>
 std::ostream &
 operator<<(std::ostream &os, const matrix<T> &m)
 {

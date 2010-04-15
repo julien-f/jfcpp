@@ -21,7 +21,7 @@ int main()
 
 	a[1] = 35435;
 
-	//	dynamic_cast<array_base<int, int[10]> &>(b) = a;
+	b = a;
 
 	b = c;
 
