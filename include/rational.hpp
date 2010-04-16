@@ -34,7 +34,7 @@ public:
 	{
 		requires(denominator != T(0));
 
-		this->normalize();
+		this->_normalize();
 	}
 
 	const T &denominator() const
@@ -52,19 +52,10 @@ public:
 		return this->_numerator;
 	}
 
-	void normalize()
+	bool operator==(const rational<T> &f) const
 	{
-		if (this->_denominator < T(0))
-		{
-			this->_denominator = -this->_denominator;
-			this->_numerator = -this->_numerator;
-		}
-
-		const T g = gcd<T>(this->_numerator, this->_denominator);
-
-		this->_numerator /= g;
-
-		this->_denominator /= g;
+		return ((this->_numerator == f.numerator()) &&
+		        (this->_denominator == f.denominator()));
 	}
 
 	template <typename T2>
@@ -146,6 +137,21 @@ private:
 	T _denominator;
 
 	T _numerator;
+
+	void _normalize()
+	{
+		if (this->_denominator < T(0))
+		{
+			this->_denominator = -this->_denominator;
+			this->_numerator = -this->_numerator;
+		}
+
+		const T g = gcd<T>(this->_numerator, this->_denominator);
+
+		this->_numerator /= g;
+
+		this->_denominator /= g;
+	}
 };
 
 template <typename T>
