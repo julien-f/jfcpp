@@ -36,7 +36,7 @@
  */
 template <typename T>
 T
-numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &x,
+numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &,
                    T xp1, const T &xp2)
 {
 	// Optimisation: the result is stored in xp1.
@@ -52,7 +52,7 @@ numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &x,
 }
 
 /**
- *
+ * Hermite interpolation.
  */
 template <typename T>
 class interpolation

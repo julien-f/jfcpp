@@ -372,28 +372,6 @@ matrix<T>::swap_rows(size_t i, size_t j)
 	                 this->_values_by_rows[j]);
 }
 
-template <typename T>
-void
-matrix<T>::to_row_echelon_form(matrix<T> &B)
-{
-	requires(this->is_square());
-	requires(this->_columns == B._rows);
-
-	// Row echelon form.
-	for (size_t i = 0; i < this->_rows; ++i)
-	{
-		const T pivot = (*this)(i, i);
-
-		for (size_t j = i + 1; j < this->_rows; ++j)
-		{
-			my_op op((*this)(j, i) / pivot);
-
-			this->op_row(j, i, j, op);
-			B.op_row(j, i, j, op);
-		}
-	}
-}
-
 template <typename T> inline
 T
 matrix<T>::trace() const
