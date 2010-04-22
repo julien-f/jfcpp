@@ -4,27 +4,6 @@
 #endif
 
 template <typename T>
-bool
-is_even(const T &x)
-{
-	return ((x % 2) == T(0));
-}
-
-template <>
-bool
-is_even<unsigned int>(const unsigned int &x)
-{
-	return ((x & 1u) == 0u);
-}
-
-template <typename T>
-bool
-is_odd(const T &x)
-{
-	return !is_even<T>(x);
-}
-
-template <typename T>
 T
 exp_mod(const T &x, const T &k, const T &n)
 {
@@ -114,6 +93,27 @@ inverse_mod(const T &x, const T &n)
 }
 
 template <typename T>
+bool
+is_even(const T &x)
+{
+	return ((x % 2) == T(0));
+}
+
+template <>
+bool
+is_even<unsigned int>(const unsigned int &x)
+{
+	return ((x & 1u) == 0u);
+}
+
+template <typename T>
+bool
+is_odd(const T &x)
+{
+	return !is_even<T>(x);
+}
+
+template <typename T>
 T
 lcm(const T &a, const T &b)
 {
@@ -121,4 +121,21 @@ lcm(const T &a, const T &b)
 	const T zero(0);
 
 	return (g != zero ? a / g * b : zero);
+}
+
+template <typename T>
+T
+numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &,
+                   T xp1, const T &xp2)
+{
+	// Optimisation: the result is stored in xp1.
+
+	xp1 -= xm1;
+	xp1 *= 8;
+	xp1 += xm2;
+	xp1 -= xp2;
+	xp1 /= 12;
+	xp1 /= dt;
+
+	return xp1;
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <math.hpp>
+#include <math/interpolation.hpp>
 
 using namespace std;
 
@@ -15,9 +16,11 @@ int main()
 	PRINT(is_even(3543542));
 	PRINT(is_odd(3543542));
 
-	interpolation<double> interp(-1, 0, -1, 0);
+	interpolation::linear<double> linear(0, -1);
+	interpolation::hermite<double> hermite(0, -1, 0, -1);
 
-	PRINT(interp(0.5));
+	PRINT(linear(0.5));
+	PRINT(hermite(0.5));
 
 	PRINT(numerical_derivate<double>(1, 0, -109./24, -265./3, -3717./8, -4472/3));
 

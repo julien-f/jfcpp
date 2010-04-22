@@ -1,5 +1,7 @@
-/bin/
-/examples/*.d
-/examples/*.o
-/tests/*.d
-/tests/*.o
+/examples/bin/
+/examples/*/*.d
+/examples/*/*.o
+
+/tests/bin/
+/tests/*/*.d
+/tests/*/*.o
