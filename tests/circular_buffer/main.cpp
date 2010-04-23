@@ -1,7 +1,9 @@
+// To properly test inclusion, the tested file must be the first included.
+#include <circular_buffer.hpp>
+
 #include <stdexcept>
 
-#include "circular_buffer.hpp"
-#include "contracts.h"
+#include <contracts.h>
 
 int main()
 {

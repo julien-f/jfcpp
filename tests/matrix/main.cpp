@@ -1,10 +1,12 @@
+// To properly test inclusion, the tested file must be the first included.
+#include <matrix.hpp>
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>
 #include <stdexcept>
 
-#include "contracts.h"
-#include "matrix.hpp"
+#include <contracts.h>
 
 struct RandomGenerator
 {

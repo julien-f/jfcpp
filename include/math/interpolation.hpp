@@ -5,8 +5,11 @@ namespace interpolation
 {
 	/**
 	 * Linear interpolation.
+	 *
+	 * @template TCD The type of the function's codomain.
+	 * @template TD  The type of the function's domain.
 	 */
-	template <typename T>
+	template <typename TCD, typename TD = TCD>
 	class linear
 	{
 	public:
@@ -17,7 +20,7 @@ namespace interpolation
 		 * @param y0
 		 * @param y1
 		 */
-		linear(T y0, T y1);
+		linear(TCD y0, TCD y1);
 
 		/**
 		 *
@@ -27,26 +30,29 @@ namespace interpolation
 		 * @param x1
 		 * @param y1
 		 */
-		linear(T x0, T y0, const T &x1, T y1);
+		linear(TCD x0, TCD y0, const TCD &x1, TCD y1);
 
 		/**
 		 *
 		 *
 		 * @param x
 		 */
-		T operator()(T x);
+		TCD operator()(const TD &x);
 
 	private:
 
-		T _a;
+		TCD _a;
 
-		T _b;
+		TCD _b;
 	};
 
 	/**
 	 * Hermite interpolation.
+	 *
+	 * @template TCD The type of the function's codomain.
+	 * @template TD  The type of the function's domain.
 	 */
-	template <typename T>
+	template <typename TCD, typename TD = TCD>
 	class hermite
 	{
 	public:
@@ -59,24 +65,24 @@ namespace interpolation
 		 * @param y1
 		 * @param dy1
 		 */
-		hermite(T y0, T dy0, T y1, const T &dy1);
+		hermite(TCD y0, TCD dy0, TCD y1, const TCD &dy1);
 
 		/**
 		 *
 		 *
 		 * @param x
 		 */
-		T operator()(const T &x);
+		TCD operator()(const TD &x);
 
 	private:
 
-		T _a;
+		TCD _a;
 
-		T _b;
+		TCD _b;
 
-		T _c;
+		TCD _c;
 
-		T _d;
+		TCD _d;
 	};
 
 #	include "interpolation/implementation.hpp"
