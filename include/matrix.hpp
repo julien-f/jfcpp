@@ -23,12 +23,16 @@
 #include <iterator>
 #include <utility>
 
+#include <contracts.h>
+
+#include "operators.hpp"
+
 namespace matrix_details
 {
-	template<typename T>
+	template <typename T>
 	class column_iterator;
 
-	template<typename T>
+	template <typename T>
 	class const_column_iterator;
 }
 
@@ -39,8 +43,14 @@ namespace matrix_details
  * - T must have a default constructor;
  * - the method “T &T::operator=(const T &)” must be defined.
  */
-template<typename T = double>
-class matrix : private CertifiedObject
+template <typename T = double>
+class matrix : public operators::addable<matrix<T> >,
+               public operators::dividable<matrix<T> >,
+               public operators::equality_comparable<matrix<T> >,
+               public operators::modable<matrix<T> >,
+               public operators::multipliable<matrix<T> >,
+               public operators::subtractable<matrix<T> >,
+               private CertifiedObject
 {
 public:
 
@@ -147,8 +157,8 @@ public:
 	 *
 	 * @param m The matrix.
 	 */
-	template<typename U>
-	matrix(const matrix<U> &m);
+	template <typename T2>
+	matrix(const matrix<T2> &m);
 
 	/**
 	 *
@@ -203,8 +213,8 @@ public:
 	 *
 	 * @return Whether they have same dimensions.
 	 */
-	template<typename U>
-	bool has_same_dimensions(const matrix<U> &m) const;
+	template <typename T2>
+	bool has_same_dimensions(const matrix<T2> &m) const;
 
 	/**
 	 * Computes the inverse of this matrix.
@@ -253,6 +263,16 @@ public:
 	 * @return Whether this subscript (row/column indexes) are valid.
 	 */
 	bool is_valid_subscript(size_t i, size_t j) const;
+
+	/**
+	 * Matrix product.
+	 *
+	 * Requirements:
+	 * - the method “T &T::operator+=(const T &)” must be defined;
+	 * - the function “T operator*(const T &, const T &)” must be defined.
+	 */
+	template <typename T2>
+	matrix<T> mprod(const matrix<T2> &m) const;
 
 	/**
 	 * Applies an operation to the column i and store it in the column j.
@@ -404,7 +424,7 @@ public:
 	 *
 	 * @return The trace of this matrix.
 	 */
-	template<typename R>
+	template <typename R>
 	R trace() const;
 
 	/**
@@ -421,6 +441,12 @@ public:
 
 	/**
 	 *
+	 */
+	template <typename T2>
+	bool operator==(const matrix<T2> &m) const;
+
+	/**
+	 *
 	 *
 	 * @param m
 	 *
@@ -431,54 +457,71 @@ public:
 	/**
 	 *
 	 */
-	template<typename U>
-	matrix<T> &operator=(const matrix<U> &m);
+	template <typename T2>
+	matrix<T> &operator=(const matrix<T2> &m);
 
 	/**
 	 *
-	 */
-	template<typename U>
-	bool operator==(const matrix<U> &m) const;
-
-	/**
-	 *
-	 */
-	template<typename U>
-	bool operator!=(const matrix<U> &m) const;
-
-	/**
-	 *
-	 *
-	 * Requirements:
-	 * - the method “T &T::operator+=(const T &)” must be defined;
-	 * - the function “T operator*(const T &, const T &)” must be defined.
-	 */
-	template<typename U>
-	matrix<T> operator*(const matrix<U> &m) const;
-
-	/**
-	 *
-	 *
-	 * Requirements:
-	 * - the method “T &T::operator+=(const T &)” must be defined;
-	 * - the function “T operator*(const T &, const T &)” must be defined.
-	 */
-	template<typename U>
-	matrix<T> &operator*=(const matrix<U> &m);
-
-	/**
-	 * Scalar multiplication: multiplies each elements of this matrix by
-	 * “value”.
 	 *
 	 * Requirement:
-	 * - the function “T operator*(const T &, const T &)” must be defined.
-	 *
-	 * @param value A value by which every elements of this matrix will be
-	 *              multiplied.
-	 *
-	 * @return The result of this operation.
+	 * - the method “R &R::operator+=(const T &)” must be defined.
 	 */
-	matrix<T> operator*(const_reference value) const;
+	template <typename T2>
+	matrix<T> &operator+=(const matrix<T2> &m);
+
+	/**
+	 *
+	 *
+	 * Requirement:
+	 * - the method “R &R::operator-=(const T &)” must be defined.
+	 */
+	template <typename T2>
+	matrix<T> &operator-=(const matrix<T2> &m);
+
+	/**
+	 *
+	 *
+	 * Requirement:
+	 * - the method “R &R::operator-=(const T &)” must be defined.
+	 */
+	template <typename T2>
+	matrix<T> &operator*=(const matrix<T2> &m);
+
+	/**
+	 *
+	 *
+	 * Requirement:
+	 * - the method “R &R::operator/=(const T &)” must be defined.
+	 */
+	template <typename T2>
+	matrix<T> &operator/=(const matrix<T2> &m);
+
+	/**
+	 *
+	 *
+	 * Requirement:
+	 * - the method “R &R::operator%=(const T &)” must be defined.
+	 */
+	template <typename T2>
+	matrix<T> &operator%=(const matrix<T2> &m);
+
+	/**
+	 * Fills the matrix with a scalar value.
+	 */
+	template <typename T2>
+	matrix<T> &operator=(const T2 &s);
+
+	/**
+	 * Scalar addition.
+	 */
+	template <typename T2>
+	matrix<T> &operator+=(const T2 &value);
+
+	/**
+	 * Scalar subtraction.
+	 */
+	template <typename T2>
+	matrix<T> &operator-=(const T2 &value);
 
 	/**
 	 * Scalar multiplication: multiplies each elements of this matrix by
@@ -492,44 +535,20 @@ public:
 	 *
 	 * @return This matrix.
 	 */
-	matrix<T> &operator*=(const_reference value);
+	template <typename T2>
+	matrix<T> &operator*=(const T2 &value);
 
 	/**
 	 * Scalar division.
 	 */
-	matrix<T> operator/(const_reference value) const;
+	template <typename T2>
+	matrix<T> &operator/=(const T2 &value);
 
 	/**
-	 * Scalar division.
+	 * Scalar modulo.
 	 */
-	matrix<T> &operator/=(const_reference value);
-
-	/**
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator+=(const T &)” must be defined.
-	 */
-	template<typename U>
-	matrix<T> operator+(const matrix<U> &m) const;
-
-	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator+=(const T &)” must be defined.
-	 */
-	template<typename U>
-	matrix<T> &operator+=(const matrix<U> &m);
-
-	/**
-	 * Scalar addition.
-	 */
-	matrix<T> operator+(const_reference value) const;
-
-	/**
-	 * Scalar addition.
-	 */
-	matrix<T> &operator+=(const_reference value);
+	template <typename T2>
+	matrix<T> &operator%=(const T2 &value);
 
 	/**
 	 * Gets the item contained at the specified position.
@@ -622,8 +641,8 @@ private:
 	 *
 	 * @param The matrix (must have the same dimension than this matrix).
 	 */
-	template<typename U>
-	void copy_values(const matrix<U> &m);
+	template <typename T2>
+	void copy_values(const matrix<T2> &m);
 
 	/**
 	 *
@@ -639,8 +658,8 @@ private:
 	 *
 	 * @return True if they are, otherwise false.
 	 */
-	template<typename U>
-	bool has_same_values(const matrix<U> &m) const;
+	template <typename T2>
+	bool has_same_values(const matrix<T2> &m) const;
 
 	/**
 	 * @see CertifiedObject::isValid() const
@@ -656,7 +675,7 @@ private:
 /**
  *
  */
-template<typename T>
+template <typename T>
 std::ostream &
 operator<<(std::ostream &os, const matrix<T> &m);
 

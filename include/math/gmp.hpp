@@ -13,7 +13,7 @@ is_odd<mpz_class>(const mpz_class &x)
 }
 
 template <>
-T
+mpz_class
 exp_mod<mpz_class>(const mpz_class &x, const mpz_class &k, const mpz_class &n)
 {
 	mpz_class result;
@@ -24,7 +24,7 @@ exp_mod<mpz_class>(const mpz_class &x, const mpz_class &k, const mpz_class &n)
 }
 
 template <>
-T
+mpz_class
 gcd<mpz_class>(const mpz_class &a, const mpz_class &b)
 {
 	mpz_class result;
@@ -35,7 +35,7 @@ gcd<mpz_class>(const mpz_class &a, const mpz_class &b)
 }
 
 template <>
-T
+mpz_class
 inverse_mod<mpz_class>(const mpz_class &x, const mpz_class &n)
 {
 	mpz_class result;
@@ -46,7 +46,7 @@ inverse_mod<mpz_class>(const mpz_class &x, const mpz_class &n)
 }
 
 template <>
-T
+mpz_class
 lcm<mpz_class>(const mpz_class &a, const mpz_class &b)
 {
 	mpz_class result;

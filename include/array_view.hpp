@@ -25,7 +25,7 @@
 #include <iterator>
 #include <ostream>
 
-#include "contracts.h"
+#include <contracts.h>
 
 /**
  * This class is a simple wrapper around a C array which provides helper for

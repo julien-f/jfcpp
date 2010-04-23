@@ -147,7 +147,7 @@ namespace functional
 	{
 		return binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
 			std::pointer_to_unary_function<Arg2, Result2>, F3>(std::ptr_fun(f1), std::ptr_fun(f2), f3);
-}
+	}
 
 	// pointer & pointer & pointer
 	template <class Arg11, class Arg12, class Result1, class Arg2, class Result2, class Arg3, class Result3>
@@ -159,7 +159,7 @@ namespace functional
 		return binary_composer<std::pointer_to_binary_function<Arg11, Arg12, Result1>,
 			std::pointer_to_unary_function<Arg2, Result2>,
 			std::pointer_to_unary_function<Arg3, Result3> >(std::ptr_fun(f1), std::ptr_fun(f2), std::ptr_fun(f3));
-}
+	}
 
 	// functor & pointer & functor
 	template <class F1, class Arg2, class Result2, class F3>

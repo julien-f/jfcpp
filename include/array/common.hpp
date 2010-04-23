@@ -43,7 +43,7 @@ typedef value_type *pointer;
 /**
  *
  */
-inline reference at(size_t i)
+reference at(size_t i)
 {
 	if (i >= this->size())
 	{
@@ -52,7 +52,7 @@ inline reference at(size_t i)
 
 	return (*this)[i];
 }
-inline const_reference at(size_t i) const
+const_reference at(size_t i) const
 {
 	return const_cast<array<value_type, S> *>(this)->at(i);
 }
@@ -60,11 +60,11 @@ inline const_reference at(size_t i) const
 /**
  *
  */
-inline iterator begin()
+iterator begin()
 {
 	return this->_data;
 }
-inline const_iterator begin() const
+const_iterator begin() const
 {
 	return this->_data;
 }
@@ -72,11 +72,11 @@ inline const_iterator begin() const
 /**
  *
  */
-inline iterator end()
+iterator end()
 {
 	return (this->_data + this->size());
 }
-inline const_iterator end() const
+const_iterator end() const
 {
 	return (this->_data + this->size());
 }
@@ -84,7 +84,7 @@ inline const_iterator end() const
 /**
  *
  */
-inline void fill(const_reference value)
+void fill(const_reference value)
 {
 	std::fill(this->begin(), this->end(), value);
 }
@@ -92,11 +92,11 @@ inline void fill(const_reference value)
 /**
  *
  */
-inline reverse_iterator rbegin()
+reverse_iterator rbegin()
 {
 	return reverse_iterator(this->end());
 }
-inline const_reverse_iterator rbegin() const
+const_reverse_iterator rbegin() const
 {
 	return reverse_iterator(this->end());
 }
@@ -104,11 +104,11 @@ inline const_reverse_iterator rbegin() const
 /**
  *
  */
-inline reverse_iterator rend()
+reverse_iterator rend()
 {
 	return reverse_iterator(this->begin());
 }
-inline const_reverse_iterator rend() const
+const_reverse_iterator rend() const
 {
 	return reverse_iterator(this->begin());
 }
@@ -116,13 +116,13 @@ inline const_reverse_iterator rend() const
 /**
  *
  */
-inline reference operator[](size_t i)
+reference operator[](size_t i)
 {
 	requires(i < this->size());
 
 	return this->_data[i];
 }
-inline const_reference operator[](size_t i) const
+const_reference operator[](size_t i) const
 {
 	return const_cast<array<value_type, S> &>(*this)[i];
 }
@@ -130,7 +130,7 @@ inline const_reference operator[](size_t i) const
 /**
  *
  */
-template<typename T2, size_t S2> inline
+template <typename T2, size_t S2>
 bool operator==(const array<T2, S2> &a) const
 {
 	return ((this->size() == a.size()) &&
@@ -140,7 +140,7 @@ bool operator==(const array<T2, S2> &a) const
 /**
  *
  */
-template<typename T2, size_t S2> inline
+template <typename T2, size_t S2>
 bool operator<(const array<T2, S2> &a) const
 {
 	return std::lexicographical_compare(this->begin(), this->end(),
@@ -150,12 +150,143 @@ bool operator<(const array<T2, S2> &a) const
 /**
  *
  */
-template<typename T2, size_t S2> inline
+template <typename T2, size_t S2>
 array<value_type, S> &operator=(const array<T2, S2> &a)
 {
 	requires(this->size() == a.size());
 
 	std::copy(a.begin(), a.end(), this->begin());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+array<value_type, S> &operator+=(const array<T2, S2> &a)
+{
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
+	               functional::plus<value_type, T2>());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+array<value_type, S> &operator-=(const array<T2, S2> &a)
+{
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
+	               functional::minus<value_type, T2>());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+array<value_type, S> &operator*=(const array<T2, S2> &a)
+{
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
+	               functional::multiplies<value_type, T2>());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+array<value_type, S> &operator/=(const array<T2, S2> &a)
+{
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
+	               functional::divides<value_type, T2>());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+array<value_type, S> &operator%=(const array<T2, S2> &a)
+{
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
+	               functional::modulo<value_type, T2>());
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator=(const T2 &s)
+{
+	std::fill(this->begin(), this->end(), s);
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator+=(const T2 &s)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind2nd(functional::plus<value_type, T2>(), s));
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator-=(const T2 &s)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind2nd(functional::minus<value_type, T2>(), s));
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator*=(const T2 &s)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind2nd(functional::multiplies<value_type, T2>(), s));
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator/=(const T2 &s)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind2nd(functional::divides<value_type, T2>(), s));
+
+	return *this;
+}
+
+/**
+ *
+ */
+template <typename T2>
+array<value_type, S> &operator%=(const T2 &s)
+{
+	std::transform(this->begin(), this->end(), this->begin(),
+	               std::bind2nd(functional::modulo<value_type, T2>(), s));
 
 	return *this;
 }

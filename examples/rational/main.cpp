@@ -3,11 +3,9 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "contracts.h"
+#include <rational.hpp>
 
 using namespace std;
-
-#include "rational.hpp"
 
 #define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
 

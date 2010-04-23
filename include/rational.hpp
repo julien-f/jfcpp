@@ -19,7 +19,7 @@
 #ifndef H_RATIONAL
 #define H_RATIONAL
 
-#include "contracts.h"
+#include <contracts.h>
 
 #include "math.hpp"
 #include "operators.hpp"
@@ -50,12 +50,6 @@ public:
 	const T &numerator() const
 	{
 		return this->_numerator;
-	}
-
-	bool operator==(const rational<T> &f) const
-	{
-		return ((this->_numerator == f.numerator()) &&
-		        (this->_denominator == f.denominator()));
 	}
 
 	template <typename T2>

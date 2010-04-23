@@ -22,13 +22,24 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <stdexcept>
+
+#include <contracts.h>
+
+#include "functional.hpp"
+#include "operators.hpp"
 
 /**
  * @template T The type of contained elements.
  * @template S The number of contained elements.
  */
 template<typename T, size_t S = 0>
-class array
+class array : public operators::addable<array<T, S> >,
+              public operators::equality_comparable<array<T, S> >,
+              public operators::dividable<array<T, S> >,
+              public operators::modable<array<T, S> >,
+              public operators::multipliable<array<T, S> >,
+              public operators::subtractable<array<T, S> >
 {
 #	include "array/common.hpp"
 
@@ -51,7 +62,12 @@ private:
 };
 
 template <typename T>
-class array<T, 0>
+class array<T, 0> : public operators::addable<array<T, 0> >,
+                    public operators::equality_comparable<array<T, 0> >,
+                    public operators::dividable<array<T, 0> >,
+                    public operators::modable<array<T, 0> >,
+                    public operators::multipliable<array<T, 0> >,
+                    public operators::subtractable<array<T, 0> >
 {
 	static const size_t S = 0;
 
@@ -71,7 +87,7 @@ public:
 	/**
 	 *
 	 */
-	array(const array<value_type, 0> &a) : _size(size)
+	array(const array<value_type, 0> &a) : _size(a._size)
 	{
 		this->_allocate();
 		*this = a;
@@ -81,7 +97,7 @@ public:
 	 *
 	 */
 	template<typename T2, size_t S2>
-	array(const array<T2, S2> &a) : _size(size)
+	array(const array<T2, S2> &a) : _size(S2)
 	{
 		this->_allocate();
 		*this = a;
@@ -136,7 +152,7 @@ private:
  *
  */
 template<typename T, size_t S>
-std::istream &operator>>(std::istream &s, array<T, S> a)
+std::istream &operator>>(std::istream &s, array<T, S> &a)
 {
 	for (size_t i = 0, n = a.size(); (i < n) && s.good(); ++i)
 	{
@@ -163,7 +179,6 @@ std::ostream &operator<<(std::ostream &s, const array<T, S> &a)
 		}
 	}
 
-	s << std::endl;
 	return s;
 }
 

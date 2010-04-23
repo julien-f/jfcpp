@@ -158,8 +158,8 @@ int main()
 			}
 		}
 
-		// Multiplication
-		assert_exception(m * m, ContractViolated);
+		// Matrix product
+		assert_exception(m.mprod(m), ContractViolated);
 
 		// Scalar multiplication
 		{
@@ -239,9 +239,9 @@ int main()
 		assert(m.columns() == 10);
 		assert(m.size() == 100);
 
-		// Multiplication
+		// Matrix product
 		{
-			matrix<int> p(m * m);
+			matrix<int> p(m.mprod(m));
 
 			assert(p.has_same_dimensions(m));
 		}

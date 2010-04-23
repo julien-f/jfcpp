@@ -1,10 +1,9 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <functional.hpp>
+
 using namespace std;
-
-#include "functional.hpp"
-
 using namespace functional;
 
 int unary1(int x)

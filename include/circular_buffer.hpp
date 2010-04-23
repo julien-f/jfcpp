@@ -22,7 +22,7 @@
 
 #include <stdexcept>
 
-#include "contracts.h"
+#include <contracts.h>
 
 /**
  * This class is an implementation of a circular buffer.

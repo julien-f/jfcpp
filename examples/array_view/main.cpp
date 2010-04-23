@@ -2,11 +2,9 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "contracts.h"
+#include <array_view.hpp>
 
 using namespace std;
-
-#include "array_view.hpp"
 
 #define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
 

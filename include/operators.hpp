@@ -21,8 +21,19 @@
 
 namespace operators
 {
-#	define BINARY_OPERATOR_COMMUTATIVE(NAME, OP) \
+#	define BINARY_OPERATOR(NAME, OP) \
 	template <typename T1> \
+	struct NAME \
+	{ \
+		template <typename T2> \
+		friend T1 operator OP(T1 lhs, const T2 &rhs) \
+		{ \
+			return (lhs OP##= rhs); \
+		} \
+	}
+
+#	define BINARY_OPERATOR_COMMUTATIVE(NAME, OP) \
+	template <typename T1, bool fix = true> \
 	struct NAME \
 	{ \
 		template <typename T2> \
@@ -35,7 +46,19 @@ namespace operators
 		{ \
 			return (rhs OP##= lhs); \
 		} \
+	}; \
+	template <typename T1> \
+	struct NAME <T1, true> : public NAME <T1, false> \
+	{ \
+		friend T1 operator OP(T1 lhs, const T1 &rhs) \
+		{ \
+			return (lhs OP##= rhs); \
+		} \
 	}
+
+	BINARY_OPERATOR(dividable, /);
+	BINARY_OPERATOR(modable, %);
+	BINARY_OPERATOR(subtractable, -);
 
 	BINARY_OPERATOR_COMMUTATIVE(addable, +);
 	BINARY_OPERATOR_COMMUTATIVE(andable, &);
@@ -43,13 +66,13 @@ namespace operators
 	BINARY_OPERATOR_COMMUTATIVE(orable, |);
 	BINARY_OPERATOR_COMMUTATIVE(xorable, ^);
 
-	template <typename T1>
+	template <typename T1, bool fix = true>
 	struct equality_comparable
 	{
 		template <typename T2>
 		friend bool operator ==(const T2 &lhs, const T1 &rhs)
 		{
-			return (rhs == lhs);
+			return rhs.operator ==(lhs);
 		}
 		template <typename T2>
 		friend bool operator !=(const T1 &lhs, const T2 &rhs)
@@ -62,7 +85,20 @@ namespace operators
 			return !static_cast<bool>(lhs == rhs);
 		}
 	};
+	template <typename T1>
+	struct equality_comparable <T1, true> : public equality_comparable <T1, false>
+	{
+		friend bool operator ==(const T1 &lhs, const T1 &rhs)
+		{
+			return rhs.operator ==(lhs);
+		}
+		friend bool operator !=(const T1 &lhs, const T1 &rhs)
+		{
+			return !static_cast<bool>(lhs == rhs);
+		}
+	};
 
+#	undef BINARY_OPERATOR
 #	undef BINARY_OPERATOR_COMMUTATIVE
 } // namespace operators
 

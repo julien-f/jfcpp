@@ -4,10 +4,8 @@
 #include <iostream>
 #include <utility>
 
-#include "contracts.h"
-
-#include "rational.hpp"
-#include "matrix.hpp"
+#include <matrix.hpp>
+#include <rational.hpp>
 
 using namespace std;
 

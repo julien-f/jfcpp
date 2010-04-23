@@ -2,11 +2,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "contracts.h"
+#include <array.hpp>
 
 using namespace std;
 
-#include "array.hpp"
+#define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
 
 int main()
 {
@@ -17,7 +17,8 @@ int main()
 	b.fill(0);
 	c.fill(3);
 
-	cout << a << b;
+	PRINT(a);
+	PRINT(b);
 
 	a[1] = 35435;
 
@@ -27,9 +28,11 @@ int main()
 
 	a = c;
 
-	cout << a << b;
+	PRINT(a);
+	PRINT(b);
 
-	cout << (a == b) << endl;
+	PRINT(a == b);
+	PRINT(a - c);
 
 	cout << sizeof(a) << " " << sizeof(b) << endl;
 
