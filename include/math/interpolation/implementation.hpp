@@ -38,7 +38,7 @@ linear<TCD, TD>::operator()(const TD &x)
 	result *= x;
 	result += _b;
 
-	return x;
+	return result;
 }
 
 template <typename TCD, typename TD>
