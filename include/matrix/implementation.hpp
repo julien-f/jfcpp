@@ -39,7 +39,7 @@ matrix<T>::identity(size_t dim, const_reference zero, const_reference one)
 	return id;
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>::matrix(size_t dim)
 	: _rows(dim), _columns(dim), _size(dim * dim), _values(NULL),
 	  _values_by_rows(NULL)
@@ -49,7 +49,7 @@ matrix<T>::matrix(size_t dim)
 	ensures(this->is_square());
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>::matrix(size_t rows, size_t columns)
 	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
 	  _values_by_rows(NULL)
@@ -57,7 +57,7 @@ matrix<T>::matrix(size_t rows, size_t columns)
 	this->allocate();
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
 	: _rows(rows), _columns(columns), _size(rows * columns), _values(NULL),
 	  _values_by_rows(NULL)
@@ -67,7 +67,7 @@ matrix<T>::matrix(size_t rows, size_t columns, const_reference value)
 	std::fill(this->begin(), this->end(), value);
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>::matrix(const matrix<T> &m)
 	: _rows(m._rows), _columns(m._columns), _size(m._size), _values(NULL),
 	  _values_by_rows(NULL)
@@ -78,7 +78,7 @@ matrix<T>::matrix(const matrix<T> &m)
 }
 
 template <typename T>
-template <typename T2> inline
+template <typename T2>
 matrix<T>::matrix(const matrix<T2> &m)
 	: _rows(m.rows()), _columns(m.columns()), _size(m.size()), _values(NULL),
 	  _values_by_rows(NULL)
@@ -94,7 +94,7 @@ matrix<T>::~matrix()
 	this->deallocate();
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::reference
 matrix<T>::at(size_t i, size_t j)
 {
@@ -106,7 +106,7 @@ matrix<T>::at(size_t i, size_t j)
 	return (*this)(i, j);
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_reference
 matrix<T>::at(size_t i, size_t j) const
 {
@@ -114,35 +114,35 @@ matrix<T>::at(size_t i, size_t j) const
 	return const_cast<matrix<T> *>(this)->at(i, j);
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::iterator
 matrix<T>::begin()
 {
 	return this->_values;
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_iterator
 matrix<T>::begin() const
 {
 	return const_cast<matrix<T> *>(this)->begin();
 }
 
-template <typename T> inline
+template <typename T>
 size_t
 matrix<T>::columns() const
 {
 	return this->_columns;
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::iterator
 matrix<T>::end()
 {
 	return this->_values + this->_size;
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_iterator
 matrix<T>::end() const
 {
@@ -150,21 +150,21 @@ matrix<T>::end() const
 }
 
 template <typename T>
-template <typename T2> inline
+template <typename T2>
 bool
 matrix<T>::has_same_dimensions(const matrix<T2> &m) const
 {
 	return ((this->_rows == m.rows()) && (this->_columns == m.columns()));
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>
 matrix<T>::inverse() const
 {
 	return matrix<T>(*this).inverse_perf();
 }
 
-template <typename T> inline
+template <typename T>
 matrix<T>
 matrix<T>::inverse_perf()
 {
@@ -177,14 +177,14 @@ matrix<T>::inverse_perf()
 	return inverse;
 }
 
-template <typename T> inline
+template <typename T>
 bool
 matrix<T>::is_valid_subscript(size_t i, size_t j) const
 {
 	return ((i < this->_rows) && (j < this->_columns));
 }
 
-template <typename T> inline
+template <typename T>
 bool
 matrix<T>::is_square() const
 {
@@ -244,7 +244,7 @@ matrix<T>::op_column(size_t i, size_t j, size_t k, BinaryOperator op)
 }
 
 template <typename T>
-template<class UnaryOperator> inline
+template<class UnaryOperator>
 void
 matrix<T>::op_row(size_t i, size_t j, UnaryOperator op)
 {
@@ -258,7 +258,7 @@ matrix<T>::op_row(size_t i, size_t j, UnaryOperator op)
 }
 
 template <typename T>
-template<class BinaryOperator> inline
+template<class BinaryOperator>
 void
 matrix<T>::op_row(size_t i, size_t j, size_t k, BinaryOperator op)
 {
@@ -272,49 +272,49 @@ matrix<T>::op_row(size_t i, size_t j, size_t k, BinaryOperator op)
 	               this->_values + this->_columns * k, op);
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::reverse_iterator
 matrix<T>::rbegin()
 {
 	return reverse_iterator(this->end());
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rbegin() const
 {
 	return reverse_iterator(this->end());
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::reverse_iterator
 matrix<T>::rend()
 {
 	return reverse_iterator(this->begin());
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_reverse_iterator
 matrix<T>::rend() const
 {
 	return reverse_iterator(this->begin());
 }
 
-template <typename T> inline
+template <typename T>
 size_t
 matrix<T>::rows() const
 {
 	return this->_rows;
 }
 
-template <typename T> inline
+template <typename T>
 size_t
 matrix<T>::size() const
 {
 	return this->_size;
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::solve(matrix<T> &B) const
 {
@@ -357,7 +357,7 @@ matrix<T>::solve_perf(matrix<T> &B)
 	}
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::swap(matrix<T> &m)
 {
@@ -368,7 +368,7 @@ matrix<T>::swap(matrix<T> &m)
 	std::swap(this->_values_by_rows, m._values_by_rows);
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::swap_columns(size_t i, size_t j)
 {
@@ -382,7 +382,7 @@ matrix<T>::swap_columns(size_t i, size_t j)
 	}
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::swap_rows(size_t i, size_t j)
 {
@@ -395,7 +395,7 @@ matrix<T>::swap_rows(size_t i, size_t j)
 	                 this->_values_by_rows[j]);
 }
 
-template <typename T> inline
+template <typename T>
 T
 matrix<T>::trace() const
 {
@@ -436,7 +436,15 @@ matrix<T>::transpose() const
 	return result;
 }
 
-template <typename T> inline
+template <typename T>
+template <typename T2>
+bool
+matrix<T>::operator==(const matrix<T2> &m) const
+{
+	return (this->has_same_dimensions(m) && this->has_same_values(m));
+}
+
+template <typename T>
 matrix<T> &
 matrix<T>::operator=(const matrix<T> &m)
 {
@@ -444,7 +452,7 @@ matrix<T>::operator=(const matrix<T> &m)
 }
 
 template <typename T>
-template <typename T2> inline
+template <typename T2>
 matrix<T> &
 matrix<T>::operator=(const matrix<T2> &m)
 {
@@ -455,81 +463,46 @@ matrix<T>::operator=(const matrix<T2> &m)
 	return *this;
 }
 
-template <typename T>
-template <typename T2> inline
-bool
-matrix<T>::operator==(const matrix<T2> &m) const
-{
-	return (this->has_same_dimensions(m) && this->has_same_values(m));
+#define MATRIX_OPERATION(OP, FUNC_NAME) \
+template <typename T> \
+template <typename T2> \
+matrix<T> & \
+matrix<T>::operator OP##=(const matrix<T2> &m) \
+{ \
+	requires(this->has_same_dimensions(m)); \
+ \
+	std::transform(this->begin(), this->end(), m.begin(), this->begin(), \
+	               functional::FUNC_NAME<T, T2>()); \
+ \
+	return *this; \
+} \
+template <typename T> \
+template <typename T2> \
+matrix<T> & \
+matrix<T>::operator OP##=(const T2 &s) \
+{ \
+	std::transform(this->begin(), this->end(), this->begin(), \
+	               std::bind2nd(functional::FUNC_NAME<T, T2>(), s)); \
+ \
+	return *this; \
 }
 
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator+=(const matrix<T2> &m)
-{
-	requires(this->has_same_dimensions(m));
+MATRIX_OPERATION(+, plus)
+MATRIX_OPERATION(-, minus)
+MATRIX_OPERATION(*, multiplies)
+MATRIX_OPERATION(/, divides)
+MATRIX_OPERATION(%, modulus)
 
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               functional::plus<T, T2>());
+MATRIX_OPERATION(&, bit_and)
+MATRIX_OPERATION(|, bit_or)
+MATRIX_OPERATION(<<, bit_shift_left)
+MATRIX_OPERATION(>>, bit_shift_right)
+MATRIX_OPERATION(^, bit_xor)
 
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator-=(const matrix<T2> &m)
-{
-	requires(this->has_same_dimensions(m));
-
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               functional::minus<T, T2>());
-
-	return *this;
-}
+#undef MATRIX_OPERATION
 
 template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator*=(const matrix<T2> &m)
-{
-	requires(this->has_same_dimensions(m));
-
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               functional::multiplies<T, T2>());
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator/=(const matrix<T2> &m)
-{
-	requires(this->has_same_dimensions(m));
-
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               functional::divides<T, T2>());
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator%=(const matrix<T2> &m)
-{
-	requires(this->has_same_dimensions(m));
-
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(),
-	               functional::modulo<T, T2>());
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
+template <typename T2>
 matrix<T> &
 matrix<T>::operator=(const T2 &s)
 {
@@ -539,61 +512,6 @@ matrix<T>::operator=(const T2 &s)
 }
 
 template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator+=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::plus<T, T2>(), s));
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator-=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::minus<T, T2>(), s));
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator*=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::multiplies<T, T2>(), s));
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator/=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::divides<T, T2>(), s));
-
-	return *this;
-}
-
-template <typename T>
-template <typename T2> inline
-matrix<T> &
-matrix<T>::operator%=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::modulo<T, T2>(), s));
-
-	return *this;
-}
-
-template <typename T> inline
 typename matrix<T>::reference
 matrix<T>::operator()(size_t i, size_t j)
 {
@@ -602,7 +520,7 @@ matrix<T>::operator()(size_t i, size_t j)
 	return this->_values_by_rows[i][j];
 }
 
-template <typename T> inline
+template <typename T>
 typename matrix<T>::const_reference
 matrix<T>::operator()(size_t i, size_t j) const
 {
@@ -632,7 +550,7 @@ matrix<T>::allocate()
 }
 
 template <typename T>
-template <typename T2> inline
+template <typename T2>
 void
 matrix<T>::copy_values(const matrix<T2> &m)
 {
@@ -641,7 +559,7 @@ matrix<T>::copy_values(const matrix<T2> &m)
 	std::copy(m.begin(), m.end(), this->begin());
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::copy_values(const matrix<T> &m)
 {
@@ -650,7 +568,7 @@ matrix<T>::copy_values(const matrix<T> &m)
 	ensures(this->has_same_values(m));
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::deallocate()
 {
@@ -662,7 +580,7 @@ matrix<T>::deallocate()
 }
 
 template <typename T>
-template <typename T2> inline
+template <typename T2>
 bool
 matrix<T>::has_same_values(const matrix<T2> &m) const
 {
@@ -681,7 +599,7 @@ matrix<T>::isValid() const
 	            || ((this->_values_by_rows != NULL))));
 }
 
-template <typename T> inline
+template <typename T>
 void
 matrix<T>::resize(size_t rows, size_t columns)
 {

@@ -111,8 +111,8 @@ public:
 	 * @param zero The value which will be used to fill the matrix.
 	 * @param one  The value which will be used to fill the matrix's diagonal.
 	 */
-	static matrix<T> identity(size_t dim, const_reference zero = T(0),
-	                          const_reference one = T(1));
+	static matrix identity(size_t dim, const_reference zero = T(0),
+	                       const_reference one = T(1));
 
 	/**
 	 * Constructs a square matrix with a given dimension.
@@ -150,7 +150,7 @@ public:
 	 *
 	 * @ensures *this == m
 	 */
-	matrix(const matrix<T> &m);
+	matrix(const matrix &m);
 
 	/**
 	 * Constructs a matrix from another.
@@ -229,7 +229,7 @@ public:
 	 *
 	 * @return The inverse.
 	 */
-	matrix<T> inverse() const;
+	matrix inverse() const;
 
 	/**
 	 * Computes the inverse of this matrix.
@@ -244,7 +244,7 @@ public:
 	 *
 	 * @return The inverse.
 	 */
-	matrix<T> inverse_perf();
+	matrix inverse_perf();
 
 	/**
 	 * Tests whether this matrix is square (i.e. has the same number of rows
@@ -272,7 +272,7 @@ public:
 	 * - the function “T operator*(const T &, const T &)” must be defined.
 	 */
 	template <typename T2>
-	matrix<T> mprod(const matrix<T2> &m) const;
+	matrix mprod(const matrix<T2> &m) const;
 
 	/**
 	 * Applies an operation to the column i and store it in the column j.
@@ -358,7 +358,7 @@ public:
 	 * A * X = B.
 	 *
 	 * To prevent this matrix from being modified, a copy is created, if you
-	 * want to avoid this, use the method “solve_perf(matrix<T>)”.
+	 * want to avoid this, use the method “solve_perf(matrix)”.
 	 *
 	 * @throw std::runtime_error If there is no solutions.
 	 *
@@ -366,13 +366,13 @@ public:
 	 *
 	 * @return The matrix X.
 	 */
-	void solve(matrix<T> &B) const;
+	void solve(matrix &B) const;
 
 	/**
 	 * Solves the following equations where A is this matrix and X the solution:
 	 * A * X = B.
 	 *
-	 * Contrary to the method “solve(matrix<T>) const”, this method does not create a
+	 * Contrary to the method “solve(matrix) const”, this method does not create a
 	 * copy of this matrix.
 	 *
 	 * @throw std::runtime_error If there is no solutions.
@@ -381,7 +381,7 @@ public:
 	 *
 	 * @return The matrix X.
 	 */
-	void solve_perf(matrix<T> &B);
+	void solve_perf(matrix &B);
 
 	/**
 	 * Swaps the content between this matrix and another.
@@ -390,7 +390,7 @@ public:
 	 *
 	 * @return m The other matrix.
 	 */
-	void swap(matrix<T> &m);
+	void swap(matrix &m);
 
 	/**
 	 * Swaps two columns of this matrix.
@@ -418,17 +418,17 @@ public:
 	 *
 	 * Requirements:
 	 * - this matrix must be square;
-	 * - the method “R &R::operator+=(const T &)” must be defined.
+	 * - the method “T2 &T2::operator+=(const T &)” must be defined.
 	 *
-	 * @template R The type of the result.
+	 * @template T2 The type of the result.
 	 *
 	 * @return The trace of this matrix.
 	 */
-	template <typename R>
-	R trace() const;
+	template <typename T2>
+	T2 trace() const;
 
 	/**
-	 * @see trace<R>() const
+	 * @see trace<T2>() const
 	 */
 	T trace() const;
 
@@ -437,7 +437,7 @@ public:
 	 *
 	 * @return The transpose.
 	 */
-	matrix<T> transpose() const;
+	matrix transpose() const;
 
 	/**
 	 *
@@ -452,103 +452,75 @@ public:
 	 *
 	 * @ensures *this == m
 	 */
-	matrix<T> &operator=(const matrix<T> &m);
+	matrix &operator=(const matrix &m);
 
 	/**
 	 *
 	 */
 	template <typename T2>
-	matrix<T> &operator=(const matrix<T2> &m);
+	matrix &operator=(const matrix<T2> &m);
 
 	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator+=(const T &)” must be defined.
+	 * Element-wise arithmetics operations.
 	 */
 	template <typename T2>
-	matrix<T> &operator+=(const matrix<T2> &m);
+	matrix &operator+=(const matrix<T2> &m);
+	template <typename T2>
+	matrix &operator-=(const matrix<T2> &m);
+	template <typename T2>
+	matrix &operator*=(const matrix<T2> &m);
+	template <typename T2>
+	matrix &operator/=(const matrix<T2> &m);
+	template <typename T2>
+	matrix &operator%=(const matrix<T2> &m);
 
 	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator-=(const T &)” must be defined.
+	 * Element-wise bitwise operations.
 	 */
 	template <typename T2>
-	matrix<T> &operator-=(const matrix<T2> &m);
-
-	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator-=(const T &)” must be defined.
-	 */
+	matrix &operator&=(const matrix<T2> &m);
 	template <typename T2>
-	matrix<T> &operator*=(const matrix<T2> &m);
-
-	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator/=(const T &)” must be defined.
-	 */
+	matrix &operator|=(const matrix<T2> &m);
 	template <typename T2>
-	matrix<T> &operator/=(const matrix<T2> &m);
-
-	/**
-	 *
-	 *
-	 * Requirement:
-	 * - the method “R &R::operator%=(const T &)” must be defined.
-	 */
+	matrix &operator<<=(const matrix<T2> &m);
 	template <typename T2>
-	matrix<T> &operator%=(const matrix<T2> &m);
+	matrix &operator>>=(const matrix<T2> &m);
+	template <typename T2>
+	matrix &operator^=(const matrix<T2> &m);
 
 	/**
 	 * Fills the matrix with a scalar value.
 	 */
 	template <typename T2>
-	matrix<T> &operator=(const T2 &s);
+	matrix &operator=(const T2 &s);
 
 	/**
-	 * Scalar addition.
+	 * Scalar arithmetics operations.
 	 */
 	template <typename T2>
-	matrix<T> &operator+=(const T2 &value);
+	matrix &operator+=(const T2 &value);
+	template <typename T2>
+	matrix &operator-=(const T2 &value);
+	template <typename T2>
+	matrix &operator*=(const T2 &value);
+	template <typename T2>
+	matrix &operator/=(const T2 &value);
+	template <typename T2>
+	matrix &operator%=(const T2 &value);
 
 	/**
-	 * Scalar subtraction.
+	 * Scalar bitwise operations.
 	 */
 	template <typename T2>
-	matrix<T> &operator-=(const T2 &value);
-
-	/**
-	 * Scalar multiplication: multiplies each elements of this matrix by
-	 * “value”.
-	 *
-	 * Requirement:
-	 * - the function “T operator*(const T &, const T &)” must be defined.
-	 *
-	 * @param value A value by which every elements of this matrix will be
-	 *              multiplied.
-	 *
-	 * @return This matrix.
-	 */
+	matrix &operator&=(const T2 &value);
 	template <typename T2>
-	matrix<T> &operator*=(const T2 &value);
-
-	/**
-	 * Scalar division.
-	 */
+	matrix &operator|=(const T2 &value);
 	template <typename T2>
-	matrix<T> &operator/=(const T2 &value);
-
-	/**
-	 * Scalar modulo.
-	 */
+	matrix &operator<<=(const T2 &value);
 	template <typename T2>
-	matrix<T> &operator%=(const T2 &value);
+	matrix &operator>>=(const T2 &value);
+	template <typename T2>
+	matrix &operator^=(const T2 &value);
 
 	/**
 	 * Gets the item contained at the specified position.
@@ -577,7 +549,7 @@ public:
 private:
 
 	/**
-	 * Used in “solve_perf(matrix<T> B)”.
+	 * Used in “solve_perf(matrix B)”.
 	 */
 	class my_op : std::binary_function<const T &, const T &, T>
 	{
@@ -634,7 +606,7 @@ private:
 	 *
 	 * @ensures *this == m
 	 */
-	void copy_values(const matrix<T> &m);
+	void copy_values(const matrix &m);
 
 	/**
 	 * Sets the values of this matrix with the values of 'm'.

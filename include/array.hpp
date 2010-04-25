@@ -34,12 +34,17 @@
  * @template S The number of contained elements.
  */
 template<typename T, size_t S = 0>
-class array : public operators::addable<array<T, S> >,
-              public operators::equality_comparable<array<T, S> >,
+class array : public operators::andable<array<T, S> >,
+              public operators::addable<array<T, S> >,
               public operators::dividable<array<T, S> >,
+              public operators::equality_comparable<array<T, S> >,
+              public operators::left_shiftable<array<T, S> >,
               public operators::modable<array<T, S> >,
               public operators::multipliable<array<T, S> >,
-              public operators::subtractable<array<T, S> >
+              public operators::orable<array<T, S> >,
+              public operators::right_shiftable<array<T, S> >,
+              public operators::subtractable<array<T, S> >,
+              public operators::xorable<array<T, S> >
 {
 #	include "array/common.hpp"
 
@@ -62,12 +67,17 @@ private:
 };
 
 template <typename T>
-class array<T, 0> : public operators::addable<array<T, 0> >,
-                    public operators::equality_comparable<array<T, 0> >,
+class array<T, 0> : public operators::andable<array<T, 0> >,
+                    public operators::addable<array<T, 0> >,
                     public operators::dividable<array<T, 0> >,
+                    public operators::equality_comparable<array<T, 0> >,
+                    public operators::left_shiftable<array<T, 0> >,
                     public operators::modable<array<T, 0> >,
                     public operators::multipliable<array<T, 0> >,
-                    public operators::subtractable<array<T, 0> >
+                    public operators::orable<array<T, 0> >,
+                    public operators::right_shiftable<array<T, 0> >,
+                    public operators::subtractable<array<T, 0> >,
+                    public operators::xorable<array<T, 0> >
 {
 	static const size_t S = 0;
 
@@ -78,7 +88,7 @@ public:
 	/**
 	 *
 	 */
-	array(size_t size) : _size(size)
+	explicit array(size_t size) : _size(size)
 	{
 		requires(size > 0);
 		this->_allocate();
@@ -87,7 +97,7 @@ public:
 	/**
 	 *
 	 */
-	array(const array<value_type, 0> &a) : _size(a._size)
+	array(const array &a) : _size(a._size)
 	{
 		this->_allocate();
 		*this = a;
@@ -96,7 +106,7 @@ public:
 	/**
 	 *
 	 */
-	template<typename T2, size_t S2>
+	template<typename T2, size_t S2> explicit
 	array(const array<T2, S2> &a) : _size(S2)
 	{
 		this->_allocate();
@@ -117,14 +127,6 @@ public:
 	size_t size() const
 	{
 		return this->_size;
-	}
-
-	/**
-	 *
-	 */
-	array<value_type, 0> &operator=(const array<value_type, 0> &a)
-	{
-		return this->operator=<value_type, 0>(a);
 	}
 
 private:

@@ -41,11 +41,6 @@ namespace operators
 		{ \
 			return (lhs OP##= rhs); \
 		} \
-		template <typename T2> \
-		friend T1 operator OP(const T2 &lhs, T1 rhs) \
-		{ \
-			return (rhs OP##= lhs); \
-		} \
 	}; \
 	template <typename T1> \
 	struct NAME <T1, true> : public NAME <T1, false> \
@@ -56,8 +51,19 @@ namespace operators
 		} \
 	}
 
+	// Does not work well for the moment.
+	/*
+		template <typename T2> \
+		friend T1 operator OP(const T2 &lhs, T1 rhs) \
+		{ \
+			return (rhs OP##= lhs); \
+		} \
+	*/
+
 	BINARY_OPERATOR(dividable, /);
 	BINARY_OPERATOR(modable, %);
+	BINARY_OPERATOR(left_shiftable, <<);
+	BINARY_OPERATOR(right_shiftable, >>);
 	BINARY_OPERATOR(subtractable, -);
 
 	BINARY_OPERATOR_COMMUTATIVE(addable, +);
@@ -79,11 +85,11 @@ namespace operators
 		{
 			return !static_cast<bool>(lhs == rhs);
 		}
-		template <typename T2>
-		friend bool operator !=(const T2 &lhs, const T1 &rhs)
-		{
-			return !static_cast<bool>(lhs == rhs);
-		}
+		// template <typename T2>
+		// friend bool operator !=(const T2 &lhs, const T1 &rhs)
+		// {
+		// 	return !static_cast<bool>(lhs == rhs);
+		// }
 	};
 	template <typename T1>
 	struct equality_comparable <T1, true> : public equality_comparable <T1, false>

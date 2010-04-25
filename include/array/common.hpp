@@ -54,7 +54,7 @@ reference at(size_t i)
 }
 const_reference at(size_t i) const
 {
-	return const_cast<array<value_type, S> *>(this)->at(i);
+	return const_cast<array *>(this)->at(i);
 }
 
 /**
@@ -124,7 +124,7 @@ reference operator[](size_t i)
 }
 const_reference operator[](size_t i) const
 {
-	return const_cast<array<value_type, S> &>(*this)[i];
+	return const_cast<array &>(*this)[i];
 }
 
 /**
@@ -151,7 +151,7 @@ bool operator<(const array<T2, S2> &a) const
  *
  */
 template <typename T2, size_t S2>
-array<value_type, S> &operator=(const array<T2, S2> &a)
+array &operator=(const array<T2, S2> &a)
 {
 	requires(this->size() == a.size());
 
@@ -160,133 +160,47 @@ array<value_type, S> &operator=(const array<T2, S2> &a)
 	return *this;
 }
 
-/**
- *
- */
-template <typename T2, size_t S2>
-array<value_type, S> &operator+=(const array<T2, S2> &a)
-{
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
-	               functional::plus<value_type, T2>());
-
-	return *this;
+#define ARRAY_OPERATION(OP, FUNC_NAME) \
+template <typename T2, size_t S2> \
+array &operator OP##=(const array<T2, S2> &a) \
+{ \
+	requires(this->size() == a.size()); \
+ \
+	std::transform(this->begin(), this->end(), a.begin(), this->begin(), \
+	               functional::FUNC_NAME<value_type, T2>()); \
+ \
+	return *this; \
+} \
+template <typename T2> \
+array &operator OP##=(const T2 &s) \
+{ \
+	std::transform(this->begin(), this->end(), this->begin(), \
+	               std::bind2nd(functional::FUNC_NAME<value_type, T2>(), s)); \
+ \
+	return *this; \
 }
 
-/**
- *
- */
-template <typename T2, size_t S2>
-array<value_type, S> &operator-=(const array<T2, S2> &a)
-{
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
-	               functional::minus<value_type, T2>());
+ARRAY_OPERATION(+, plus)
+ARRAY_OPERATION(-, minus)
+ARRAY_OPERATION(*, multiplies)
+ARRAY_OPERATION(/, divides)
+ARRAY_OPERATION(%, modulus)
 
-	return *this;
-}
+ARRAY_OPERATION(&, bit_and)
+ARRAY_OPERATION(|, bit_or)
+ARRAY_OPERATION(<<, bit_shift_left)
+ARRAY_OPERATION(>>, bit_shift_right)
+ARRAY_OPERATION(^, bit_xor)
 
-/**
- *
- */
-template <typename T2, size_t S2>
-array<value_type, S> &operator*=(const array<T2, S2> &a)
-{
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
-	               functional::multiplies<value_type, T2>());
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2, size_t S2>
-array<value_type, S> &operator/=(const array<T2, S2> &a)
-{
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
-	               functional::divides<value_type, T2>());
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2, size_t S2>
-array<value_type, S> &operator%=(const array<T2, S2> &a)
-{
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(),
-	               functional::modulo<value_type, T2>());
-
-	return *this;
-}
+#undef ARRAY_OPERATION
 
 /**
  *
  */
 template <typename T2>
-array<value_type, S> &operator=(const T2 &s)
+array &operator=(const T2 &s)
 {
 	std::fill(this->begin(), this->end(), s);
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2>
-array<value_type, S> &operator+=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::plus<value_type, T2>(), s));
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2>
-array<value_type, S> &operator-=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::minus<value_type, T2>(), s));
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2>
-array<value_type, S> &operator*=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::multiplies<value_type, T2>(), s));
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2>
-array<value_type, S> &operator/=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::divides<value_type, T2>(), s));
-
-	return *this;
-}
-
-/**
- *
- */
-template <typename T2>
-array<value_type, S> &operator%=(const T2 &s)
-{
-	std::transform(this->begin(), this->end(), this->begin(),
-	               std::bind2nd(functional::modulo<value_type, T2>(), s));
 
 	return *this;
 }

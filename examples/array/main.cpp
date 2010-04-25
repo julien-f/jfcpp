@@ -10,29 +10,60 @@ using namespace std;
 
 int main()
 {
-	array<int> a(10);
-	array<int, 10> b;
-	array<int> c(10);
+	// Let's create a static array of integers
+	// with a size known at compile time.
+	array<int, 5> a;
 
-	b.fill(0);
-	c.fill(3);
+	// Let's create a static array of integers with
+	// a size not (necessary) known at compile time.
+	array<int> b(5);
 
+	// Now fill them with a value.
+	a = 6;
+	b = 2;
+
+	// Print them.
 	PRINT(a);
 	PRINT(b);
 
-	a[1] = 35435;
+	// Change manually some values.
+	a[4] = 468;
+	b[1] += 2;
 
-	b = a;
-
-	b = c;
-
-	a = c;
-
+	// Reprint them.
 	PRINT(a);
 	PRINT(b);
+
+	// All operations are element-wise.
+
+	// Let's try some arithmetic operations.
+	PRINT(a + b);
+	PRINT(a - b);
+	PRINT(a * b);
+	PRINT(a / b);
+	PRINT(a % b);
+
+	// Some bitwise operations.
+	PRINT(a & b);
+	PRINT(a | b);
+	PRINT(a << b);
+	PRINT(a >> b);
+	PRINT(a ^ b);
+
+	PRINT(a * 3);
+	//PRINT(3 * a); // Does not currently work.
 
 	PRINT(a == b);
-	PRINT(a - c);
+	PRINT(b == a);
+
+	PRINT(a != b);
+	PRINT(b != a);
+
+	PRINT(a == a);
+	PRINT(b == b);
+
+	PRINT(a != a);
+	PRINT(b != b);
 
 	cout << sizeof(a) << " " << sizeof(b) << endl;
 
