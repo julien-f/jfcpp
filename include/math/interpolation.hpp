@@ -30,7 +30,7 @@ namespace interpolation
 		 * @param x1
 		 * @param y1
 		 */
-		linear(TCD x0, TCD y0, const TCD &x1, TCD y1);
+		linear(TD x0, TCD y0, const TD &x1, TCD y1);
 
 		/**
 		 *
