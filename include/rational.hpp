@@ -25,7 +25,12 @@
 #include "operators.hpp"
 
 template <typename T = long int>
-class rational : public operators::equality_comparable<rational<T> >
+class rational : public operators::addable<rational<T> >,
+                 public operators::equality_comparable<rational<T> >,
+                 public operators::dividable<rational<T> >,
+                 public operators::modable<rational<T> >,
+                 public operators::multipliable<rational<T> >,
+                 public operators::subtractable<rational<T> >
 {
 public:
 
@@ -52,6 +57,16 @@ public:
 		return this->_numerator;
 	}
 
+	const rational<T> &operator+() const
+	{
+		return *this;
+	}
+
+	rational operator-() const
+	{
+		return rational(-this->_numerator, this->_denominator);
+	}
+
 	template <typename T2>
 	bool operator==(const rational<T2> &f) const
 	{
@@ -60,35 +75,13 @@ public:
 	}
 
 	template <typename T2>
-	bool operator==(const T2 &x) const
-	{
-		return (this->_numerator == (this->_denominator * x));
-	}
-
-	rational<T> operator-() const
-	{
-		return rational<T>(-this->_numerator, this->_denominator);
-	}
-
-	template <typename T2>
-	rational<T> operator+(const rational<T2> &f) const
-	{
-		return rational<T>(this->_numerator * f.denominator()
-		                   + f.numerator() * this->_denominator,
-		                   this->_denominator * f.denominator());
-	}
-
-	template <typename T2>
 	rational<T> &operator+=(const rational<T2> &f)
 	{
-		*this = *this + f;
-		return *this;
-	}
+		this->_numerator *= f.denominator();
+		this->_numerator += this->_denominator * f.numerator();
+		this->_denominator *= f.denominator();
 
-	template <typename T2>
-	rational<T> operator-(const rational<T2> &f) const
-	{
-		return (*this + -f);
+		return *this;
 	}
 
 	template <typename T2>
@@ -99,24 +92,12 @@ public:
 	}
 
 	template <typename T2>
-	rational<T> operator*(const rational<T2> &f) const
-	{
-		return rational<T>(this->_numerator * f.numerator(),
-		                   this->_denominator * f.denominator());
-	}
-
-	template <typename T2>
 	rational<T> &operator*=(const rational<T2> &f)
 	{
-		*this = *this * f;
+		this->_numerator *= f.numerator();
+		this->_denominator *= f.denominator();
 
 		return *this;
-	}
-
-	template <typename T2>
-	rational<T> operator/(const rational<T2> &f) const
-	{
-		return (*this * f.inverse());
 	}
 
 	template <typename T2>
@@ -124,6 +105,12 @@ public:
 	{
 		*this *= f.inverse();
 		return *this;
+	}
+
+	template <typename T2>
+	bool operator==(const T2 &x) const
+	{
+		return (this->_numerator == (this->_denominator * x));
 	}
 
 private:

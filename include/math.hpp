@@ -76,10 +76,10 @@ lcm(const T &a, const T &b);
  *
  * @requires dt != 0
  */
-template <typename T>
-T
-numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &,
-                   T xp1, const T &xp2);
+template <typename TD, typename TCD>
+TCD
+numerical_derivate(const TD &dt, const TCD &xm2, const TCD &xm1, const TCD &,
+                   TCD xp1, const TCD &xp2);
 
 #include "math/implementation.hpp"
 

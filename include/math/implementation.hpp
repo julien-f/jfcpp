@@ -123,10 +123,10 @@ lcm(const T &a, const T &b)
 	return (g != zero ? a / g * b : zero);
 }
 
-template <typename T>
-T
-numerical_derivate(const T &dt, const T &xm2, const T &xm1, const T &,
-                   T xp1, const T &xp2)
+template <typename TCD, typename TD>
+TCD
+numerical_derivate(const TD &dt, const TCD &xm2, const TCD &xm1, const TCD &,
+                   TCD xp1, const TCD &xp2)
 {
 	// Optimisation: the result is stored in xp1.
 
