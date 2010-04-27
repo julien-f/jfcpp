@@ -129,6 +129,20 @@ matrix<T>::begin() const
 }
 
 template <typename T>
+void
+matrix<T>::clear()
+{
+	this->deallocate();
+
+	this->_rows = 0;
+	this->_columns = 0;
+	this->_size = 0;
+
+	this->_values = NULL;
+	this->_values_by_rows = NULL;
+}
+
+template <typename T>
 size_t
 matrix<T>::columns() const
 {
@@ -179,9 +193,24 @@ matrix<T>::inverse_perf()
 
 template <typename T>
 bool
+matrix<T>::is_valid_column(size_t j) const
+{
+	return (j < this->_columns);
+}
+
+
+template <typename T>
+bool
+matrix<T>::is_valid_row(size_t i) const
+{
+	return (i < this->_rows);
+}
+
+template <typename T>
+bool
 matrix<T>::is_valid_subscript(size_t i, size_t j) const
 {
-	return ((i < this->_rows) && (j < this->_columns));
+	return (this->is_valid_row(i) && this->is_valid_column(j));
 }
 
 template <typename T>

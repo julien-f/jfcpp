@@ -189,6 +189,11 @@ public:
 	const_iterator begin() const;
 
 	/**
+	 * Clears the matrix, setting its size to (0, 0).
+	 */
+	void clear();
+
+	/**
 	 * Gets the number of columns of this matrix.
 	 *
 	 * @return The number of columns of this matrix.
@@ -253,6 +258,16 @@ public:
 	 * @return Whether this matrix is square.
 	 */
 	bool is_square() const;
+
+	/**
+	 *
+	 */
+	bool is_valid_column(size_t j) const;
+
+	/**
+	 *
+	 */
+	bool is_valid_row(size_t i) const;
 
 	/**
 	 * Checks if (i, j) is a valid subscript for this matrix.
