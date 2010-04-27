@@ -330,6 +330,22 @@ matrix<T>::rend() const
 }
 
 template <typename T>
+void
+matrix<T>::resize(size_t rows, size_t columns)
+{
+	this->deallocate();
+
+	this->_rows = rows;
+	this->_columns = columns;
+
+	this->_size = this->_rows * this->_columns;
+
+	this->allocate();
+
+	validate(*this);
+}
+
+template <typename T>
 size_t
 matrix<T>::rows() const
 {
@@ -626,22 +642,6 @@ matrix<T>::isValid() const
 	        && ((this->_values != NULL) || (this->_size == 0))
 	        && (((this->_values == NULL) && (this->_values_by_rows == NULL))
 	            || ((this->_values_by_rows != NULL))));
-}
-
-template <typename T>
-void
-matrix<T>::resize(size_t rows, size_t columns)
-{
-	this->deallocate();
-
-	this->_rows = rows;
-	this->_columns = columns;
-
-	this->_size = this->_rows * this->_columns;
-
-	this->allocate();
-
-	validate(*this);
 }
 
 template <typename T>

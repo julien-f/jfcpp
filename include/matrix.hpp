@@ -353,6 +353,11 @@ public:
 	const_reverse_iterator rend() const;
 
 	/**
+	 * Resizes the matrix (the previous content is discarded !).
+	 */
+	void resize(size_t rows, size_t columns);
+
+	/**
 	 * Gets the number of rows of this matrix.
 	 *
 	 * @return The number of rows of this matrix.
@@ -652,11 +657,6 @@ private:
 	 * @see CertifiedObject::isValid() const
 	 */
 	virtual bool isValid() const;
-
-	/**
-	 *
-	 */
-	void resize(size_t rows, size_t columns);
 };
 
 /**
