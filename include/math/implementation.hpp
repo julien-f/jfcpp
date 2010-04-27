@@ -123,7 +123,7 @@ lcm(const T &a, const T &b)
 	return (g != zero ? a / g * b : zero);
 }
 
-template <typename TCD, typename TD>
+template <typename TD, typename TCD>
 TCD
 numerical_derivate(const TD &dt, const TCD &xm2, const TCD &xm1, const TCD &,
                    TCD xp1, const TCD &xp2)
