@@ -7,7 +7,8 @@ linear<TCD, TD>::linear(TCD y0, TCD y1) : _a(y1), _b(y0)
 }
 
 template <typename TCD, typename TD>
-linear<TCD, TD>::linear(TD x0, TCD y0, const TD &x1, TCD y1) : _a(y1), _b(y0)
+linear<TCD, TD>::linear(const TD &x0, TCD y0, const TD &x1, TCD y1)
+	: _a(y1), _b(y0)
 {
 	// Formula:
 	// y = (y1 - y0) / (x1 - x0) * x + (x1 * y0 - x0 * y1) / (x1 - x0)
@@ -23,8 +24,8 @@ linear<TCD, TD>::linear(TD x0, TCD y0, const TD &x1, TCD y1) : _a(y1), _b(y0)
 	_a /= tmp;
 
 	_b *= x1;
-	x0 *= y1;
-	_b -= x0;
+	y1 *= x0;
+	_b -= y1;
 	_b /= tmp;
 }
 
