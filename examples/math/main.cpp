@@ -22,7 +22,7 @@ int main()
 	PRINT(linear(0.5));
 	PRINT(hermite(0.5));
 
-	PRINT(numerical_derivate<double>(1, 0, -109./24, -265./3, -3717./8, -4472/3));
+	PRINT(numerical_derivate(1, double(0), -109./24, -265./3, -3717./8, -4472./3));
 
 	cout << "Theorical results of the previous calculus:" << endl;
 	PRINT(-365./2);

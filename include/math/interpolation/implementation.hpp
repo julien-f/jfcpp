@@ -31,7 +31,7 @@ linear<TCD, TD>::linear(const TD &x0, TCD y0, const TD &x1, TCD y1)
 
 template <typename TCD, typename TD>
 TCD
-linear<TCD, TD>::operator()(const TD &x)
+linear<TCD, TD>::operator()(const TD &x) const
 {
 	// y = _a * x + _b
 
@@ -86,7 +86,7 @@ hermite<TCD, TD>::hermite(TCD y0, TCD dy0, TCD y1, const TCD &dy1)
 
 template <typename TCD, typename TD>
 TCD
-hermite<TCD, TD>::operator()(const TD &x)
+hermite<TCD, TD>::operator()(const TD &x) const
 {
 	TCD result(_d);
 	result *= x;

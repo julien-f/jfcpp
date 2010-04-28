@@ -37,7 +37,7 @@ namespace interpolation
 		 *
 		 * @param x
 		 */
-		TCD operator()(const TD &x);
+		TCD operator()(const TD &x) const;
 
 	private:
 
@@ -72,7 +72,7 @@ namespace interpolation
 		 *
 		 * @param x
 		 */
-		TCD operator()(const TD &x);
+		TCD operator()(const TD &x) const;
 
 	private:
 
