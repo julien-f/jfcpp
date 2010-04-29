@@ -13,7 +13,7 @@
 ##
 
 # Projects list.
-PROJECTS := array array_view functional math matrix rational
+PROJECTS := array array_view functional interpolation math matrix rational
 
 # Global configuration.
 PREFIX   := /usr/local

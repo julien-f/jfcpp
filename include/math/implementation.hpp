@@ -125,16 +125,19 @@ lcm(const T &a, const T &b)
 
 template <typename TD, typename TCD>
 TCD
-numerical_derivate(const TD &dt, const TCD &xm2, const TCD &xm1, const TCD &,
+numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
                    TCD xp1, const TCD &xp2)
 {
-	// Optimisation: the result is stored in xp1.
+	// Base formula:
+	// result = (8 * (xp1 - xm1) + xm2 - xp2) / (12 * dt)
 
 	xp1 -= xm1;
 	xp1 *= 8;
 	xp1 += xm2;
 	xp1 -= xp2;
-	xp1 /= 12;
+
+	dt *= 12;
+
 	xp1 /= dt;
 
 	return xp1;

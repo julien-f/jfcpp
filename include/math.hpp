@@ -78,7 +78,7 @@ lcm(const T &a, const T &b);
  */
 template <typename TD, typename TCD>
 TCD
-numerical_derivate(const TD &dt, const TCD &xm2, const TCD &xm1, const TCD &,
+numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
                    TCD xp1, const TCD &xp2);
 
 #include "math/implementation.hpp"
