@@ -27,6 +27,7 @@ PROJECTS := \
 PREFIX   := /usr/local
 CXXFLAGS += -I../include/ -I../contracts/include/
 CXXFLAGS += -std=c++98 -pedantic -Wall -Wextra -Winline -Wconversion -ggdb3
+CXXFLAGS += -g0 -DNDEBUG
 
 
 

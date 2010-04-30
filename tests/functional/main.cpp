@@ -6,7 +6,7 @@
 #include <contracts.h>
 
 /**
- * Comparing two expressions directly does not always work, so w use this
+ * Comparing two expressions directly does not always work, so we use this
  * function.
  */
 template <typename T>
