@@ -26,6 +26,7 @@
 
 #include <contracts.h>
 
+#include "algorithm.hpp"
 #include "functional.hpp"
 #include "operators.hpp"
 

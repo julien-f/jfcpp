@@ -220,6 +220,16 @@ namespace functional
 		} \
 	}
 
+#	define BINARY_OPERATION_ASSIGN(NAME, OP) \
+	template <typename T1, typename T2> \
+	struct NAME##_assign : public std::binary_function<T1, T2, void> \
+	{ \
+		void operator()(T1 &x, const T2 &y) const \
+		{ \
+			x OP##= y; \
+		} \
+	}
+
 	/**
 	 * Arithmetic operations.
 	 *
@@ -228,11 +238,18 @@ namespace functional
 	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(negate, -);
+
 	BINARY_OPERATION(divides, /);
 	BINARY_OPERATION(minus, -);
 	BINARY_OPERATION(modulus, %);
 	BINARY_OPERATION(multiplies, *);
 	BINARY_OPERATION(plus, +);
+
+	BINARY_OPERATION_ASSIGN(divides, /);
+	BINARY_OPERATION_ASSIGN(minus, -);
+	BINARY_OPERATION_ASSIGN(modulus, %);
+	BINARY_OPERATION_ASSIGN(multiplies, *);
+	BINARY_OPERATION_ASSIGN(plus, +);
 
 	/**
 	 * Bitwise operations.
@@ -242,11 +259,18 @@ namespace functional
 	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(bit_not, ~);
+
 	BINARY_OPERATION(bit_and, &);
 	BINARY_OPERATION(bit_or, |);
 	BINARY_OPERATION(bit_shift_left, <<);
 	BINARY_OPERATION(bit_shift_right, >>);
 	BINARY_OPERATION(bit_xor, ^);
+
+	BINARY_OPERATION_ASSIGN(bit_and, &);
+	BINARY_OPERATION_ASSIGN(bit_or, |);
+	BINARY_OPERATION_ASSIGN(bit_shift_left, <<);
+	BINARY_OPERATION_ASSIGN(bit_shift_right, >>);
+	BINARY_OPERATION_ASSIGN(bit_xor, ^);
 
 	/**
 	 * Logical operations.
@@ -256,11 +280,13 @@ namespace functional
 	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(logical_not, !);
+
 	BINARY_OPERATION(logical_and, &&);
 	BINARY_OPERATION(logical_or, ||);
 
 #	undef UNARY_OPERATION
 #	undef BINARY_OPERATION
+#	undef BINARY_OPERATION_ASSIGN
 } // namespace functional
 
 #endif

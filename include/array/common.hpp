@@ -166,16 +166,16 @@ array &operator OP##=(const array<T2, S2> &a) \
 { \
 	requires(this->size() == a.size()); \
  \
-	std::transform(this->begin(), this->end(), a.begin(), this->begin(), \
-	               functional::FUNC_NAME<value_type, T2>()); \
+	algorithm::for_each(this->begin(), this->end(), a.begin(), \
+	                    functional::FUNC_NAME##_assign<value_type, T2>()); \
  \
 	return *this; \
 } \
 template <typename T2> \
 array &operator OP##=(const T2 &s) \
 { \
-	std::transform(this->begin(), this->end(), this->begin(), \
-	               std::bind2nd(functional::FUNC_NAME<value_type, T2>(), s)); \
+	std::for_each(this->begin(), this->end(), \
+	              std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 	return *this; \
 }

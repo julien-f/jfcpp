@@ -23,6 +23,8 @@
 #include <stdexcept>
 
 #include "contracts.h"
+
+#include "algorithm.hpp"
 #include "functional.hpp"
 
 template <typename T>
@@ -516,8 +518,8 @@ matrix<T>::operator OP##=(const matrix<T2> &m) \
 { \
 	requires(this->has_same_dimensions(m)); \
  \
-	std::transform(this->begin(), this->end(), m.begin(), this->begin(), \
-	               functional::FUNC_NAME<T, T2>()); \
+	algorithm::for_each(this->begin(), this->end(), m.begin(), \
+	                    functional::FUNC_NAME##_assign<value_type, T2>()); \
  \
 	return *this; \
 } \
@@ -526,8 +528,8 @@ template <typename T2> \
 matrix<T> & \
 matrix<T>::operator OP##=(const T2 &s) \
 { \
-	std::transform(this->begin(), this->end(), this->begin(), \
-	               std::bind2nd(functional::FUNC_NAME<T, T2>(), s)); \
+	std::for_each(this->begin(), this->end(), \
+	              std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 	return *this; \
 }
