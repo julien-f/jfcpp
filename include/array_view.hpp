@@ -179,6 +179,40 @@ public:
 		return *this;
 	}
 
+#	define ARRAY_VIEW_OPERATION(OP, FUNC_NAME) \
+	template <typename T2, size_t S2> \
+	array_view &operator OP##=(const array<T2, S2> &a) \
+	{ \
+		requires(this->size() == a.size()); \
+ \
+		algorithm::for_each(this->begin(), this->end(), a.begin(), \
+		                    functional::FUNC_NAME##_assign<value_type, T2>()); \
+ \
+		return *this; \
+	} \
+	template <typename T2> \
+	array_view &operator OP##=(const T2 &s) \
+	{ \
+		algorithm::for_each(this->begin(), this->end(), \
+		                    std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
+ \
+		return *this; \
+	}
+
+	ARRAY_VIEW_OPERATION(+, plus)
+	ARRAY_VIEW_OPERATION(-, minus)
+	ARRAY_VIEW_OPERATION(*, multiplies)
+	ARRAY_VIEW_OPERATION(/, divides)
+	ARRAY_VIEW_OPERATION(%, modulus)
+
+	ARRAY_VIEW_OPERATION(&, bit_and)
+	ARRAY_VIEW_OPERATION(|, bit_or)
+	ARRAY_VIEW_OPERATION(<<, bit_shift_left)
+	ARRAY_VIEW_OPERATION(>>, bit_shift_right)
+	ARRAY_VIEW_OPERATION(^, bit_xor)
+
+#	undef ARRAY_VIEW_OPERATION
+
 private:
 
 	/**

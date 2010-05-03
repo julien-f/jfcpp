@@ -84,9 +84,9 @@ const_iterator end() const
 /**
  *
  */
-void fill(const_reference value)
+bool is_valid_index(size_t i) const
 {
-	std::fill(this->begin(), this->end(), value);
+	return (i < this->size());
 }
 
 /**
@@ -174,8 +174,8 @@ array &operator OP##=(const array<T2, S2> &a) \
 template <typename T2> \
 array &operator OP##=(const T2 &s) \
 { \
-	std::for_each(this->begin(), this->end(), \
-	              std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
+	algorithm::for_each(this->begin(), this->end(), \
+	                    std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 	return *this; \
 }

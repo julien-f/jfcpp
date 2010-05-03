@@ -528,8 +528,8 @@ template <typename T2> \
 matrix<T> & \
 matrix<T>::operator OP##=(const T2 &s) \
 { \
-	std::for_each(this->begin(), this->end(), \
-	              std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
+	algorithm::for_each(this->begin(), this->end(), \
+	                    std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 	return *this; \
 }

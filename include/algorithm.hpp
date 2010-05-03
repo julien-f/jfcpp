@@ -23,6 +23,8 @@
 
 namespace algorithm
 {
+	using std::for_each;
+
 	/**
 	 *
 	 */
