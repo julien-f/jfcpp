@@ -48,17 +48,30 @@ namespace algorithm
 			}
 		}
 
-#		if defined(_OPENMP) && (_OPENMP == 200805)
+#		ifdef _OPENMP
 		template <class InputIterator, class UnaryFunction>
 		void
 		apply(InputIterator first, InputIterator end, UnaryFunction f,
 		      std::random_access_iterator_tag)
 		{
+#			if _OPENMP == 200805 // OpenMP v3.0
 #			pragma omp parallel for
-			for (InputIterator it = first; it != end; ++it)
+			for (InputIterator it = first; it < end; ++it)
 			{
 				f(*it);
 			}
+#			else // ! OpenMP v3.0
+			typedef std::iterator_traits<InputIterator> iterator_traits;
+			typedef typename iterator_traits1::difference_type difference_type;
+
+			difference_type n = end - first;
+
+#			pragma omp parallel for
+			for (difference_type1 i = 0; i < n; ++i)
+			{
+				f(first[n]);
+			}
+#			endif // OpenMP v3.0
 		}
 
 		template <class InputIterator1, class InputIterator2,
@@ -68,11 +81,15 @@ namespace algorithm
 		      BinaryFunction f, std::random_access_iterator_tag,
 		      std::random_access_iterator_tag)
 		{
+			typedef std::iterator_traits<InputIterator1> iterator_traits1;
+			typedef typename iterator_traits1::difference_type difference_type1;
+
+			difference_type1 n = end1 - first1;
+
 #			pragma omp parallel for
-			for (InputIterator1 it = first1; it != end1; ++it)
+			for (difference_type1 i = 0; i < n; ++i)
 			{
-				f(*it, *first2);
-				++first2;
+				f(first1[i], first2[i]);
 			}
 		}
 #		endif
@@ -84,7 +101,7 @@ namespace algorithm
 	 *
 	 * There is no defined order and the implementation might parallelize the
 	 * execution with OpenMP if possible (the iterator is a random access
-	 * iterator, OpenMP 3.0 is available and enabled).
+	 * iterator, OpenMP is available and enabled).
 	 */
 	template <class InputIterator, class UnaryFunction>
 	void

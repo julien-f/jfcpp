@@ -27,12 +27,14 @@ struct RandomGenerator
 	}
 };
 
+#include <iostream>
+
 int main()
 {
 	// Ordinary matrix.
 	{
-		const size_t rows = 100;
-		const size_t columns = 500;
+		const size_t rows = 5;
+		const size_t columns = 6;
 
 		matrix<int> m(rows, columns);
 
