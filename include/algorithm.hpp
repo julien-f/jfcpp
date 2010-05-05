@@ -62,14 +62,14 @@ namespace algorithm
 			}
 #			else // ! OpenMP v3.0
 			typedef std::iterator_traits<InputIterator> iterator_traits;
-			typedef typename iterator_traits1::difference_type difference_type;
+			typedef typename iterator_traits::difference_type difference_type;
 
 			difference_type n = end - first;
 
 #			pragma omp parallel for
-			for (difference_type1 i = 0; i < n; ++i)
+			for (difference_type i = 0; i < n; ++i)
 			{
-				f(first[n]);
+				f(first[i]);
 			}
 #			endif // OpenMP v3.0
 		}
