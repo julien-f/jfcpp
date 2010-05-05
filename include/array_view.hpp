@@ -27,6 +27,8 @@
 
 #include <contracts.h>
 
+#include "algorithm.hpp"
+#include "functional.hpp"
 #include "operators.hpp"
 
 /**
@@ -180,21 +182,21 @@ public:
 	}
 
 #	define ARRAY_VIEW_OPERATION(OP, FUNC_NAME) \
-	template <typename T2, size_t S2> \
-	array_view &operator OP##=(const array<T2, S2> &a) \
+	template <typename T2> \
+	array_view &operator OP##=(const array_view<T2> &a) \
 	{ \
 		requires(this->size() == a.size()); \
  \
-		algorithm::for_each(this->begin(), this->end(), a.begin(), \
-		                    functional::FUNC_NAME##_assign<value_type, T2>()); \
+		algorithm::apply(this->begin(), this->end(), a.begin(), \
+		                 functional::FUNC_NAME##_assign<value_type, T2>()); \
  \
 		return *this; \
 	} \
 	template <typename T2> \
 	array_view &operator OP##=(const T2 &s) \
 	{ \
-		algorithm::for_each(this->begin(), this->end(), \
-		                    std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
+		algorithm::apply(this->begin(), this->end(), \
+		                 std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 		return *this; \
 	}

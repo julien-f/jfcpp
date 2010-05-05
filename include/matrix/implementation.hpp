@@ -518,8 +518,8 @@ matrix<T>::operator OP##=(const matrix<T2> &m) \
 { \
 	requires(this->has_same_dimensions(m)); \
  \
-	algorithm::for_each(this->begin(), this->end(), m.begin(), \
-	                    functional::FUNC_NAME##_assign<value_type, T2>()); \
+	algorithm::apply(this->begin(), this->end(), m.begin(), \
+	                 functional::FUNC_NAME##_assign<value_type, T2>()); \
  \
 	return *this; \
 } \
@@ -528,8 +528,8 @@ template <typename T2> \
 matrix<T> & \
 matrix<T>::operator OP##=(const T2 &s) \
 { \
-	algorithm::for_each(this->begin(), this->end(), \
-	                    std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
+	algorithm::apply(this->begin(), this->end(), \
+	                 std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
  \
 	return *this; \
 }

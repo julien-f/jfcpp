@@ -12,6 +12,9 @@
 # The C++ prefix is ".cpp".
 ##
 
+# Do we want to use OpenMP for parallelization if availabled?
+OPENMP := 1
+
 # Projects list.
 PROJECTS := \
 	array\
@@ -28,6 +31,11 @@ PREFIX   := /usr/local
 CXXFLAGS += -I../include/ -I../contracts/include/
 CXXFLAGS += -std=c++98 -pedantic -Wall -Wextra -Winline -Wconversion -ggdb3
 CXXFLAGS += -g0 -DNDEBUG
+
+ifeq ($(OPENMP),1)
+	CXXFLAGS += -fopenmp
+	LDFLAGS  += -fopenmp
+endif
 
 
 
