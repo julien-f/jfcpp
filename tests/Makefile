@@ -16,7 +16,12 @@
 OPENMP := 1
 
 # Projects list.
-PROJECTS := array circular_buffer functional matrix
+PROJECTS := \
+	array\
+	circular_buffer\
+	functional\
+	matrix\
+	meta
 
 # Global configuration.
 PREFIX   := /usr/local

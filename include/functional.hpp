@@ -232,10 +232,6 @@ namespace functional
 
 	/**
 	 * Arithmetic operations.
-	 *
-	 * @template T1 Type of the left operand.
-	 * @template T2 Type of the right operand.
-	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(negate, -);
 
@@ -253,10 +249,6 @@ namespace functional
 
 	/**
 	 * Bitwise operations.
-	 *
-	 * @template T1 Type of the left operand.
-	 * @template T2 Type of the right operand.
-	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(bit_not, ~);
 
@@ -274,10 +266,6 @@ namespace functional
 
 	/**
 	 * Logical operations.
-	 *
-	 * @template T1 Type of the left operand.
-	 * @template T2 Type of the right operand.
-	 * @template T3 Type of the result.
 	 */
 	UNARY_OPERATION(logical_not, !);
 

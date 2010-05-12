@@ -19,10 +19,12 @@ OPENMP := 1
 PROJECTS := \
 	array\
 	array_view\
+	expression\
 	functional\
 	interpolation\
 	math\
 	matrix\
+	meta\
 	numerical_derivate\
 	rational
 
