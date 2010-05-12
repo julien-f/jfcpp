@@ -51,7 +51,7 @@ int main()
 	PRINT(a ^ b);
 
 	PRINT(a * 3);
-	//PRINT(3 * a); // Does not currently work.
+	PRINT(9 * a);
 
 	PRINT(a == b);
 	PRINT(b == a);

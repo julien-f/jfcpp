@@ -10,13 +10,29 @@ namespace expression
 {
 	namespace operators
 	{
+		using meta::and_;
+		using meta::enable_if;
+		using meta::is_a;
+
 #		define BINARY_OPERATOR(NAME, OP) \
+		template <typename T> \
+		NAME<T, wrapper<typename T::value_type, typename T::param_type> > \
+		operator OP(T lhs, typename T::value_type rhs) \
+		{ \
+			return NAME<T, wrapper<typename T::value_type, typename T::param_type> >(lhs, rhs); \
+		} \
+		template <typename T> \
+		NAME<wrapper<typename T::value_type, typename T::param_type>, T> \
+		operator OP(typename T::value_type lhs, T rhs) \
+		{ \
+			return NAME<wrapper<typename T::value_type, typename T::param_type>, T>(lhs, rhs); \
+		} \
 		template <typename T1, typename T2> \
-		meta::enable_if<meta::and_<meta::is_a<base<typename T1::value_type, \
-		                                           typename T1::param_type>, T1>::value, \
-		                           meta::is_a<base<typename T2::value_type, \
-		                                           typename T2::param_type>, T2>::value>::value, \
-		                NAME<T1, T2> > \
+		typename enable_if<and_<is_a<base<typename T1::value_type, \
+		                                  typename T1::param_type>, T1>::value, \
+		                        is_a<base<typename T2::value_type, \
+		                                  typename T2::param_type>, T2>::value>::value, \
+		                   NAME<T1, T2> >::type \
 		operator OP(T1 lhs, T2 rhs) \
 		{ \
 			return NAME<T1, T2>(lhs, rhs); \

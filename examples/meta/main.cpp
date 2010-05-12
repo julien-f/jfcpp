@@ -23,20 +23,34 @@ test_enable_if()
 	cout << "No" << endl;
 }
 
-template <class T>
+// template <class T>
+// struct has_member
+// {
+// 	template <class C> static
+// 	yes_t
+// 	_check(char[sizeof(&C::test)] *p);
+
+// 	template <class C> static
+// 	no_t
+// 	_check(char *p);
+
+// 	static const bool value = sizeof(_check<T>(0)) == sizeof(yes_t);
+// };
+
+// From: http://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
+template<typename T>
 struct has_member
 {
-	template <class C> static
-	yes_t
-	_check(int i = sizeof(&C::test));
+	struct fallback { void test(); }; // introduce the member
+	struct derived : T, fallback { };
 
-	template <class C> static
-	no_t
-	_check(int i);
+	template<typename C, C> struct ChT;
 
-	static const bool value = sizeof(_check<T>()) == sizeof(yes_t);
+	template<typename C> static no_t f(ChT<void (fallback::*)(), &C::test>*);
+	template<typename C> static yes_t f(...);
+
+	static const bool value = sizeof(f<derived>(0)) == sizeof(yes_t);
 };
-
 
 struct A
 {};
@@ -63,8 +77,8 @@ int main()
 	test_enable_if<is_a<A, C>::value>();
 	test_enable_if<is_a<B, A>::value>();
 
-	test_enable_if<has_member<C>::value>();
-	test_enable_if<has_member<D>::value>();
+	cout << has_member<C>::value << endl;
+	cout << has_member<D>::value << endl;
 
 	return EXIT_SUCCESS;
 }

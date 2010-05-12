@@ -1,6 +1,8 @@
 #ifndef H_EXPRESSION_OPERATIONS
 #define H_EXPRESSION_OPERATIONS
 
+#include <ostream>
+
 #include "base.hpp"
 
 namespace expression
@@ -21,6 +23,12 @@ namespace expression
 		value_type eval(param_type param = param_type()) const \
 		{ \
 			return (_lhs.eval(param) OP _rhs.eval(param)); \
+		} \
+ \
+		friend std::ostream &operator << (std::ostream &s, const NAME &op) \
+		{ \
+			s << '(' << op._lhs << ' ' << #OP << ' ' << op._rhs << ')'; \
+			return s; \
 		} \
  \
 	private: \
@@ -46,6 +54,12 @@ namespace expression
 		value_type eval(param_type param = param_type()) const \
 		{ \
 			return (OP _x.eval(param)); \
+		} \
+ \
+		friend std::ostream &operator << (std::ostream &s, const NAME &op) \
+		{ \
+			s << #OP << op._x; \
+			return s; \
 		} \
  \
 	private: \

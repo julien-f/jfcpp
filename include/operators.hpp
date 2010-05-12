@@ -19,46 +19,41 @@
 #ifndef H_OPERATORS
 #define H_OPERATORS
 
+#include "meta/enable_if.hpp"
+#include "meta/is_a.hpp"
+
 namespace operators
 {
 #	define BINARY_OPERATOR(NAME, OP) \
 	template <typename T1> \
 	struct NAME \
 	{ \
-		template <typename T2> \
-		friend T1 operator OP(T1 lhs, const T2 &rhs) \
+		template <typename T2> friend \
+		T1 \
+		operator OP(T1 lhs, const T2 &rhs) \
 		{ \
 			return (lhs OP##= rhs); \
 		} \
 	}
 
 #	define BINARY_OPERATOR_COMMUTATIVE(NAME, OP) \
-	template <typename T1, bool fix = true> \
+	template <typename T1> \
 	struct NAME \
 	{ \
-		template <typename T2> \
-		friend T1 operator OP(T1 lhs, const T2 &rhs) \
+		template <typename T2> friend \
+		T1 \
+		operator OP(T1 lhs, const T2 &rhs) \
 		{ \
 			return (lhs OP##= rhs); \
 		} \
-	}; \
-	template <typename T1> \
-	struct NAME <T1, true> : public NAME <T1, false> \
-	{ \
-		friend T1 operator OP(T1 lhs, const T1 &rhs) \
-		{ \
-			return (lhs OP##= rhs); \
-		} \
-	}
-
-	// Does not work well for the moment.
-	/*
-		template <typename T2> \
-		friend T1 operator OP(const T2 &lhs, T1 rhs) \
+		template <typename T2> friend \
+		typename meta::enable_if<!meta::is_a<NAME<T2>, T2>::value, T1>::type \
+		operator OP(const T2 &lhs, T1 rhs) \
 		{ \
 			return (rhs OP##= lhs); \
 		} \
-	*/
+	}
+
 
 	BINARY_OPERATOR(dividable, /);
 	BINARY_OPERATOR(modable, %);

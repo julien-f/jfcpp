@@ -1,18 +1,20 @@
 #ifndef H_EXPRESSION_WRAPPER
 #define H_EXPRESSION_WRAPPER
 
+#include <ostream>
+
 #include "base.hpp"
 
 namespace expression
 {
-	template <typename T>
-	class wrapper : base<T>
+	template <typename Value, typename Param = void_t>
+	class wrapper : public base<Value, Param>
 	{
 	public:
 
-		typedef typename base<T>::param_type param_type;
+		typedef Param param_type;
 
-		typedef T value_type;
+		typedef Value value_type;
 
 		wrapper(value_type value) : _value(value)
 		{}
@@ -30,6 +32,14 @@ namespace expression
 			return _value;
 		}
 
+		friend
+		std::ostream &
+		operator << (std::ostream &s, const wrapper &w)
+		{
+			s << w._value;
+			return s;
+		}
+
 	private:
 
 		const value_type _value;
@@ -41,6 +51,7 @@ namespace expression
 	{
 		return wrapper<T>(value);
 	}
+
 } // namespace expression
 
 #endif // H_EXPRESSION_WRAPPER
