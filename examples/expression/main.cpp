@@ -1,44 +1,57 @@
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <ostream>
 
 #include <expression.hpp>
+#include <lambda.hpp>
 
 using namespace std;
 using namespace expression;
 using namespace expression::operators;
 
-struct var : public base<double, double>
+template <typename T>
+struct var : public base<T>
 {
-	double eval(double x) const
+	typedef typename base<T>::value_type value_type;
+
+	value_type eval(value_type x) const
 	{
 		return x;
 	}
+
+	friend ostream &operator<<(ostream &s, var)
+	{
+		s << 'x';
+		return s;
+	}
 };
 
-ostream &operator << (ostream &s, var)
+template <typename Expression>
+void
+test(Expression e)
 {
-	s << 'x';
-	return s;
+	test(lambda<Expression>(e));
 }
 
-template <typename EXP>
+template <typename Expression>
 void
-test(EXP e)
+test(lambda<Expression> f)
 {
-	cout << e << endl;
+	cerr << f.expression() << endl;
 
-	for (int i = 0; i < 10; ++i)
+	const double step = 1e-1;
+	for (double t = -10; t <= 10; t += step)
 	{
-		cout << "x = " << i << ": " << e.eval(i) << endl;
+		cout << t << '\t' << f(t) << endl;
 	}
 }
 
 int main()
 {
-	var x;
+	var<double> x;
 
-	test(2 * -x + 4);
+	test(x * (1 + x * (1 + x * (1 + x * (1 + x)))));
 
 	return EXIT_SUCCESS;
 }

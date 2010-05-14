@@ -5,3 +5,7 @@
 /tests/bin/
 /tests/*/*.d
 /tests/*/*.o
+
+# Ignore backup files.
+*~
+\#*\#

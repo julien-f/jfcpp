@@ -26,7 +26,8 @@ PROJECTS := \
 	matrix\
 	meta\
 	numerical_derivate\
-	rational
+	rational\
+	ref
 
 # Global configuration.
 PREFIX   := /usr/local

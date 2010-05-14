@@ -1,58 +1,40 @@
-#ifndef H_EXPRESSION_WRAPPER
-#define H_EXPRESSION_WRAPPER
-
 #include <ostream>
 
-#include "base.hpp"
-
-namespace expression
+template <typename Value>
+class wrapper : public base<Value>
 {
-	template <typename Value, typename Param = void_t>
-	class wrapper : public base<Value, Param>
-	{
-	public:
+public:
 
-		typedef Param param_type;
+	typedef typename base<Value>::value_type value_type;
 
-		typedef Value value_type;
+	wrapper(value_type value) : _value(value)
+	{}
 
-		wrapper(value_type value) : _value(value)
-		{}
-
-		/**
-		 * If there is an argument, ignore it.
-		 */
-		const value_type &eval(param_type) const
-		{
-			return eval();
-		}
-
-		const value_type &eval() const
-		{
-			return _value;
-		}
-
-		friend
-		std::ostream &
-		operator << (std::ostream &s, const wrapper &w)
-		{
-			s << w._value;
-			return s;
-		}
-
-	private:
-
-		const value_type _value;
-	};
-
+	/**
+	 * If there is an argument, ignore it.
+	 */
 	template <typename T>
-	wrapper<T>
-	wrap(T value)
+	const value_type &
+	eval(T) const
 	{
-		return wrapper<T>(value);
+		return eval();
 	}
 
-} // namespace expression
+	const value_type &
+	eval() const
+	{
+		return _value;
+	}
 
-#endif // H_EXPRESSION_WRAPPER
+	friend
+	std::ostream &
+	operator << (std::ostream &s, const wrapper &w)
+	{
+		s << w._value;
+		return s;
+	}
 
+private:
+
+	const value_type _value;
+};

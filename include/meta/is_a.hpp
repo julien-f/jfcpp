@@ -10,14 +10,14 @@ namespace meta
 	 *
 	 * Does not work with non-public inheritance.
 	 */
-	template <class A, class B>
+	template <class Base, class Derived>
 	struct is_a
 	{
 		static no_t _test(...);
 
-		static yes_t _test(A *);
+		static yes_t _test(Base *);
 
-		static B *_from;
+		static Derived *_from;
 
 		static const bool value = (sizeof(_test(_from)) == sizeof(yes_t));
 	};
