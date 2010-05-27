@@ -5,6 +5,15 @@
 
 template <typename T>
 T
+abs(const T &x)
+{
+	const T zero(0);
+
+	return (x < zero ? -x : x);
+}
+
+template <typename T>
+T
 exp_mod(const T &x, const T &k, const T &n)
 {
 	const T zero(0);
@@ -52,10 +61,7 @@ template <typename T>
 T
 gcd(const T &a, const T &b)
 {
-	const T g = gcd_helper<T>(a, b);
-	const T zero(0);
-
-	return (g < zero ? -g : g);
+	return abs(gcd_helper<T>(a, b));
 }
 
 template <typename T>

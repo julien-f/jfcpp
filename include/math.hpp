@@ -21,6 +21,10 @@
 
 #include <contracts.h>
 
+template <typename T>
+T
+abs(const T &x);
+
 /**
  *
  */

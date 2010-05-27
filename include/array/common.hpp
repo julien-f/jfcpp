@@ -150,6 +150,10 @@ bool operator<(const array<T2, S2> &a) const
 /**
  *
  */
+array &operator=(const array &a)
+{
+	return this->operator= <value_type, S>(a);
+}
 template <typename T2, size_t S2>
 array &operator=(const array<T2, S2> &a)
 {
