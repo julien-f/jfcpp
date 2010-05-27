@@ -152,6 +152,39 @@ matrix<T>::columns() const
 }
 
 template <typename T>
+T
+matrix<T>::det() const
+{
+	requires (this->is_square());
+
+	if (this->_rows == 1)
+	{
+		return this->_values[0];
+	}
+
+	if (this->_rows == 2)
+	{
+		return (this->_values[0] * this->_values[3]
+		        -
+		        this->_values[1] * this->_values[2]);
+	}
+
+	assert(this->_rows == 3);
+
+	return (this->_values[0] * this->_values[4] * this->_values[8]
+	        +
+	        this->_values[1] * this->_values[5] * this->_values[6]
+	        +
+	        this->_values[2] * this->_values[3] * this->_values[7]
+	        -
+	        this->_values[2] * this->_values[4] * this->_values[6]
+	        -
+	        this->_values[1] * this->_values[3] * this->_values[8]
+	        -
+	        this->_values[0] * this->_values[5] * this->_values[7]);
+}
+
+template <typename T>
 typename matrix<T>::iterator
 matrix<T>::end()
 {

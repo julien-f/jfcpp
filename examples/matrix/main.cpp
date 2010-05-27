@@ -30,7 +30,7 @@ struct RandomGenerator
 
 int main()
 {
-	matrix<rational<long> > m(4);
+	matrix<rational<long> > m(3);
 
 	RandomGenerator::fill(m);
 
@@ -39,6 +39,8 @@ int main()
 	rational<long> tr = m.trace();
 
 	cout << tr << endl;
+
+	cout << m.det() << endl;
 
 	cout << m.inverse_perf();
 

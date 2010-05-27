@@ -201,6 +201,18 @@ public:
 	size_t columns() const;
 
 	/**
+	 * Computes the deteminant of this matrix.
+	 *
+	 * Requirements:
+	 * - This matrix must be square.
+	 * - This matrix must not be empty (size = 0).
+	 *
+	 * /!\ : Currently only works when the dimension is less than 4.
+	 */
+	T det() const;
+
+
+	/**
 	 * Gets an iterator referring to the past-the-end element in this matrix.
 	 *
 	 * This iterator iterates line by line.
