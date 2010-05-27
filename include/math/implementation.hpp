@@ -1,3 +1,5 @@
+#include <cmath> // for sqrt
+
 // Specializations for mpz_class.
 #ifdef __GMP_PLUSPLUS__
 #include "math/gmp.hpp"
@@ -105,12 +107,19 @@ is_even(const T &x)
 	return ((x % 2) == T(0));
 }
 
-template <>
-bool
-is_even<unsigned int>(const unsigned int &x)
-{
-	return ((x & 1u) == 0u);
-}
+#define IS_EVEN_SPECIALIZATION(TYPE) \
+	template <> inline \
+	bool \
+	is_even<unsigned TYPE>(const unsigned TYPE &x) \
+	{ \
+		return ((x & 1u) == 0u); \
+	}
+
+IS_EVEN_SPECIALIZATION(char)
+IS_EVEN_SPECIALIZATION(int)
+IS_EVEN_SPECIALIZATION(long int)
+
+#undef IS_EVEN_SPECIALIZATION
 
 template <typename T>
 bool
@@ -127,6 +136,43 @@ lcm(const T &a, const T &b)
 	const T zero(0);
 
 	return (g != zero ? a / g * b : zero);
+}
+
+template <typename T, size_t S>
+T
+norm_1(const array<T, S> &v)
+{
+	T sum(0);
+
+	for (typename array<T, S>::const_iterator
+		     it = v.begin(),
+		     end = v.end();
+	     it != end;
+	     ++it)
+	{
+		sum += abs(*it);
+	}
+
+	return sum;
+}
+
+template <typename T, size_t S>
+T
+norm_2(const array<T, S> &v)
+{
+	T sum(0);
+
+	for (typename array<T, S>::const_iterator
+		     it = v.begin(),
+		     end = v.end();
+	     it != end;
+	     ++it)
+	{
+		typename array<T, S>::const_reference x = *it;
+		sum += x * x;
+	}
+
+	return sqrt(sum);
 }
 
 template <typename TD, typename TCD>
@@ -147,4 +193,20 @@ numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
 	xp1 /= dt;
 
 	return xp1;
+}
+
+template <typename T, size_t S1, size_t S2>
+array<T, 3>
+vprod(const array<T, S1> &u, const array<T, S2> &v)
+{
+	requires(u.size() == 3);
+	requires(v.size() == 3);
+
+	array<T, 3> result;
+
+	result[0] = u[1] * v[2] - u[2] * v[1];
+	result[1] = u[2] * v[0] - u[0] * v[2];
+	result[2] = u[0] * v[1] - u[1] * v[0];
+
+	return result;
 }

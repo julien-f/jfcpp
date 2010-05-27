@@ -21,6 +21,11 @@
 
 #include <contracts.h>
 
+#include "array.hpp"
+
+/**
+ *
+ */
 template <typename T>
 T
 abs(const T &x);
@@ -68,6 +73,20 @@ T
 lcm(const T &a, const T &b);
 
 /**
+ *
+ */
+template <typename T, size_t S>
+T
+norm_1(const array<T, S> &v);
+
+/**
+ *
+ */
+template <typename T, size_t S>
+T
+norm_2(const array<T, S> &v);
+
+/**
  * Computes numerically the derivativate at 'x' using the values x₋₂, x₋₁, x,
  * x₊₁ and x₊₂.
  *
@@ -84,6 +103,13 @@ template <typename TD, typename TCD>
 TCD
 numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
                    TCD xp1, const TCD &xp2);
+
+/**
+ * Vectorial product (or cross product).
+ */
+template <typename T, size_t S1, size_t S2>
+array<T, 3>
+vprod(const array<T, S1> &u, const array<T, S2> &v);
 
 #include "math/implementation.hpp"
 
