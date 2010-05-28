@@ -28,6 +28,7 @@ PROJECTS := \
 	matrix\
 	meta\
 	numerical_derivate\
+	quaternion\
 	rational\
 	ref
 

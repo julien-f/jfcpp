@@ -67,33 +67,24 @@ namespace operators
 	BINARY_OPERATOR_COMMUTATIVE(orable, |);
 	BINARY_OPERATOR_COMMUTATIVE(xorable, ^);
 
-	template <typename T1, bool fix = true>
+	template <typename T1>
 	struct equality_comparable
 	{
-		template <typename T2>
-		friend bool operator ==(const T2 &lhs, const T1 &rhs)
+		template <typename T2> friend
+		typename meta::enable_if<!meta::is_a<equality_comparable<T2>, T2>::value, bool>::type
+		operator ==(const T2 &lhs, const T1 &rhs)
 		{
 			return rhs.operator ==(lhs);
 		}
-		template <typename T2>
-		friend bool operator !=(const T1 &lhs, const T2 &rhs)
+		template <typename T2> friend
+		bool
+		operator !=(const T1 &lhs, const T2 &rhs)
 		{
 			return !static_cast<bool>(lhs == rhs);
 		}
-		// template <typename T2>
-		// friend bool operator !=(const T2 &lhs, const T1 &rhs)
-		// {
-		// 	return !static_cast<bool>(lhs == rhs);
-		// }
-	};
-	template <typename T1>
-	struct equality_comparable <T1, true> : public equality_comparable <T1, false>
-	{
-		friend bool operator ==(const T1 &lhs, const T1 &rhs)
-		{
-			return rhs.operator ==(lhs);
-		}
-		friend bool operator !=(const T1 &lhs, const T1 &rhs)
+		template <typename T2> friend
+		typename meta::enable_if<!meta::is_a<equality_comparable<T2>, T2>::value, bool>::type
+		operator !=(const T2 &lhs, const T1 &rhs)
 		{
 			return !static_cast<bool>(lhs == rhs);
 		}

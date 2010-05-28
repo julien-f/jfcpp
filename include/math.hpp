@@ -26,6 +26,13 @@
 /**
  *
  */
+static const double
+	rad2deg = 180 * 113 / 355.0,
+	deg2rad = 355.0 / (180 * 113);
+
+/**
+ *
+ */
 template <typename T>
 T
 abs(const T &x);
