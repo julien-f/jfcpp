@@ -33,24 +33,17 @@ public:
 	typedef T value_type;
 
 	/**
-	 *
-	 */
-	static quaternion from_rotation(const array<T, 3> &axis, T angle)
-	{
-		angle /= 2;
-
-		const T tmp(sin(angle) / norm_2(axis));
-
-		return quaternion<T>(angle, axis[0] * tmp, axis[1] * tmp, axis[2] * tmp);
-	}
-
-	/**
-	 *
+	 * a + b*i + c*j + d*k
 	 */
 	quaternion(const_reference a = value_type(1),
 	           const_reference b = value_type(0),
 	           const_reference c = value_type(0),
 	           const_reference d = value_type(0));
+
+	/**
+	 *
+	 */
+	quaternion(const_reference scalar, const array<value_type, 3> &vector);
 
 	/**
 	 *
@@ -68,12 +61,12 @@ public:
 	value_type norm() const;
 
 	/**
-	 *
+	 * Gets the scalar part of this quaternion (its real part).
 	 */
 	value_type scalar() const;
 
 	/**
-	 *
+	 * Gets the vectorial part of this quaternion (its unreal part).
 	 */
 	array<value_type, 3> vector() const;
 
@@ -154,13 +147,14 @@ quaternion_from_rotation(const array<T, 3> &axis, T angle)
 
 	const T tmp(sin(angle) / norm_2(axis));
 
-	return quaternion<T>(angle, axis[0] * tmp, axis[1] * tmp, axis[2] * tmp);
+	return quaternion<T>(cos(angle), axis[0] * tmp, axis[1] * tmp, axis[2] * tmp);
 }
 
 template <typename T>
 array<T, 3>
 rotate_with_quaternion(const array<T, 3> &v, const quaternion<T> &q)
 {
+	return (q * quaternion<T>(0, v) * q.inverse()).vector();
 }
 
 #include "quaternion/implementation.hpp"

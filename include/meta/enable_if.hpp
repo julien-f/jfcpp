@@ -10,7 +10,7 @@ namespace meta
 	 *
 	 * Code from: http://www.drdobbs.com/184401659
 	 */
-	template <bool B, class T = void>
+	template <bool, class T = void>
 	struct enable_if
 	{
 		typedef T type;

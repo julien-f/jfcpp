@@ -50,5 +50,14 @@ int main()
 		<< q << endl
 		<< q.inverse().inverse() << endl;
 
+	array<double, 3> vector;
+	vector[0] = 0;
+	vector[1] = 1;
+	vector[2] = 0;
+
+	cout
+		<< vector << endl
+		<< rotate_with_quaternion(vector, q) << endl;
+
 	return EXIT_SUCCESS;
 }

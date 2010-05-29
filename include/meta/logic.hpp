@@ -3,7 +3,7 @@
 
 namespace meta
 {
-	template <bool B1, bool B2>
+	template <bool, bool>
 	struct and_
 	{
 		static const bool value = false;
@@ -14,7 +14,7 @@ namespace meta
 		static const bool value = true;
 	};
 
-	template <bool B1, bool B2>
+	template <bool, bool>
 	struct or_
 	{
 		static const bool value = true;

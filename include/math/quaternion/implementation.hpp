@@ -11,6 +11,16 @@ quaternion<T>::quaternion(const_reference a, const_reference b,
 }
 
 template <typename T>
+quaternion<T>::quaternion(const_reference scalar,
+                          const array<value_type, 3> &vector)
+{
+	_values[0] = scalar;
+	_values[1] = vector[0];
+	_values[2] = vector[1];
+	_values[3] = vector[2];
+}
+
+template <typename T>
 quaternion<T>
 quaternion<T>::conjugate() const
 {
