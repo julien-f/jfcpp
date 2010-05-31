@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cmath>
+#include <numeric>
 #include <ostream>
 
 #include <array.hpp>
@@ -139,6 +140,10 @@ private:
 	quaternion(array<T, 4> values);
 };
 
+/**
+ * Constructs a quaternion from a rotation of angle 'angle' around the axis
+ * 'axis'.
+ */
 template <typename T>
 quaternion<T>
 quaternion_from_rotation(const array<T, 3> &axis, T angle)
@@ -150,6 +155,28 @@ quaternion_from_rotation(const array<T, 3> &axis, T angle)
 	return quaternion<T>(cos(angle), axis[0] * tmp, axis[1] * tmp, axis[2] * tmp);
 }
 
+/**
+ * Constructs a quaternion from a rotation between the vector 'u' and the
+ * vector 'v'.
+ */
+template <typename T>
+quaternion<T>
+quaternion_from_rotation(array<T, 3> u, array<T, 3> v)
+{
+	// Normalizes them.
+	u /= norm_2(u);
+	v /= norm_2(v);
+
+	// Dot product.
+	const double dp = acos(std::inner_product(u.begin(), u.end(), v.begin(),
+	                                          double(0)));
+
+	return quaternion_from_rotation(vprod(u, v), dp);
+}
+
+/**
+ * Rotates the vector 'v' with the quaternion 'q'.
+ */
 template <typename T>
 array<T, 3>
 rotate_with_quaternion(const array<T, 3> &v, const quaternion<T> &q)
