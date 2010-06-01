@@ -167,11 +167,9 @@ quaternion_from_rotation(array<T, 3> u, array<T, 3> v)
 	u /= norm_2(u);
 	v /= norm_2(v);
 
-	// Dot product.
-	const double dp = acos(std::inner_product(u.begin(), u.end(), v.begin(),
-	                                          double(0)));
+	const T angle(acos(std::inner_product(u.begin(), u.end(), v.begin(), T(0))));
 
-	return quaternion_from_rotation(vprod(u, v), dp);
+	return quaternion_from_rotation(vprod(u, v), angle);
 }
 
 /**
