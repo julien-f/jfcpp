@@ -311,7 +311,7 @@ make_array_view(T (&raw)[size])
 template <typename T>
 std::istream &operator>>(std::istream &s, array_view<T> a)
 {
-	for (size_t i = 0, n = a.size(); (i < n) && s.good(); ++i)
+	for (size_t i = 0, n = a.size(); i < n; ++i)
 	{
 		s >> a[i];
 	}

@@ -157,7 +157,7 @@ private:
 template<typename T, size_t S>
 std::istream &operator>>(std::istream &s, array<T, S> &a)
 {
-	for (size_t i = 0, n = a.size(); (i < n) && s.good(); ++i)
+	for (size_t i = 0, n = a.size(); i < n; ++i)
 	{
 		s >> a[i];
 	}

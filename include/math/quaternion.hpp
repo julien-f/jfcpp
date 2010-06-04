@@ -173,6 +173,60 @@ quaternion_from_rotation(array<T, 3> u, array<T, 3> v)
 }
 
 /**
+ * Constructs a quaternion from a rotation matrix.
+ */
+template <typename T>
+quaternion<T>
+quaternion_from_rotation(const matrix<T> &m)
+{
+	requires(m.is_square());
+	requires(m.rows() == 3);
+
+	const T
+		epsilon(1e-8),
+		quarter(.25),
+		one(1),
+		two(2);
+
+	T trace(m.trace() + one);
+
+	if (trace > epsilon)
+	{
+		const T s = sqrt(trace) * two;
+
+		return quaternion<T>(s * quarter,
+		                     (m(2, 1) - m(1, 2)) / s,
+		                     (m(0, 2) - m(2, 0)) / s,
+		                     (m(1, 0) - m(0, 1)) / s);
+	}
+	if ((m(0, 0) > m(1, 1)) && (m(0, 0) > m(2, 2)))
+	{
+		const T s = one + sqrt(m(0, 0) - m(1, 1) - m(2, 2));
+
+		return quaternion<T>((m(1, 2) - m(2, 1)) / s,
+		                     quarter * s,
+		                     (m(1, 0) + m(0, 1)) / s,
+		                     (m(0, 2) + m(2, 0)) / s);
+	}
+	if (m(1, 1) > m(2, 2))
+	{
+		const T s = one + sqrt(m(1, 1) - m(0, 0) - m(2, 2));
+
+		return quaternion<T>((m(0, 2) - m(2, 0)) / s,
+		                     (m(1, 0) + m(0, 1)) / s,
+		                     quarter * s,
+		                     (m(1, 2) + m(2, 1)) / s);
+	}
+
+	const T s = one + sqrt(m(2, 2) - m(0, 0) - m(1, 1));
+
+	return quaternion<T>((m(0, 1) - m(1, 0)) / s,
+	                     (m(0, 2) + m(2, 0)) / s,
+	                     (m(1, 2) + m(2, 1)) / s,
+	                     quarter * s);
+}
+
+/**
  * Rotates the vector 'v' with the quaternion 'q'.
  */
 template <typename T>
