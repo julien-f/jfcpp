@@ -171,17 +171,7 @@ std::istream &operator>>(std::istream &s, array<T, S> &a)
 template<typename T, size_t S>
 std::ostream &operator<<(std::ostream &s, const array<T, S> &a)
 {
-	const size_t n = a.size();
-
-	if (n != 0)
-	{
-		s << a[0];
-		for (size_t i = 1; i < n; ++i)
-		{
-			s << " " << a[i];
-		}
-	}
-
+	a.print(s);
 	return s;
 }
 

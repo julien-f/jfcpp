@@ -92,6 +92,31 @@ bool is_valid_index(size_t i) const
 /**
  *
  */
+void print(std::ostream &s) const
+{
+	this->print(s, ' ');
+}
+template <typename Separator>
+void print(std::ostream &s, const Separator &separator) const
+{
+	// More convenient than *this.
+	const array &self = *this;
+
+	const size_t n = self.size();
+
+	if (n != 0)
+	{
+		s << self[0];
+		for (size_t i = 1; i < n; ++i)
+		{
+			s << separator << self[i];
+		}
+	}
+}
+
+/**
+ *
+ */
 reverse_iterator rbegin()
 {
 	return reverse_iterator(this->end());
