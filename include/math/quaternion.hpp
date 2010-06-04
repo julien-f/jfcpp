@@ -8,6 +8,7 @@
 
 #include <array.hpp>
 #include <math.hpp>
+#include <matrix.hpp>
 #include <operators.hpp>
 
 template <typename T>
