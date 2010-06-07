@@ -98,3 +98,27 @@ hermite<TCD, TD>::operator()(const TD &x) const
 
 	return result;
 }
+
+template <typename Codomain, typename Domain, typename Angle>
+slerp<Codomain, Domain, Angle>::slerp(Angle angle, Codomain y0, Codomain y1)
+	: _angle(angle), _a(y0), _b(y1)
+{
+	Angle sin_angle = sin(_angle);
+	_a /= sin_angle;
+	_b /= sin_angle;
+}
+
+template <typename Codomain, typename Domain, typename Angle>
+Codomain
+slerp<Codomain, Domain, Angle>::operator()(const Domain &x) const
+{
+	Domain result(_a);
+	result *= sin((1 - x) * _angle);
+
+	Domain tmp(_b);
+	tmp *= sin(_angle * x);
+
+	result += tmp;
+
+	return result;
+}

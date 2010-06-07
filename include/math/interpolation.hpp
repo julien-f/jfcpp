@@ -85,6 +85,43 @@ namespace interpolation
 		TCD _d;
 	};
 
+	/**
+	 * Spherical Linear Interpolation.
+	 */
+	template <typename Codomain, typename Domain = Codomain,
+	          typename Angle = Domain>
+	class slerp
+	{
+	public:
+
+		/**
+		 *
+		 */
+		slerp(Angle angle, Codomain y0, Codomain y1);
+
+		/**
+		 *
+		 */
+		Codomain operator()(const Domain &x) const;
+
+	private:
+
+		/**
+		 *
+		 */
+		Angle _angle;
+
+		/**
+		 *
+		 */
+		Codomain _a;
+
+		/**
+		 *
+		 */
+		Codomain _b;
+	};
+
 #	include "interpolation/implementation.hpp"
 } // namespace interpolation
 
