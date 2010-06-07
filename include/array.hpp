@@ -59,6 +59,18 @@ public:
 		return S;
 	}
 
+	array operator-() const
+	{
+		array result;
+
+		for (size_t i = 0; i < this->size(); ++i)
+		{
+			result[i] = -(*this)[i];
+		}
+
+		return result;
+	}
+
 private:
 
 	/**
@@ -128,6 +140,18 @@ public:
 	size_t size() const
 	{
 		return this->_size;
+	}
+
+	array operator-() const
+	{
+		array result(this->_size);
+
+		for (size_t i = 0; i < this->size(); ++i)
+		{
+			result[i] = -(*this)[i];
+		}
+
+		return result;
 	}
 
 private:

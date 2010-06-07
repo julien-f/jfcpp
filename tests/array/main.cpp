@@ -89,5 +89,17 @@ int main()
 	assert(a == b);
 	assert(b == a);
 
+	array<int, SIZE> c(-a);
+	for (size_t i = 0; i < c.size(); ++i)
+	{
+		assert(c[i] == -a[i]);
+	}
+
+	array<int> d(-b);
+	for (size_t i = 0; i < d.size(); ++i)
+	{
+		assert(d[i] == -b[i]);
+	}
+
 	return EXIT_SUCCESS;
 }

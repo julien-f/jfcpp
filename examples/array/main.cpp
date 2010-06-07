@@ -43,6 +43,8 @@ int main()
 	PRINT(a / b);
 	PRINT(a % b);
 
+	PRINT(-a);
+
 	// Some bitwise operations.
 	PRINT(a & b);
 	PRINT(a | b);
