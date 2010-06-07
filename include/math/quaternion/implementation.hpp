@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <numeric>
 
 template <typename T>
@@ -28,12 +29,19 @@ quaternion<T>::conjugate() const
 }
 
 template <typename T>
+typename quaternion<T>::value_type
+quaternion<T>::dot(const quaternion &q) const
+{
+	return std::inner_product(_values.begin(), _values.end(),
+	                          q._values.begin(), value_type(0));
+}
+
+template <typename T>
 quaternion<T>
 quaternion<T>::inverse() const
 {
 	quaternion result(conjugate());
-	result /= std::inner_product(_values.begin(), _values.end(),
-	                             _values.begin(), value_type(0));
+	result /= dot(*this);
 	return result;
 }
 
@@ -41,8 +49,7 @@ template <typename T>
 T
 quaternion<T>::norm() const
 {
-	return sqrt(std::inner_product(_values.begin(), _values.end(),
-	                               _values.begin(), value_type(0)));
+	return sqrt(dot(*this));
 }
 
 template <typename T>

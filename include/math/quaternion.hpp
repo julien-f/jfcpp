@@ -53,6 +53,11 @@ public:
 	quaternion conjugate() const;
 
 	/**
+	 * Dot product.
+	 */
+	value_type dot(const quaternion &q) const;
+
+	/**
 	 *
 	 */
 	quaternion inverse() const;
@@ -140,6 +145,16 @@ private:
 
 	quaternion(array<T, 4> values);
 };
+
+/**
+ *
+ */
+template <typename T>
+T
+angle_from_quaternion(const quaternion<T> &q)
+{
+	return (acos(q.scalar()) * 2);
+}
 
 /**
  * Constructs a quaternion from a rotation of angle 'angle' around the axis
