@@ -112,10 +112,10 @@ template <typename Codomain, typename Domain, typename Angle>
 Codomain
 slerp<Codomain, Domain, Angle>::operator()(const Domain &x) const
 {
-	Domain result(_a);
+	Codomain result(_a);
 	result *= sin((1 - x) * _angle);
 
-	Domain tmp(_b);
+	Codomain tmp(_b);
 	tmp *= sin(_angle * x);
 
 	result += tmp;
