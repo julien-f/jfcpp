@@ -38,6 +38,8 @@ int main()
 
 		CLOSE_ENOUGH((q * qq).norm(), q.norm() * qq.norm());
 
+		assert(q == q.inverse().inverse());
+
 		{
 			quaternion<double> r(q * qq);
 
@@ -46,18 +48,33 @@ int main()
 		}
 	}
 
-	cout
-		<< q << endl
-		<< q.inverse().inverse() << endl;
+	axis[0] = 1;
+	axis[1] = 0;
+	axis[2] = 0;
+	quaternion<double> rx = quaternion_from_rotation(axis, 90 * deg2rad);
+
+	axis[0] = 0;
+	axis[1] = 1;
+	axis[2] = 0;
+	quaternion<double> ry = quaternion_from_rotation(axis, 90 * deg2rad);
+
+	axis[0] = 0;
+	axis[1] = 0;
+	axis[2] = 1;
+	quaternion<double> rz = quaternion_from_rotation(axis, 90 * deg2rad);
 
 	array<double, 3> vector;
-	vector[0] = 0;
-	vector[1] = 1;
+	vector[0] = 1;
+	vector[1] = 0;
 	vector[2] = 0;
 
 	cout
-		<< vector << endl
-		<< rotate_with_quaternion(vector, q) << endl;
+		<< "Orginal vector: " << vector << endl
+		<< "Rotated around x: " << rotate_with_quaternion(vector, rx) << endl
+		<< "Rotated around y: " << rotate_with_quaternion(vector, ry) << endl
+		<< "Rotated around z: " << rotate_with_quaternion(vector, rz) << endl
+		<< "Rotated around x and y: " << rotate_with_quaternion(vector, ry * rx) << endl
+		<< "Rotated around x, y and z: " << rotate_with_quaternion(vector, rz * ry * rx) << endl;
 
 	return EXIT_SUCCESS;
 }
