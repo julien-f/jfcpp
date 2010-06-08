@@ -141,9 +141,9 @@ public:
 
 private:
 
-	array<T, 4> _values;
+	array<value_type, 4> _values;
 
-	quaternion(array<T, 4> values);
+	quaternion(array<value_type, 4> values);
 };
 
 /**

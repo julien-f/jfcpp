@@ -33,72 +33,12 @@ namespace projection
 		/**
 		 *
 		 */
-		orthogonal(array<value_type, dimension + 1> plan) : _plan(plan)
-		{
-			const value_type zero(0);
-
-			_denominator = 0;
-
-			vector tmp;
-			for (size_t i = 0; i < dimension; ++i)
-			{
-				typename array<value_type, dimension + 1>::const_reference
-					current = _plan[i];
-
-				_denominator += tmp[i] = current * current;
-			}
-
-			for (size_t i = 0; i < dimension; ++i)
-			{
-				typename vector::reference current = _squares[i];
-
-				current = zero;
-				for (size_t j = 0; j < dimension; ++j)
-				{
-					if (i != j)
-					{
-						current += tmp[j];
-					}
-				}
-			}
-		}
+		orthogonal(array<value_type, dimension + 1> plan);
 
 		/**
 		 *
 		 */
-		vector operator()(const vector &v) const
-		{
-			vector result(_squares * v);
-
-			vector tmp1(v);
-			for (size_t i = 0; i < dimension; ++i)
-			{
-				tmp1[i] *= _plan[i];
-			}
-
-			const value_type last(_plan[dimension]);
-
-			vector tmp2;
-			for (size_t i = 0; i < dimension; ++i)
-			{
-				typename vector::reference current = tmp2[i];
-
-				current = last;
-				for (size_t j = 0; j < dimension; ++j)
-				{
-					if (i != j)
-					{
-						current += tmp1[j];
-					}
-				}
-				current *= _plan[i];
-			}
-
-			result -= tmp2;
-			result /= _denominator;
-
-			return result;
-		}
+		vector operator()(const vector &v) const;
 
 	private:
 
@@ -117,6 +57,49 @@ namespace projection
 		 */
 		vector _squares;
 	};
+
+	/**
+	 * Perspective projection: 3D to 2D.
+	 */
+	template <typename T>
+	class perspective
+	{
+	public:
+
+		/**
+		 *
+		 */
+		typedef T value_type;
+
+		/**
+		 *
+		 */
+		typedef array<value_type, 2> vec2;
+
+		/**
+		 *
+		 */
+		typedef array<value_type, 3> vec3;
+
+		/**
+		 *
+		 */
+		perspective(T e2s);
+
+		/**
+		 *
+		 */
+		vec2 operator()(const vec3 &v) const;
+
+	private:
+
+		/**
+		 *
+		 */
+		const T _e2s;
+	};
+
+#	include "projection/implementation.hpp"
 } // namespace projection
 
 #endif // H_MATH_PROJECTION
