@@ -1,4 +1,5 @@
 #include <cmath> // for sqrt
+#include <numeric> // for inner_product
 
 // Specializations for mpz_class.
 #ifdef __GMP_PLUSPLUS__
@@ -193,6 +194,15 @@ numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
 	xp1 /= dt;
 
 	return xp1;
+}
+
+template <typename T, size_t S1, size_t S2>
+T
+sprod(const array<T, S1> &u, const array<T, S2> &v)
+{
+	requires(u.size() == v.size());
+
+	return std::inner_product(u.begin(), u.end(), v.begin(), T(0));
 }
 
 template <typename T, size_t S1, size_t S2>

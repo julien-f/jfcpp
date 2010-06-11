@@ -1,5 +1,6 @@
 #include <algorithm>
-#include <numeric>
+
+#include <math.hpp>
 
 template <typename T>
 quaternion<T>::quaternion(const_reference a, const_reference b,
@@ -32,8 +33,7 @@ template <typename T>
 typename quaternion<T>::value_type
 quaternion<T>::dot(const quaternion &q) const
 {
-	return std::inner_product(_values.begin(), _values.end(),
-	                          q._values.begin(), value_type(0));
+	return sprod(_values, q._values);
 }
 
 template <typename T>

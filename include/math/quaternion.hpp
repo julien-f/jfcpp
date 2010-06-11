@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <cmath>
-#include <numeric>
 #include <ostream>
 
 #include <array.hpp>
@@ -183,7 +182,7 @@ quaternion_from_rotation(array<T, 3> u, array<T, 3> v)
 	u /= norm_2(u);
 	v /= norm_2(v);
 
-	const T angle(acos(std::inner_product(u.begin(), u.end(), v.begin(), T(0))));
+	const T angle(acos(sprod(u, v)));
 
 	return quaternion_from_rotation(vprod(u, v), angle);
 }

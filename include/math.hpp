@@ -25,6 +25,18 @@
 
 /**
  *
+ *
+ * From the GNU C Library.
+ */
+static const double
+	PI_2 = 1.57079632679489661923,
+	PI_4 = 0.78539816339744830962,
+	PI = 3.14159265358979323846,
+	PI_TIMES_2 = 6.28318530717958647692,
+	PI_TIMES_4 = 12.56637061435917295384;
+
+/**
+ *
  */
 static const double
 	rad2deg = 180 * 113 / 355.0,
@@ -110,6 +122,14 @@ template <typename TD, typename TCD>
 TCD
 numerical_derivate(TD dt, const TCD &xm2, const TCD &xm1, const TCD &,
                    TCD xp1, const TCD &xp2);
+
+/**
+ * Scalar product (or dot product).
+ */
+template <typename T, size_t S1, size_t S2>
+T
+sprod(const array<T, S1> &u, const array<T, S2> &v);
+
 
 /**
  * Vectorial product (or cross product).
