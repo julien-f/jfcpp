@@ -59,25 +59,12 @@ is_inside_convex_polygon(const array<array<Type, Dim>, N> &vertices,
 			return true;
 		}
 
-		sum += acos(double(sprod(a, b)) / norm_product);
+		double angle = acos(double(sprod(a, b)) / norm_product);
+
+		sum += angle;
 	}
 
-	if (sum > PI)
-	{
-		do
-		{
-			sum -= PI_TIMES_2;
-		} while (sum > PI);
-	}
-	else
-	{
-		do
-		{
-			sum += PI_TIMES_2;
-		} while (sum < PI);
-	}
-
-	return (sum > PI);
+	return (abs(sum - PI_TIMES_2) < epsilon);
 }
 
 #endif // H_MATH_GEOMETRY
