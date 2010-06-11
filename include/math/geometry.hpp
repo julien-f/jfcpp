@@ -16,8 +16,8 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_MATH
-#define H_MATH
+#ifndef H_MATH_GEOMETRY
+#define H_MATH_GEOMETRY
 
 #include <cmath>
 #include <cstddef>
@@ -79,3 +79,5 @@ is_inside_convex_polygon(const array<array<Type, Dim>, N> &vertices,
 
 	return (sum > PI);
 }
+
+#endif // H_MATH_GEOMETRY
