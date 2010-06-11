@@ -22,7 +22,7 @@
 #include <cmath>
 #include <cstddef>
 
-#include <math>
+#include <math.hpp>
 #include <array.hpp>
 
 /**
