@@ -8,6 +8,58 @@
 namespace projection
 {
 	/**
+	 * Computes a oblique projection, a projection along an arbitrary direction.
+	 */
+	template <typename T, size_t D>
+	class oblique
+	{
+	public:
+
+		/**
+		 *
+		 */
+		typedef T value_type;
+
+		/**
+		 *
+		 */
+		typedef array<value_type, D> vector;
+
+		/**
+		 *
+		 */
+		static const size_t dimension = D;
+
+		/**
+		 *
+		 */
+		orthogonal(array<value_type, dimension + 1> hyperplan,
+		           vector direction);
+
+		/**
+		 *
+		 */
+		vector operator()(const vector &v) const;
+
+	private:
+
+		/**
+		 *
+		 */
+		value_type _denominator;
+
+		/**
+		 *
+		 */
+		const array<value_type, dimension + 1> _plan;
+
+		/**
+		 *
+		 */
+		vector _squares;
+	};
+
+	/**
 	 * Computes a orthogonal projection.
 	 */
 	template <typename T, size_t D>
