@@ -34,7 +34,7 @@
  * - removing an element at the beginning or at the end in constant time.
  */
 template<typename T>
-class circular_buffer : public CertifiedObject
+class circular_buffer
 {
 public:
 

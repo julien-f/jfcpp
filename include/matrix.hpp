@@ -49,8 +49,7 @@ class matrix : public operators::addable<matrix<T> >,
                public operators::equality_comparable<matrix<T> >,
                public operators::modable<matrix<T> >,
                public operators::multipliable<matrix<T> >,
-               public operators::subtractable<matrix<T> >,
-               private CertifiedObject
+               public operators::subtractable<matrix<T> >
 {
 public:
 
@@ -666,9 +665,11 @@ private:
 	bool has_same_values(const matrix<T2> &m) const;
 
 	/**
-	 * @see CertifiedObject::isValid() const
+	 * Returns whether the current matrix is in a coherent state.
+	 *
+	 * @returns True if yes, otherwise false.
 	 */
-	virtual bool isValid() const;
+	bool isValid() const;
 };
 
 /**

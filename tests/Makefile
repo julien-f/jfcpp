@@ -25,7 +25,7 @@ PROJECTS := \
 
 # Global configuration.
 PREFIX   := /usr/local
-CXXFLAGS += -DEXDEBUG -I../include/ -I../contracts/include/
+CXXFLAGS += -DEXDEBUG -I../include/
 CXXFLAGS += -std=c++98 -pedantic -Wall -Wextra -Winline -Wconversion -ggdb3
 
 ifeq ($(OPENMP),1)
