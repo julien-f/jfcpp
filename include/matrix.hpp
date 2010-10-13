@@ -164,6 +164,9 @@ public:
 	 */
 	~matrix();
 
+	reference at(size_t i);
+	const_reference at(size_t i) const;
+
 	/**
 	 * Gets the item contained at the specified position.
 	 *
@@ -552,6 +555,9 @@ public:
 	matrix &operator>>=(const T2 &value);
 	template <typename T2>
 	matrix &operator^=(const T2 &value);
+
+	reference operator()(size_t i);
+	const_reference operator()(size_t i) const;
 
 	/**
 	 * Gets the item contained at the specified position.

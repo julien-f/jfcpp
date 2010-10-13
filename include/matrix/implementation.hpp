@@ -98,6 +98,26 @@ matrix<T>::~matrix()
 
 template <typename T>
 typename matrix<T>::reference
+matrix<T>::at(size_t i)
+{
+	if (i >= this->_size)
+	{
+		throw std::out_of_range("No such index");
+	}
+
+	return (*this)(i);
+}
+
+template <typename T>
+typename matrix<T>::const_reference
+matrix<T>::at(size_t i) const
+{
+	// Reuse the implementation of at(size_t).
+	return const_cast<matrix<T> *>(this)->at(i);
+}
+
+template <typename T>
+typename matrix<T>::reference
 matrix<T>::at(size_t i, size_t j)
 {
 	if (!this->is_valid_subscript(i, j))
@@ -589,6 +609,24 @@ matrix<T>::operator=(const T2 &s)
 	std::fill(this->begin(), this->end(), s);
 
 	return *this;
+
+}
+
+template <typename T>
+typename matrix<T>::reference
+matrix<T>::operator()(size_t i)
+{
+	requires(i < this->_size);
+
+	return this->_values[i];
+}
+
+template <typename T>
+typename matrix<T>::const_reference
+matrix<T>::operator()(size_t i) const
+{
+	// Reuse the implementation of operator()(size_t).
+	return (*const_cast<matrix<T> *>(this))(i);
 }
 
 template <typename T>

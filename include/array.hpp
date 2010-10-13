@@ -104,6 +104,7 @@ public:
 	explicit array(size_t size) : _size(size)
 	{
 		requires(size > 0);
+		if_debug(this->_data = NULL);
 		this->_allocate();
 	}
 
@@ -112,6 +113,7 @@ public:
 	 */
 	array(const array &a) : _size(a._size)
 	{
+		if_debug(this->_data = NULL);
 		this->_allocate();
 		*this = a;
 	}
@@ -122,6 +124,7 @@ public:
 	template<typename T2, size_t S2> explicit
 	array(const array<T2, S2> &a) : _size(S2)
 	{
+		if_debug(this->_data = NULL);
 		this->_allocate();
 		*this = a;
 	}
@@ -131,7 +134,7 @@ public:
 	 */
 	~array()
 	{
-		delete [] this->_data;
+		this->_deallocate();
 	}
 
 	/**
@@ -171,7 +174,21 @@ private:
 	 */
 	void _allocate()
 	{
+		requires(this->_data == NULL);
+
 		this->_data = new value_type[this->_size];
+	}
+
+	/**
+	 *
+	 */
+	void _deallocate()
+	{
+		requires(this->_data != NULL);
+
+		delete [] this->_data;
+
+		if_debug(this->_data = NULL);
 	}
 };
 
