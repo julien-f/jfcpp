@@ -1,5 +1,9 @@
-#ifndef H_MATH_INTERPOLATION
-#define H_MATH_INTERPOLATION
+#ifndef H_JFCPP_MATH_INTERPOLATION
+#define H_JFCPP_MATH_INTERPOLATION
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace interpolation
 {
@@ -125,4 +129,6 @@ namespace interpolation
 #	include "interpolation/implementation.hpp"
 } // namespace interpolation
 
-#endif // H_MATH_INTERPOLATION
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_MATH_INTERPOLATION

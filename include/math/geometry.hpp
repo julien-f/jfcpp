@@ -16,14 +16,17 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_MATH_GEOMETRY
-#define H_MATH_GEOMETRY
+#ifndef H_JFCPP_MATH_GEOMETRY
+#define H_JFCPP_MATH_GEOMETRY
 
 #include <cmath>
 #include <cstddef>
 
-#include <math.hpp>
-#include <array.hpp>
+#include "../array.hpp"
+#include "../common.hpp"
+#include "../math.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  *
@@ -67,4 +70,6 @@ is_inside_convex_polygon(const array<array<Type, Dim>, N> &vertices,
 	return (abs(sum - PI_TIMES_2) < epsilon);
 }
 
-#endif // H_MATH_GEOMETRY
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_MATH_GEOMETRY

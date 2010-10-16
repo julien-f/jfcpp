@@ -1,5 +1,9 @@
-#ifndef H_REF
-#define H_REF
+#ifndef H_JFCPP_REF
+#define H_JFCPP_REF
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T>
 class const_referencer;
@@ -93,4 +97,6 @@ cref(const T &x)
 	return const_referencer<T>(x);
 }
 
-#endif // H_REF
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_REF

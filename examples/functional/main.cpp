@@ -3,8 +3,7 @@
 
 #include <functional.hpp>
 
-using namespace std;
-using namespace functional;
+using jfcpp::functional::compose;
 
 // Here are two unary functions.
 int unary1(int x)
@@ -27,7 +26,7 @@ double binary1(int x, int y)
 template <class F, typename T>
 void test_unary(F f, const T &x)
 {
-	cout << f(x) << endl;
+	std::cout << f(x) << std::endl;
 }
 
 // This function applies a binary function 'f'
@@ -36,7 +35,7 @@ void test_unary(F f, const T &x)
 template <class F, typename T1, typename T2>
 void test_binary(F f, const T1 &x, const T2 &y)
 {
-	cout << f(x, y) << endl;
+	std::cout << f(x, y) << std::endl;
 }
 
 int main()

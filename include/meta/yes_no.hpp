@@ -1,5 +1,9 @@
-#ifndef H_META_YES_NO
-#define H_META_YES_NO
+#ifndef H_JFCPP_META_YES_NO
+#define H_JFCPP_META_YES_NO
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace meta
 {
@@ -8,4 +12,6 @@ namespace meta
 	typedef char no_t; // sizeof(no_t) == 1
 } // namespace meta
 
-#endif // H_META_YES_NO
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_META_YES_NO

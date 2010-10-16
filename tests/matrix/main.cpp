@@ -8,6 +8,8 @@
 
 #include <contracts.h>
 
+using jfcpp::matrix;
+
 struct RandomGenerator
 {
 	template<typename T> static
@@ -91,6 +93,51 @@ int main()
 			for (size_t i = 0; i < m.rows(); ++i)
 			{
 				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(it != end);
+					assert(m(i, j) == *it);
+					++it;
+				}
+			}
+			assert(it == end);
+		}
+		{
+			matrix<int>::const_iterator
+				it = m.begin(),
+				end = m.end();
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(it != end);
+					assert(m(i, j) == *it);
+					++it;
+				}
+			}
+			assert(it == end);
+		}
+		{
+			matrix<int>::column_iterator
+				it = m.cbegin(),
+				end = m.cend();
+			for (size_t j = 0; j < m.columns(); ++j)
+			{
+				for (size_t i = 0; i < m.rows(); ++i)
+				{
+					assert(it != end);
+					assert(m(i, j) == *it);
+					++it;
+				}
+			}
+			assert(it == end);
+		}
+		{
+			matrix<int>::const_column_iterator
+				it = m.cbegin(),
+				end = m.cend();
+			for (size_t j = 0; j < m.columns(); ++j)
+			{
+				for (size_t i = 0; i < m.rows(); ++i)
 				{
 					assert(it != end);
 					assert(m(i, j) == *it);

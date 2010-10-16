@@ -16,8 +16,8 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_MATRIX
-#define H_MATRIX
+#ifndef H_JFCPP_MATRIX
+#define H_JFCPP_MATRIX
 
 #include <cstddef>
 #include <iterator>
@@ -25,7 +25,10 @@
 
 #include <contracts.h>
 
+#include "common.hpp"
 #include "operators.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace matrix_details
 {
@@ -189,6 +192,27 @@ public:
 	 */
 	iterator begin();
 	const_iterator begin() const;
+
+	/**
+	 * Gets a column iterator referring to the first element in this matrix.
+	 *
+	 * This iterator iterates line by line.
+	 *
+	 * @return A forward iterator positioned on the first element.
+	 */
+	column_iterator cbegin();
+	const_column_iterator cbegin() const;
+
+	/**
+	 * Gets a column iterator referring to the past-the-end element in this
+	 * matrix.
+	 *
+	 * This iterator iterates column by column.
+	 *
+	 * @return A forward iterator positioned on the past-the-end element.
+	 */
+	column_iterator cend();
+	const_column_iterator cend() const;
 
 	/**
 	 * Clears the matrix, setting its size to (0, 0).
@@ -678,12 +702,14 @@ private:
 	bool isValid() const;
 };
 
+JFCPP_NAMESPACE_END
+
 /**
  *
  */
 template <typename T>
 std::ostream &
-operator<<(std::ostream &os, const matrix<T> &m);
+operator<<(std::ostream &os, const JFCPP_NS()matrix<T> &m);
 
 #include "matrix/column_iterator.hpp"
 

@@ -16,10 +16,14 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_FUNCTIONAL
-#define H_FUNCTIONAL
+#ifndef H_JFCPP_FUNCTIONAL
+#define H_JFCPP_FUNCTIONAL
 
 #include <functional>
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace functional
 {
@@ -276,5 +280,7 @@ namespace functional
 #	undef BINARY_OPERATION
 #	undef BINARY_OPERATION_ASSIGN
 } // namespace functional
+
+JFCPP_NAMESPACE_END
 
 #endif

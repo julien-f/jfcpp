@@ -16,8 +16,8 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_ARRAY
-#define H_ARRAY
+#ifndef H_JFCPP_ARRAY
+#define H_JFCPP_ARRAY
 
 #include <algorithm>
 #include <cstddef>
@@ -27,8 +27,11 @@
 #include <contracts.h>
 
 #include "algorithm.hpp"
+#include "common.hpp"
 #include "functional.hpp"
 #include "operators.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  * @template T The type of contained elements.
@@ -192,11 +195,13 @@ private:
 	}
 };
 
+JFCPP_NAMESPACE_END
+
 /**
  *
  */
 template<typename T, size_t S>
-std::istream &operator>>(std::istream &s, array<T, S> &a)
+std::istream &operator>>(std::istream &s, JFCPP_NS()array<T, S> &a)
 {
 	for (size_t i = 0, n = a.size(); i < n; ++i)
 	{
@@ -210,10 +215,10 @@ std::istream &operator>>(std::istream &s, array<T, S> &a)
  *
  */
 template<typename T, size_t S>
-std::ostream &operator<<(std::ostream &s, const array<T, S> &a)
+std::ostream &operator<<(std::ostream &s, const JFCPP_NS()array<T, S> &a)
 {
 	a.print(s);
 	return s;
 }
 
-#endif
+#endif // H_JFCPP_ARRAY

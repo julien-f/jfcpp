@@ -6,6 +6,10 @@
 #include "math/gmp.hpp"
 #endif
 
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
+
 template <typename T>
 T
 abs(const T &x)
@@ -220,3 +224,5 @@ vprod(const array<T, S1> &u, const array<T, S2> &v)
 
 	return result;
 }
+
+JFCPP_NAMESPACE_END

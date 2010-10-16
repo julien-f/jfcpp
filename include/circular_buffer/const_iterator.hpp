@@ -19,7 +19,11 @@
 
 #include <stdexcept>
 
-#include "contracts.h"
+#include <contracts.h>
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  * This class is an implementation of a const iterator for class circular_ buffer.
@@ -88,5 +92,7 @@ private :
 	 */
 	size_type _iteration;
 };
+
+JFCPP_NAMESPACE_END
 
 #include "const_iterator/implementation.hpp"

@@ -16,8 +16,8 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_ARRAY_VIEW
-#define H_ARRAY_VIEW
+#ifndef H_JFCPP_ARRAY_VIEW
+#define H_JFCPP_ARRAY_VIEW
 
 #include <algorithm>
 #include <cstddef>
@@ -28,8 +28,11 @@
 #include <contracts.h>
 
 #include "algorithm.hpp"
+#include "common.hpp"
 #include "functional.hpp"
 #include "operators.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  * This class is a simple wrapper around a C array which provides helper for
@@ -305,11 +308,13 @@ make_array_view(T (&raw)[size])
 	return array_view<T>(size, raw);
 }
 
+JFCPP_NAMESPACE_END
+
 /**
  *
  */
 template <typename T>
-std::istream &operator>>(std::istream &s, array_view<T> a)
+std::istream &operator>>(std::istream &s, JFCPP_NS()array_view<T> a)
 {
 	for (size_t i = 0, n = a.size(); i < n; ++i)
 	{
@@ -323,7 +328,7 @@ std::istream &operator>>(std::istream &s, array_view<T> a)
  *
  */
 template <typename T>
-std::ostream &operator<<(std::ostream &s, const array_view<T> &a)
+std::ostream &operator<<(std::ostream &s, const JFCPP_NS()array_view<T> &a)
 {
 	const size_t n = a.size();
 

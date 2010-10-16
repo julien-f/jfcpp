@@ -7,7 +7,11 @@
 #include <meta/yes_no.hpp>
 
 using namespace std;
-using namespace meta;
+
+using jfcpp::meta::enable_if;
+using jfcpp::meta::is_a;
+using jfcpp::meta::no_t;
+using jfcpp::meta::yes_t;
 
 template <bool B>
 typename enable_if<B>::type

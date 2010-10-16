@@ -1,10 +1,13 @@
-#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 
 #include <ref.hpp>
 
-using namespace std;
+using std::cout;
+using std::endl;
+
+using jfcpp::cref;
+using jfcpp::ref;
 
 template <typename T1, typename T2>
 void

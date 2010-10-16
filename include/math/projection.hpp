@@ -1,9 +1,12 @@
-#ifndef H_MATH_PROJECTION
-#define H_MATH_PROJECTION
+#ifndef H_JFCPP_MATH_PROJECTION
+#define H_JFCPP_MATH_PROJECTION
 
 #include <cstddef>
 
-#include <array.hpp>
+#include "../array.hpp"
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace projection
 {
@@ -154,4 +157,6 @@ namespace projection
 #	include "projection/implementation.hpp"
 } // namespace projection
 
-#endif // H_MATH_PROJECTION
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_MATH_PROJECTION

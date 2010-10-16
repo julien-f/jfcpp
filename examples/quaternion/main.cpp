@@ -5,9 +5,14 @@
 
 #include <contracts.h>
 
+#include <array.hpp>
 #include <math.hpp>
 
-using namespace std;
+using jfcpp::abs;
+using jfcpp::array;
+using jfcpp::deg2rad;
+using jfcpp::quaternion;
+using jfcpp::quaternion_from_rotation;
 
 #define CLOSE_ENOUGH(A, B) (assert(abs((A) - (B)) < 1e-10))
 
@@ -68,13 +73,13 @@ int main()
 	vector[1] = 0;
 	vector[2] = 0;
 
-	cout
-		<< "Orginal vector: " << vector << endl
-		<< "Rotated around x: " << rotate_with_quaternion(vector, rx) << endl
-		<< "Rotated around y: " << rotate_with_quaternion(vector, ry) << endl
-		<< "Rotated around z: " << rotate_with_quaternion(vector, rz) << endl
-		<< "Rotated around x and y: " << rotate_with_quaternion(vector, ry * rx) << endl
-		<< "Rotated around x, y and z: " << rotate_with_quaternion(vector, rz * ry * rx) << endl;
+	std::cout
+		<< "Orginal vector: " << vector << std::endl
+		<< "Rotated around x: " << rotate_with_quaternion(vector, rx) << std::endl
+		<< "Rotated around y: " << rotate_with_quaternion(vector, ry) << std::endl
+		<< "Rotated around z: " << rotate_with_quaternion(vector, rz) << std::endl
+		<< "Rotated around x and y: " << rotate_with_quaternion(vector, ry * rx) << std::endl
+		<< "Rotated around x, y and z: " << rotate_with_quaternion(vector, rz * ry * rx) << std::endl;
 
 	return EXIT_SUCCESS;
 }

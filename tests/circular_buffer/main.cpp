@@ -7,10 +7,10 @@
 
 int main()
 {
-	assert_exception(circular_buffer<int>(0), ContractViolated);
+	assert_exception(jfcpp::circular_buffer<int>(0), ContractViolated);
 
 	{
-		circular_buffer<int> buf(1);
+		jfcpp::circular_buffer<int> buf(1);
 
 
 		assert(buf.capacity() == 1);

@@ -35,9 +35,9 @@ template<typename T> inline
 bool
 column_iterator<T>::operator==(const column_iterator &it) const
 {
-	return ((this->_matrix == it._matrix)
-	        && (this->_i == it._i)
-	        && (this->_j == it._j));
+	return ((_matrix == it._matrix) // Same matrix.
+	        && (_i == it._i)
+	        && (_j == it._j));
 }
 
 template<typename T> inline

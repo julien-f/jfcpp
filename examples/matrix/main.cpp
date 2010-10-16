@@ -1,13 +1,12 @@
-#include <algorithm>
-#include <cstddef>
-#include <cstdlib>
-#include <iostream>
-#include <utility>
+#include <algorithm> // std::generate
+#include <cstdlib>   // EXIT_SUCCESS
+#include <iostream>  // std::cout & std::endl
 
 #include <matrix.hpp>
 #include <rational.hpp>
 
-using namespace std;
+using jfcpp::matrix;
+using jfcpp::rational;
 
 struct RandomGenerator
 {
@@ -34,15 +33,15 @@ int main()
 
 	RandomGenerator::fill(m);
 
-	cout << m;
+	std::cout << m;
 
 	rational<long> tr = m.trace();
 
-	cout << tr << endl;
+	std::cout << tr << std::endl;
 
-	cout << m.det() << endl;
+	std::cout << m.det() << std::endl;
 
-	cout << m.inverse_perf();
+	std::cout << m.inverse_perf();
 
 	return EXIT_SUCCESS;
 }

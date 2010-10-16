@@ -6,21 +6,19 @@
 #include <expression.hpp>
 #include <lambda.hpp>
 
-using namespace std;
-using namespace expression;
-using namespace expression::operators;
+using namespace jfcpp::expression::operators;
 
 template <typename T>
-struct var : public base<T>
+struct var : public jfcpp::expression::base<T>
 {
-	typedef typename base<T>::value_type value_type;
+	typedef typename jfcpp::expression::base<T>::value_type value_type;
 
 	value_type eval(value_type x) const
 	{
 		return x;
 	}
 
-	friend ostream &operator<<(ostream &s, var)
+	friend std::ostream &operator<<(std::ostream &s, var)
 	{
 		s << 'x';
 		return s;
@@ -31,19 +29,19 @@ template <typename Expression>
 void
 test(Expression e)
 {
-	test(lambda<Expression>(e));
+	test(jfcpp::lambda<Expression>(e));
 }
 
 template <typename Expression>
 void
-test(lambda<Expression> f)
+test(jfcpp::lambda<Expression> f)
 {
-	cerr << f.expression() << endl;
+	std::cerr << f.expression() << std::endl;
 
 	const double step = 1e-1;
 	for (double t = -10; t <= 10; t += step)
 	{
-		cout << t << '\t' << f(t) << endl;
+		std::cout << t << '\t' << f(t) << std::endl;
 	}
 }
 

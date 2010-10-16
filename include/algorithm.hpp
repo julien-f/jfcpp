@@ -16,10 +16,14 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_ALGORITHM
-#define H_ALGORITHM
+#ifndef H_JFCPP_ALGORITHM
+#define H_JFCPP_ALGORITHM
 
 #include <iterator>
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace algorithm
 {
@@ -87,4 +91,6 @@ namespace algorithm
 
 } // namespace algorithm
 
-#endif // H_ALGORITHM
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_ALGORITHM

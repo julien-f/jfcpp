@@ -16,11 +16,14 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_OPERATORS
-#define H_OPERATORS
+#ifndef H_JFCPP_OPERATORS
+#define H_JFCPP_OPERATORS
 
+#include "common.hpp"
 #include "meta/enable_if.hpp"
 #include "meta/is_a.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace operators
 {
@@ -93,5 +96,7 @@ namespace operators
 #	undef BINARY_OPERATOR
 #	undef BINARY_OPERATOR_COMMUTATIVE
 } // namespace operators
+
+JFCPP_NAMESPACE_END
 
 #endif

@@ -16,13 +16,16 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_RATIONAL
-#define H_RATIONAL
+#ifndef H_JFCPP_RATIONAL
+#define H_JFCPP_RATIONAL
 
 #include <contracts.h>
 
+#include "common.hpp"
 #include "math.hpp"
 #include "operators.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T = long int>
 class rational : public operators::addable<rational<T> >,
@@ -151,4 +154,6 @@ std::ostream &operator<<(std::ostream &s, const rational<T> &f)
 	return s;
 }
 
-#endif // H_RATIONAL
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_RATIONAL

@@ -22,10 +22,13 @@
 #include <ostream>
 #include <stdexcept>
 
-#include "contracts.h"
+#include <contracts.h>
 
-#include "algorithm.hpp"
-#include "functional.hpp"
+#include "../algorithm.hpp"
+#include "../common.hpp"
+#include "../functional.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T>
 matrix<T>
@@ -148,6 +151,34 @@ typename matrix<T>::const_iterator
 matrix<T>::begin() const
 {
 	return const_cast<matrix<T> *>(this)->begin();
+}
+
+template <typename T>
+typename matrix<T>::column_iterator
+matrix<T>::cbegin()
+{
+	return column_iterator(*this, 0, 0);
+}
+
+template <typename T>
+typename matrix<T>::const_column_iterator
+matrix<T>::cbegin() const
+{
+	return const_column_iterator(*this, 0, 0);
+}
+
+template <typename T>
+typename matrix<T>::column_iterator
+matrix<T>::cend()
+{
+	return column_iterator(*this, 0, this->_columns);
+}
+
+template <typename T>
+typename matrix<T>::const_column_iterator
+matrix<T>::cend() const
+{
+	return const_column_iterator(*this, 0, this->_columns);
 }
 
 template <typename T>
@@ -717,9 +748,11 @@ matrix<T>::isValid() const
 	            || ((this->_values_by_rows != NULL))));
 }
 
+JFCPP_NAMESPACE_END
+
 template <typename T>
 std::ostream &
-operator<<(std::ostream &os, const matrix<T> &m)
+operator<<(std::ostream &os, const JFCPP_NS()matrix<T> &m)
 {
 	if ((m.rows() == 0) || (m.columns() == 0))
 	{

@@ -16,12 +16,16 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_VARIOUS
-#define H_VARIOUS
+#ifndef H_JFCPP_VARIOUS
+#define H_JFCPP_VARIOUS
 
 #include <sstream>
 #include <stdexcept>
 #include <string>
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T>
 T
@@ -51,5 +55,7 @@ to_string(const T &x)
 
 	return ss.str();
 }
+
+JFCPP_NAMESPACE_END
 
 #endif

@@ -1,5 +1,9 @@
-#ifndef H_LAMBDA
-#define H_LAMBDA
+#ifndef H_JFCPP_LAMBDA
+#define H_JFCPP_LAMBDA
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename Expression>
 class lambda
@@ -32,4 +36,6 @@ private:
 	const Expression _e;
 };
 
-#endif // H_LAMBDA
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_LAMBDA

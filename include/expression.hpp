@@ -1,17 +1,9 @@
-#ifndef H_EXPRESSION
-#define H_EXPRESSION
+#ifndef H_JFCPP_EXPRESSION
+#define H_JFCPP_EXPRESSION
 
-namespace expression
-{
-	// Used by “operations.hpp” and “wrapper.hpp”.
-#	include "expression/base.hpp"
+#include "expression/base.hpp"
+#include "expression/operations.hpp"
+#include "expression/operators.hpp"
+#include "expression/wrapper.hpp"
 
-#	include "expression/operations.hpp"
-
-	// Used by “operators.hpp”
-#	include "expression/wrapper.hpp"
-
-#	include "expression/operators.hpp"
-} // namespace expression
-
-#endif // H_EXPRESSION
+#endif // H_JFCPP_EXPRESSION

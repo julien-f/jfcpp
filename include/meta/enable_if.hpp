@@ -1,5 +1,9 @@
-#ifndef H_META_ENABLE_IF
-#define H_META_ENABLE_IF
+#ifndef H_JFCPP_META_ENABLE_IF
+#define H_JFCPP_META_ENABLE_IF
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace meta
 {
@@ -20,4 +24,6 @@ namespace meta
 	{};
 } // namespace meta
 
-#endif // H_META_ENABLE_IF
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_META_ENABLE_IF

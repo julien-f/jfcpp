@@ -22,6 +22,11 @@ const_column_iterator<T>::const_column_iterator()
 {}
 
 template<typename T> inline
+const_column_iterator<T>::const_column_iterator(const column_iterator<T> &it)
+	: _matrix(it._matrix), _i(it._i), _j(it._j)
+{}
+
+template<typename T> inline
 const_column_iterator<T>::const_column_iterator(const const_column_iterator &it)
 	: _matrix(it._matrix), _i(it._i), _j(it._j)
 {}
@@ -36,9 +41,9 @@ template<typename T> inline
 bool
 const_column_iterator<T>::operator==(const const_column_iterator &it) const
 {
-	return ((this->_matrix == it._matrix)
-	        && (this->_i == it._i)
-	        && (this->_j == it._j));
+	return ((_matrix == it._matrix)
+	        && (_i == it._i)
+	        && (_j == it._j));
 }
 
 template<typename T> inline

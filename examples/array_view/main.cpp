@@ -1,12 +1,12 @@
-#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 
 #include <array_view.hpp>
 
-using namespace std;
+using jfcpp::array_view;
+using jfcpp::make_array_view;
 
-#define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
+#define PRINT(EXP) (std::cout << #EXP ":  " << (EXP) << std::endl)
 
 int main()
 {
@@ -39,7 +39,7 @@ int main()
 	PRINT(ar_c);
 
 	// Reads values of ar_c from cin.
-	cin >> ar_c;
+	std::cin >> ar_c;
 
 	// Reprints ar_c.
 	PRINT(ar_c);

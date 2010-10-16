@@ -5,6 +5,14 @@
 
 #include <contracts.h>
 
+using jfcpp::functional::compose;
+using jfcpp::functional::identity;
+using jfcpp::functional::plus;
+using jfcpp::functional::minus;
+using jfcpp::functional::multiplies;
+using jfcpp::functional::divides;
+using jfcpp::functional::modulus;
+
 /**
  * Comparing two expressions directly does not always work, so we use this
  * function.
@@ -32,8 +40,6 @@ double binary1(double x, double y)
 
 int main()
 {
-	using namespace functional;
-
 	const double
 		x = 5.65,
 		y = 968754.215;

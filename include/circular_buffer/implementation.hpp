@@ -19,7 +19,11 @@
 
 #include <stdexcept>
 
-#include "contracts.h"
+#include <contracts.h>
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template<typename T>
 circular_buffer<T>::circular_buffer(size_type capacity)
@@ -250,3 +254,5 @@ circular_buffer<T>::shift_right(size_type &index, size_type offset) const
 
 	ensures(index < this->_capacity);
 }
+
+JFCPP_NAMESPACE_END

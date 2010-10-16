@@ -1,7 +1,11 @@
-#ifndef H_META_IS_A
-#define H_META_IS_A
+#ifndef H_JFCPP_META_IS_A
+#define H_JFCPP_META_IS_A
 
 #include "yes_no.hpp"
+
+#include "../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace meta
 {
@@ -29,4 +33,6 @@ namespace meta
 	};
 } // namespace meta
 
-#endif // H_META_IS_A
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_META_IS_A

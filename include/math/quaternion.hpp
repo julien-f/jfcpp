@@ -1,14 +1,17 @@
-#ifndef H_QUATERNION
-#define H_QUATERNION
+#ifndef H_JFCPP_QUATERNION
+#define H_JFCPP_QUATERNION
 
 #include <cstddef>
 #include <cmath>
 #include <ostream>
 
-#include <array.hpp>
-#include <math.hpp>
-#include <matrix.hpp>
-#include <operators.hpp>
+#include "../array.hpp"
+#include "../common.hpp"
+#include "../math.hpp"
+#include "../matrix.hpp"
+#include "../operators.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T>
 class quaternion : public operators::addable<quaternion<T> >,
@@ -251,6 +254,8 @@ rotate_with_quaternion(const array<T, 3> &v, const quaternion<T> &q)
 	return (q * quaternion<T>(0, v) * q.inverse()).vector();
 }
 
+JFCPP_NAMESPACE_END
+
 #include "quaternion/implementation.hpp"
 
-#endif // H_QUATERNION
+#endif // H_JFCPP_QUATERNION

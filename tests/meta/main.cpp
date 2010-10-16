@@ -7,7 +7,10 @@
 
 #include <contracts.h>
 
-using namespace meta;
+using jfcpp::meta::and_;
+using jfcpp::meta::enable_if;
+using jfcpp::meta::is_a;
+using jfcpp::meta::or_;
 
 template <bool B>
 typename enable_if<B, bool>::type

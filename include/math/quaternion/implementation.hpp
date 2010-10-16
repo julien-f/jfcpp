@@ -1,6 +1,9 @@
 #include <algorithm>
 
-#include <math.hpp>
+#include "../../common.hpp"
+#include "../../math.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template <typename T>
 quaternion<T>::quaternion(const_reference a, const_reference b,
@@ -180,3 +183,5 @@ template <typename T>
 quaternion<T>::quaternion(array<T, 4> values)
 	: _values(values)
 {}
+
+JFCPP_NAMESPACE_END

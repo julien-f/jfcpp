@@ -7,6 +7,8 @@
 
 #define SIZE 10
 
+using jfcpp::array;
+
 int main()
 {
 	array<int, SIZE> a;

@@ -16,8 +16,16 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
+#ifndef H_JFCPP_MATRIX_COLUMN_ITERATOR
+#define H_JFCPP_MATRIX_COLUMN_ITERATOR
+
 #include <cstddef>
 #include <iterator>
+
+#include "../common.hpp"
+#include "const_column_iterator.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 namespace matrix_details
 {
@@ -87,7 +95,13 @@ namespace matrix_details
 		 *
 		 */
 		size_t _j;
+
+		friend class const_column_iterator<T>;
 	};
 
 #	include "column_iterator/implementation.hpp"
 }
+
+JFCPP_NAMESPACE_END
+
+#endif // H_JFCPP_MATRIX_COLUMN_ITERATOR

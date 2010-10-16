@@ -16,12 +16,15 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_MATH
-#define H_MATH
+#ifndef H_JFCPP_MATH
+#define H_JFCPP_MATH
 
 #include <contracts.h>
 
 #include "array.hpp"
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  *
@@ -138,6 +141,8 @@ template <typename T, size_t S1, size_t S2>
 array<T, 3>
 vprod(const array<T, S1> &u, const array<T, S2> &v);
 
+JFCPP_NAMESPACE_END
+
 #include "math/implementation.hpp"
 
-#endif // H_MATH
+#endif // H_JFCPP_MATH

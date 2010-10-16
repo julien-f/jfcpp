@@ -4,19 +4,17 @@
 
 #include <array.hpp>
 
-using namespace std;
-
-#define PRINT(EXP) (cout << #EXP ":  " << (EXP) << endl)
+#define PRINT(EXP) (std::cout << #EXP ":  " << (EXP) << std::endl)
 
 int main()
 {
 	// Let's create a static array of integers
 	// with a size known at compile time.
-	array<int, 5> a;
+	jfcpp::array<int, 5> a;
 
 	// Let's create a static array of integers with
 	// a size not (necessary) known at compile time.
-	array<int> b(5);
+	jfcpp::array<int> b(5);
 
 	// Now fill them with a value.
 	a = 6;
@@ -67,7 +65,7 @@ int main()
 	PRINT(a != a);
 	PRINT(b != b);
 
-	cout << sizeof(a) << " " << sizeof(b) << endl;
+	std::cout << sizeof(a) << " " << sizeof(b) << std::endl;
 
 	return EXIT_SUCCESS;
 }

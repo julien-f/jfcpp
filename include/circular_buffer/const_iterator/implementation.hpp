@@ -17,7 +17,11 @@
  *   Jérémy Jaussaud <jeremy.jaussaud@free.fr>
  */
 
-#include "contracts.h"
+#include <contracts.h>
+
+#include "../../common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 template<typename T>
 circular_buffer<T>::const_iterator::const_iterator(size_type iteration,
@@ -67,3 +71,5 @@ circular_buffer<T>::const_iterator::operator!=(const const_iterator &iterator) c
 	return ((this->_iteration != iterator._iteration)
 	        || (this->_cbuffer != iterator._cbuffer));
 }
+
+JFCPP_NAMESPACE_END

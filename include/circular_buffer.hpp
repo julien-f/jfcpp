@@ -17,12 +17,16 @@
  *   Jérémy Jaussaud <jeremy.jaussaud@free.fr>
  */
 
-#ifndef H_CIRCULAR_BUFFER
-#define H_CIRCULAR_BUFFER
+#ifndef H_JFCPP_CIRCULAR_BUFFER
+#define H_JFCPP_CIRCULAR_BUFFER
 
 #include <stdexcept>
 
 #include <contracts.h>
+
+#include "common.hpp"
+
+JFCPP_NAMESPACE_BEGIN
 
 /**
  * This class is an implementation of a circular buffer.
@@ -261,9 +265,11 @@ private:
 	void shift_right(size_type &index, size_type offset) const;
 };
 
+JFCPP_NAMESPACE_END
+
 #include "circular_buffer/const_iterator.hpp"
 
 #include "circular_buffer/implementation.hpp"
 
-#endif // H_CIRCULAR_BUFFER
+#endif // H_JFCPP_CIRCULAR_BUFFER
 
