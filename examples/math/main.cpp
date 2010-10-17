@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <math.hpp>
-#include <math/interpolation.hpp>
+#include <jfcpp/math.hpp>
+#include <jfcpp/math/interpolation.hpp>
 
 #define PRINT(EXP) (std::cout << #EXP ":  " << (EXP) << std::endl)
 

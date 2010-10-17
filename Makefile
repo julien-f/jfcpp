@@ -7,7 +7,7 @@ INSTALL_DIR := $(PREFIX)/include
 MKDIR := mkdir --parents
 RMDIR := rmdir --parents --ignore-fail-on-non-empty
 
-.PHONY: all clean examples mrproper tests
+.PHONY: all install uninstall clean-tests test
 
 all:
 	@echo 'This is a set of C++ headers, there is nothing to compile ;)'
@@ -15,21 +15,18 @@ all:
 	@echo 'Type “make install” to install at the default location (“'"$(INSTALL_DIR)"'”).'
 	@echo 'Type “make INSTALL_DIR=/some/directory” to install where you want.'
 	@echo
-	@echo 'Type “make tests” to compile and execute the available tests.'
-	@echo ''
-	@echo 'Type “make examples” to compile the available examples.'
+	@echo 'Type “make test” to compile and execute the available tests.'
 
 install:
 	$(MKDIR) -- '$(INSTALL_DIR)'
-	cp -r -- include/ '$(INSTALL_DIR)/jfcpp/'
+	cp -r -- include/jfcpp/ '$(INSTALL_DIR)/jfcpp/'
 
 uninstall:
 	$(RM) -r -- '$(INSTALL_DIR)/jfcpp/'
 	$(RMDIR) -- '$(INSTALL_DIR)'
 
-clean mrproper:
-	@cd examples && $(MAKE) $(MAKEFLAGS) '$@'
-	@cd tests && $(MAKE) $(MAKEFLAGS) '$@'
+clean-tests:
+	@cd tests/ && $(MAKE) $(MAKEFLAGS) mrproper
 
-examples tests:
-	@cd '$@' && $(MAKE) $(MAKEFLAGS)
+test:
+	@cd tests/ && $(MAKE) $(MAKEFLAGS)

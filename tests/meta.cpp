@@ -1,7 +1,7 @@
 // To properly test inclusion, the tested file must be the first included.
-#include <meta/enable_if.hpp>
-#include <meta/is_a.hpp>
-#include <meta/logic.hpp>
+#include <jfcpp/meta/enable_if.hpp>
+#include <jfcpp/meta/is_a.hpp>
+#include <jfcpp/meta/logic.hpp>
 
 #include <cstdlib>
 

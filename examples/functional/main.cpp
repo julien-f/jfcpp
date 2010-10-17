@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <functional.hpp>
+#include <jfcpp/functional.hpp>
 
 using jfcpp::functional::compose;
 

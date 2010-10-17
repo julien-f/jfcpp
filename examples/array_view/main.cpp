@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <array_view.hpp>
+#include <jfcpp/array_view.hpp>
 
 using jfcpp::array_view;
 using jfcpp::make_array_view;

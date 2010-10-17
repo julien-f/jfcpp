@@ -51,6 +51,33 @@ namespace algorithm
 				f(*first1, *first2);
 			}
 		}
+
+#		if defined(_OPENMP) && !defined(JFCPP_ALGORITHM_NO_PARALLELIZATION)
+		template <class InputIterator, class UnaryFunction>
+		void
+		apply(InputIterator first, InputIterator end, UnaryFunction f,
+		      std::random_access_iterator_tag)
+		{
+#			if _OPENMP == 200805 // OpenMP v3.0
+#			pragma omp parallel for
+			for (InputIterator it = first; it < end; ++it)
+			{
+				f(*it);
+			}
+#			else // ! OpenMP v3.0
+			typedef std::iterator_traits<InputIterator> iterator_traits;
+			typedef typename iterator_traits::difference_type difference_type;
+
+			difference_type n = end - first;
+
+#			pragma omp parallel for
+			for (difference_type i = 0; i < n; ++i)
+			{
+				f(first[i]);
+			}
+#			endif // OpenMP v3.0
+		}
+#		endif // defined(_OPENMP) && !defined(JFCPP_ALGORITHM_NO_PARALLELIZATION)
 	} // namespace details
 
 

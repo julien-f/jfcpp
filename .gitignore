@@ -1,10 +1,7 @@
-/examples/bin/
-/examples/*/*.d
-/examples/*/*.o
-
-/tests/bin/
-/tests/*/*.d
-/tests/*/*.o
+bin/
+*.d
+*.log
+*.o
 
 # Ignore backup files.
 *~

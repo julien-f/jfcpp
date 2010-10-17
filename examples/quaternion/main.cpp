@@ -1,12 +1,12 @@
-#include <math/quaternion.hpp>
+#include <jfcpp/math/quaternion.hpp>
 
 #include <cstdlib>
 #include <iostream>
 
 #include <contracts.h>
 
-#include <array.hpp>
-#include <math.hpp>
+#include <jfcpp/array.hpp>
+#include <jfcpp/math.hpp>
 
 using jfcpp::abs;
 using jfcpp::array;

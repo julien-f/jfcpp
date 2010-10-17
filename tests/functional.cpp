@@ -1,5 +1,5 @@
 // To properly test inclusion, the tested file must be the first included.
-#include <functional.hpp>
+#include <jfcpp/functional.hpp>
 
 #include <cstdlib>
 

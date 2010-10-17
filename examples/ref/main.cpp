@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <ref.hpp>
+#include <jfcpp/ref.hpp>
 
 using std::cout;
 using std::endl;

@@ -1,5 +1,5 @@
 // To properly test inclusion, the tested file must be the first included.
-#include <circular_buffer.hpp>
+#include <jfcpp/circular_buffer.hpp>
 
 #include <stdexcept>
 

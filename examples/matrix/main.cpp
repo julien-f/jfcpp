@@ -2,8 +2,8 @@
 #include <cstdlib>   // EXIT_SUCCESS
 #include <iostream>  // std::cout & std::endl
 
-#include <matrix.hpp>
-#include <rational.hpp>
+#include <jfcpp/matrix.hpp>
+#include <jfcpp/rational.hpp>
 
 using jfcpp::matrix;
 using jfcpp::rational;

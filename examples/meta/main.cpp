@@ -1,10 +1,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <meta/enable_if.hpp>
-#include <meta/is_a.hpp>
-#include <meta/logic.hpp>
-#include <meta/yes_no.hpp>
+#include <jfcpp/meta/enable_if.hpp>
+#include <jfcpp/meta/is_a.hpp>
+#include <jfcpp/meta/logic.hpp>
+#include <jfcpp/meta/yes_no.hpp>
 
 using namespace std;
 

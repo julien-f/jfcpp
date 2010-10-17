@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <array.hpp>
+#include <jfcpp/array.hpp>
 
 #define PRINT(EXP) (std::cout << #EXP ":  " << (EXP) << std::endl)
 

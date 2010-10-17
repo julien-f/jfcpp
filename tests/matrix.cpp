@@ -1,5 +1,5 @@
 // To properly test inclusion, the tested file must be the first included.
-#include <matrix.hpp>
+#include <jfcpp/matrix.hpp>
 
 #include <algorithm>
 #include <cstddef>

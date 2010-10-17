@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include <math.hpp>
-#include <various.hpp>
+#include <jfcpp/math.hpp>
+#include <jfcpp/various.hpp>
 
 using jfcpp::from_string;
 

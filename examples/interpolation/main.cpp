@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include <math/interpolation.hpp>
+#include <jfcpp/math/interpolation.hpp>
 
 template <typename Func>
 void

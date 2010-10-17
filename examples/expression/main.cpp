@@ -3,8 +3,8 @@
 #include <iostream>
 #include <ostream>
 
-#include <expression.hpp>
-#include <lambda.hpp>
+#include <jfcpp/expression.hpp>
+#include <jfcpp/lambda.hpp>
 
 using namespace jfcpp::expression::operators;
 

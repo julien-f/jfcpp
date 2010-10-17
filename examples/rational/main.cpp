@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <rational.hpp>
+#include <jfcpp/rational.hpp>
 
 #define PRINT(EXP) (std::cout << #EXP ":  " << (EXP) << std::endl)
 
