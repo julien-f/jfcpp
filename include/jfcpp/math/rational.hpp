@@ -16,16 +16,16 @@
  *   Julien Fontanet <julien.fontanet@isonoe.net>
  */
 
-#ifndef H_JFCPP_RATIONAL
-#define H_JFCPP_RATIONAL
+#ifndef H_JFCPP_MATH_RATIONAL
+#define H_JFCPP_MATH_RATIONAL
 
 #include <contracts.h>
 
+#include "../math.hpp"
+#include "../operators.hpp"
 #include "common.hpp"
-#include "math.hpp"
-#include "operators.hpp"
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 template <typename T = long int>
 class rational : public operators::addable<rational<T> >,
@@ -130,7 +130,7 @@ private:
 			this->_numerator = -this->_numerator;
 		}
 
-		const T g = gcd<T>(this->_numerator, this->_denominator);
+		const T g = JFCPP_MATH_NS()gcd<T>(this->_numerator, this->_denominator);
 
 		this->_numerator /= g;
 
@@ -154,6 +154,6 @@ std::ostream &operator<<(std::ostream &s, const rational<T> &f)
 	return s;
 }
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END
 
-#endif // H_JFCPP_RATIONAL
+#endif // H_JFCPP_MATH_RATIONAL

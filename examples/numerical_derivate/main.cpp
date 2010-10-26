@@ -7,6 +7,8 @@
 #include <jfcpp/various.hpp>
 
 using jfcpp::from_string;
+using jfcpp::math::numerical_derivate;
+
 
 int main(int argc, char **argv)
 {
@@ -21,12 +23,12 @@ int main(int argc, char **argv)
 
 	std::cout
 		<< "Result: "
-		<< jfcpp::numerical_derivate(from_string<double>(argv[1]),
-		                             from_string<double>(argv[2]),
-		                             from_string<double>(argv[3]),
-		                             from_string<double>(argv[4]),
-		                             from_string<double>(argv[5]),
-		                             from_string<double>(argv[6]))
+		<< numerical_derivate(from_string<double>(argv[1]),
+		                      from_string<double>(argv[2]),
+		                      from_string<double>(argv[3]),
+		                      from_string<double>(argv[4]),
+		                      from_string<double>(argv[5]),
+		                      from_string<double>(argv[6]))
 		<< std::endl;
 
 	return EXIT_SUCCESS;

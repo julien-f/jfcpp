@@ -6,9 +6,9 @@
 #include "math/gmp.hpp"
 #endif
 
-#include "../common.hpp"
+#include "common.hpp"
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 template <typename T>
 T
@@ -225,4 +225,4 @@ vprod(const array<T, S1> &u, const array<T, S2> &v)
 	return result;
 }
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END

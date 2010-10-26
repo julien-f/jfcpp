@@ -8,11 +8,13 @@
 #include <jfcpp/array.hpp>
 #include <jfcpp/math.hpp>
 
-using jfcpp::abs;
 using jfcpp::array;
-using jfcpp::deg2rad;
-using jfcpp::quaternion;
-using jfcpp::quaternion_from_rotation;
+
+namespace jfmath = jfcpp::math;
+using jfmath::abs;
+using jfmath::deg2rad;
+using jfmath::quaternion;
+using jfmath::quaternion_from_rotation;
 
 #define CLOSE_ENOUGH(A, B) (assert(abs((A) - (B)) < 1e-10))
 

@@ -1,9 +1,9 @@
-#include "../common.hpp"
+#include "common.hpp"
 
 // No need to include “gmpxx.h” because this file is only used if
 //__GMP_PLUSPLUS__ is defined.
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 template <>
 bool
@@ -63,4 +63,4 @@ lcm<mpz_class>(const mpz_class &a, const mpz_class &b)
 	return result;
 }
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END

@@ -3,10 +3,10 @@
 #include <iostream>  // std::cout & std::endl
 
 #include <jfcpp/matrix.hpp>
-#include <jfcpp/rational.hpp>
+#include <jfcpp/math/rational.hpp>
 
 using jfcpp::matrix;
-using jfcpp::rational;
+using jfcpp::math::rational;
 
 struct RandomGenerator
 {

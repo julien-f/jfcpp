@@ -22,9 +22,9 @@
 #include <contracts.h>
 
 #include "array.hpp"
-#include "common.hpp"
+#include "math/common.hpp"
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 /**
  *
@@ -141,7 +141,7 @@ template <typename T, size_t S1, size_t S2>
 array<T, 3>
 vprod(const array<T, S1> &u, const array<T, S2> &v);
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END
 
 #include "math/implementation.hpp"
 

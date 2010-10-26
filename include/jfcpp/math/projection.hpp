@@ -4,9 +4,9 @@
 #include <cstddef>
 
 #include "../array.hpp"
-#include "../common.hpp"
+#include "common.hpp"
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 namespace projection
 {
@@ -157,6 +157,6 @@ namespace projection
 #	include "projection/implementation.hpp"
 } // namespace projection
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END
 
 #endif // H_JFCPP_MATH_PROJECTION

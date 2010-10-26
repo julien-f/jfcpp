@@ -23,10 +23,10 @@
 #include <cstddef>
 
 #include "../array.hpp"
-#include "../common.hpp"
 #include "../math.hpp"
+#include "common.hpp"
 
-JFCPP_NAMESPACE_BEGIN
+JFCPP_MATH_NAMESPACE_BEGIN
 
 /**
  *
@@ -70,6 +70,6 @@ is_inside_convex_polygon(const array<array<Type, Dim>, N> &vertices,
 	return (abs(sum - PI_TIMES_2) < epsilon);
 }
 
-JFCPP_NAMESPACE_END
+JFCPP_MATH_NAMESPACE_END
 
 #endif // H_JFCPP_MATH_GEOMETRY
