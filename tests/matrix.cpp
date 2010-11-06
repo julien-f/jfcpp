@@ -147,7 +147,7 @@ int main()
 			assert(it == end);
 		}
 
-		// Default constructor + affectation
+		// Default constructor + affectation + equality.
 		{
 			matrix<int> a;
 
@@ -173,6 +173,7 @@ int main()
 
 			// Equality
 			assert(a == m);
+			assert(!(a != m));
 		}
 
 		// Copy constructor
@@ -209,9 +210,6 @@ int main()
 			}
 		}
 
-		// Matrix product
-		assert_exception(m.mprod(m), ContractViolated);
-
 		// Scalar multiplication
 		{
 			int value = RandomGenerator()();
@@ -230,22 +228,21 @@ int main()
 			// Inequality
 			assert(p != m);
 		}
-
-		// Addition
+		// Scalar subtraction
 		{
-			matrix<int> s(m + m);
+			int value = RandomGenerator()();
+			matrix<int> p(m - value);
 
-			assert(s.has_same_dimensions(m));
+			assert(p.has_same_dimensions(m));
 
 			for (size_t i = 0; i < m.rows(); ++i)
 			{
 				for (size_t j = 0; j < m.columns(); ++j)
 				{
-					assert(s(i, j) == (2 * m(i, j)));
+					assert(p(i, j) == (m(i, j) - value));
 				}
 			}
 		}
-
 		// Scalar addition
 		{
 			int value = RandomGenerator()();
@@ -261,7 +258,6 @@ int main()
 				}
 			}
 		}
-
 		// Scalar division
 		{
 			int value = RandomGenerator()();
@@ -274,6 +270,48 @@ int main()
 				for (size_t j = 0; j < m.columns(); ++j)
 				{
 					assert(p(i, j) == (m(i, j) / value));
+				}
+			}
+		}
+
+		// Unary operations.
+		assert(m == +m);
+		assert((matrix<int>(m.rows(), m.columns(), 0) - m) == -m);
+		{
+			matrix<int> m2(m), m3(++m);
+			assert((m2 + 1) == m);
+			assert(m3 == m);
+		}
+		{
+			matrix<int> m2(m), m3(--m);
+			assert((m2 - 1) == m);
+			assert(m3 == m);
+		}
+		{
+			matrix<int> m2(m), m3(m++);
+			assert((m2 + 1) == m);
+			assert(m3 == m2);
+		}
+		{
+			matrix<int> m2(m), m3(m--);
+			assert((m2 - 1) == m);
+			assert(m3 == m2);
+		}
+
+		// Matrix product
+		assert_exception(m.mprod(m), ContractViolated);
+
+		// Addition
+		{
+			matrix<int> s(m + m);
+
+			assert(s.has_same_dimensions(m));
+
+			for (size_t i = 0; i < m.rows(); ++i)
+			{
+				for (size_t j = 0; j < m.columns(); ++j)
+				{
+					assert(s(i, j) == (2 * m(i, j)));
 				}
 			}
 		}

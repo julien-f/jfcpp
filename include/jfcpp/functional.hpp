@@ -204,7 +204,7 @@ namespace functional
 			std::pointer_to_unary_function<Arg3, Result3> >(std::ptr_fun(f1), std::ptr_fun(f2), std::ptr_fun(f3));
 	}
 
-#	define UNARY_OPERATION(NAME, OP) \
+#	define JFCPP_UNARY_OPERATION(NAME, OP) \
 	template <typename T, typename TR = T> \
 	struct NAME : public std::unary_function<T, TR> \
 	{ \
@@ -214,7 +214,7 @@ namespace functional
 		} \
 	}
 
-#	define BINARY_OPERATION(NAME, OP) \
+#	define JFCPP_BINARY_OPERATION(NAME, OP) \
 	template <typename T1, typename T2 = T1, typename TR = T1> \
 	struct NAME : public std::binary_function<T1, T2, TR> \
 	{ \
@@ -224,7 +224,7 @@ namespace functional
 		} \
 	}
 
-#	define BINARY_OPERATION_ASSIGN(NAME, OP) \
+#	define JFCPP_BINARY_OPERATION_ASSIGN(NAME, OP) \
 	template <typename T1, typename T2> \
 	struct NAME##_assign : public std::binary_function<T1, T2, void> \
 	{ \
@@ -237,48 +237,48 @@ namespace functional
 	/**
 	 * Arithmetic operations.
 	 */
-	UNARY_OPERATION(negate, -);
+	JFCPP_UNARY_OPERATION(negate, -);
 
-	BINARY_OPERATION(divides, /);
-	BINARY_OPERATION(minus, -);
-	BINARY_OPERATION(modulus, %);
-	BINARY_OPERATION(multiplies, *);
-	BINARY_OPERATION(plus, +);
+	JFCPP_BINARY_OPERATION(divides, /);
+	JFCPP_BINARY_OPERATION(minus, -);
+	JFCPP_BINARY_OPERATION(modulus, %);
+	JFCPP_BINARY_OPERATION(multiplies, *);
+	JFCPP_BINARY_OPERATION(plus, +);
 
-	BINARY_OPERATION_ASSIGN(divides, /);
-	BINARY_OPERATION_ASSIGN(minus, -);
-	BINARY_OPERATION_ASSIGN(modulus, %);
-	BINARY_OPERATION_ASSIGN(multiplies, *);
-	BINARY_OPERATION_ASSIGN(plus, +);
+	JFCPP_BINARY_OPERATION_ASSIGN(divides, /);
+	JFCPP_BINARY_OPERATION_ASSIGN(minus, -);
+	JFCPP_BINARY_OPERATION_ASSIGN(modulus, %);
+	JFCPP_BINARY_OPERATION_ASSIGN(multiplies, *);
+	JFCPP_BINARY_OPERATION_ASSIGN(plus, +);
 
 	/**
 	 * Bitwise operations.
 	 */
-	UNARY_OPERATION(bit_not, ~);
+	JFCPP_UNARY_OPERATION(bit_not, ~);
 
-	BINARY_OPERATION(bit_and, &);
-	BINARY_OPERATION(bit_or, |);
-	BINARY_OPERATION(bit_shift_left, <<);
-	BINARY_OPERATION(bit_shift_right, >>);
-	BINARY_OPERATION(bit_xor, ^);
+	JFCPP_BINARY_OPERATION(bit_and, &);
+	JFCPP_BINARY_OPERATION(bit_or, |);
+	JFCPP_BINARY_OPERATION(bit_shift_left, <<);
+	JFCPP_BINARY_OPERATION(bit_shift_right, >>);
+	JFCPP_BINARY_OPERATION(bit_xor, ^);
 
-	BINARY_OPERATION_ASSIGN(bit_and, &);
-	BINARY_OPERATION_ASSIGN(bit_or, |);
-	BINARY_OPERATION_ASSIGN(bit_shift_left, <<);
-	BINARY_OPERATION_ASSIGN(bit_shift_right, >>);
-	BINARY_OPERATION_ASSIGN(bit_xor, ^);
+	JFCPP_BINARY_OPERATION_ASSIGN(bit_and, &);
+	JFCPP_BINARY_OPERATION_ASSIGN(bit_or, |);
+	JFCPP_BINARY_OPERATION_ASSIGN(bit_shift_left, <<);
+	JFCPP_BINARY_OPERATION_ASSIGN(bit_shift_right, >>);
+	JFCPP_BINARY_OPERATION_ASSIGN(bit_xor, ^);
 
 	/**
 	 * Logical operations.
 	 */
-	UNARY_OPERATION(logical_not, !);
+	JFCPP_UNARY_OPERATION(logical_not, !);
 
-	BINARY_OPERATION(logical_and, &&);
-	BINARY_OPERATION(logical_or, ||);
+	JFCPP_BINARY_OPERATION(logical_and, &&);
+	JFCPP_BINARY_OPERATION(logical_or, ||);
 
-#	undef UNARY_OPERATION
-#	undef BINARY_OPERATION
-#	undef BINARY_OPERATION_ASSIGN
+#	undef JFCPP_UNARY_OPERATION
+#	undef JFCPP_BINARY_OPERATION
+#	undef JFCPP_BINARY_OPERATION_ASSIGN
 } // namespace functional
 
 JFCPP_NAMESPACE_END

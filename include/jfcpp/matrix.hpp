@@ -519,6 +519,18 @@ public:
 	matrix &operator=(const matrix<T2> &m);
 
 	/**
+	 * Element-with unary operations.
+	 */
+	matrix operator+() const;
+	matrix operator-() const;
+	matrix operator!() const;
+	matrix operator~() const;
+	matrix &operator++();
+	matrix &operator--();
+	matrix operator++(int);
+	matrix operator--(int);
+
+	/**
 	 * Element-wise arithmetics operations.
 	 */
 	template <typename T2>

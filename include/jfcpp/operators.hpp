@@ -27,7 +27,7 @@ JFCPP_NAMESPACE_BEGIN
 
 namespace operators
 {
-#	define BINARY_OPERATOR(NAME, OP) \
+#	define JFCPP_BINARY_OPERATOR(NAME, OP) \
 	template <typename T1> \
 	struct NAME \
 	{ \
@@ -39,7 +39,7 @@ namespace operators
 		} \
 	}
 
-#	define BINARY_OPERATOR_COMMUTATIVE(NAME, OP) \
+#	define JFCPP_BINARY_OPERATOR_COMMUTATIVE(NAME, OP) \
 	template <typename T1> \
 	struct NAME \
 	{ \
@@ -58,17 +58,17 @@ namespace operators
 	}
 
 
-	BINARY_OPERATOR(dividable, /);
-	BINARY_OPERATOR(modable, %);
-	BINARY_OPERATOR(left_shiftable, <<);
-	BINARY_OPERATOR(right_shiftable, >>);
-	BINARY_OPERATOR(subtractable, -);
+	JFCPP_BINARY_OPERATOR(dividable, /);
+	JFCPP_BINARY_OPERATOR(modable, %);
+	JFCPP_BINARY_OPERATOR(left_shiftable, <<);
+	JFCPP_BINARY_OPERATOR(right_shiftable, >>);
+	JFCPP_BINARY_OPERATOR(subtractable, -);
 
-	BINARY_OPERATOR_COMMUTATIVE(addable, +);
-	BINARY_OPERATOR_COMMUTATIVE(andable, &);
-	BINARY_OPERATOR_COMMUTATIVE(multipliable, *);
-	BINARY_OPERATOR_COMMUTATIVE(orable, |);
-	BINARY_OPERATOR_COMMUTATIVE(xorable, ^);
+	JFCPP_BINARY_OPERATOR_COMMUTATIVE(addable, +);
+	JFCPP_BINARY_OPERATOR_COMMUTATIVE(andable, &);
+	JFCPP_BINARY_OPERATOR_COMMUTATIVE(multipliable, *);
+	JFCPP_BINARY_OPERATOR_COMMUTATIVE(orable, |);
+	JFCPP_BINARY_OPERATOR_COMMUTATIVE(xorable, ^);
 
 	template <typename T1>
 	struct equality_comparable
@@ -93,8 +93,8 @@ namespace operators
 		}
 	};
 
-#	undef BINARY_OPERATOR
-#	undef BINARY_OPERATOR_COMMUTATIVE
+#	undef JFCPP_BINARY_OPERATOR
+#	undef JFCPP_BINARY_OPERATOR_COMMUTATIVE
 } // namespace operators
 
 JFCPP_NAMESPACE_END

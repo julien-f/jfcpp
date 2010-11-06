@@ -594,7 +594,68 @@ matrix<T>::operator=(const matrix<T2> &m)
 	return *this;
 }
 
-#define MATRIX_OPERATION(OP, FUNC_NAME) \
+// Unary operations (but increment).
+#define JFCPP_MATRIX_OPERATION(OP) \
+template <typename T> \
+matrix<T> \
+matrix<T>::operator OP() const \
+{ \
+	matrix result(this->rows(), this->columns()); \
+ \
+	for (size_t i = 0; i < this->size(); ++i) \
+	{ \
+		result(i) = OP (*this)(i); \
+	} \
+	return result; \
+}
+
+JFCPP_MATRIX_OPERATION(+)
+JFCPP_MATRIX_OPERATION(-)
+JFCPP_MATRIX_OPERATION(!)
+JFCPP_MATRIX_OPERATION(~)
+
+#undef JFCPP_MATRIX_OPERATION
+
+// Pre-incrementation.
+#define JFCPP_MATRIX_OPERATION(OP) \
+template <typename T> \
+matrix<T> & \
+matrix<T>::operator OP() \
+{ \
+	for (size_t i = 0; i < this->size(); ++i) \
+	{ \
+		OP (*this)(i); \
+	} \
+	return *this; \
+}
+
+JFCPP_MATRIX_OPERATION(++)
+JFCPP_MATRIX_OPERATION(--)
+
+#undef JFCPP_MATRIX_OPERATION
+
+// Post-incrementation.
+#define JFCPP_MATRIX_OPERATION(OP) \
+template <typename T> \
+matrix<T> \
+matrix<T>::operator OP(int) \
+{ \
+	matrix result(this->rows(), this->columns()); \
+ \
+	for (size_t i = 0; i < this->size(); ++i) \
+	{ \
+		result(i) = (*this)(i) OP; \
+	} \
+	return result; \
+}
+
+JFCPP_MATRIX_OPERATION(++)
+JFCPP_MATRIX_OPERATION(--)
+
+#undef JFCPP_MATRIX_OPERATION
+
+// Binary operations.
+#define JFCPP_MATRIX_OPERATION(OP, FUNC_NAME) \
 template <typename T> \
 template <typename T2> \
 matrix<T> & \
@@ -618,19 +679,19 @@ matrix<T>::operator OP##=(const T2 &s) \
 	return *this; \
 }
 
-MATRIX_OPERATION(+, plus)
-MATRIX_OPERATION(-, minus)
-MATRIX_OPERATION(*, multiplies)
-MATRIX_OPERATION(/, divides)
-MATRIX_OPERATION(%, modulus)
+JFCPP_MATRIX_OPERATION(+, plus)
+JFCPP_MATRIX_OPERATION(-, minus)
+JFCPP_MATRIX_OPERATION(*, multiplies)
+JFCPP_MATRIX_OPERATION(/, divides)
+JFCPP_MATRIX_OPERATION(%, modulus)
 
-MATRIX_OPERATION(&, bit_and)
-MATRIX_OPERATION(|, bit_or)
-MATRIX_OPERATION(<<, bit_shift_left)
-MATRIX_OPERATION(>>, bit_shift_right)
-MATRIX_OPERATION(^, bit_xor)
+JFCPP_MATRIX_OPERATION(&, bit_and)
+JFCPP_MATRIX_OPERATION(|, bit_or)
+JFCPP_MATRIX_OPERATION(<<, bit_shift_left)
+JFCPP_MATRIX_OPERATION(>>, bit_shift_right)
+JFCPP_MATRIX_OPERATION(^, bit_xor)
 
-#undef MATRIX_OPERATION
+#undef JFCPP_MATRIX_OPERATION
 
 template <typename T>
 template <typename T2>
