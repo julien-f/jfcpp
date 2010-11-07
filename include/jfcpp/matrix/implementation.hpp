@@ -419,6 +419,11 @@ template <typename T>
 void
 matrix<T>::resize(size_t rows, size_t columns)
 {
+	if ((rows == this->_rows) && (columns == this->_columns))
+	{
+		return;
+	}
+
 	this->deallocate();
 
 	this->_rows = rows;
