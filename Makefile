@@ -26,7 +26,7 @@ uninstall:
 	$(RMDIR) -- '$(INSTALL_DIR)'
 
 clean-tests:
-	@cd tests/ && $(MAKE) $(MAKEFLAGS) mrproper
+	@$(MAKE) -C tests/ mrproper
 
 test:
-	@cd tests/ && $(MAKE) $(MAKEFLAGS)
+	@$(MAKE) -C tests/
