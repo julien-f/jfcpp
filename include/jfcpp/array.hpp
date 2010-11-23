@@ -57,6 +57,12 @@ public:
 	/**
 	 *
 	 */
+	array()
+	{}
+
+	/**
+	 *
+	 */
 	explicit
 	array(const T &val)
 	{
