@@ -209,6 +209,15 @@ sprod(const array<T, S1> &u, const array<T, S2> &v)
 	return std::inner_product(u.begin(), u.end(), v.begin(), T(0));
 }
 
+template <typename T>
+T
+square(T a)
+{
+	a *= a;
+
+	return a;
+}
+
 template <typename T, size_t S1, size_t S2>
 array<T, 3>
 vprod(const array<T, S1> &u, const array<T, S2> &v)

@@ -133,6 +133,12 @@ template <typename T, size_t S1, size_t S2>
 T
 sprod(const array<T, S1> &u, const array<T, S2> &v);
 
+/**
+ * Square.
+ */
+template <typename T>
+T
+square(T a);
 
 /**
  * Vectorial product (or cross product).
