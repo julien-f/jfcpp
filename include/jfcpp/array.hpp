@@ -57,12 +57,31 @@ public:
 	/**
 	 *
 	 */
-	size_t size() const
+	explicit
+	array(const T &val)
+	{
+		*this = val;
+	}
+
+	/**
+	 *
+	 */
+	array(const array &val)
+	{
+		*this = a;
+	}
+
+	/**
+	 *
+	 */
+	size_t
+	size() const
 	{
 		return S;
 	}
 
-	array operator-() const
+	array
+	operator-() const
 	{
 		array result;
 
@@ -104,7 +123,8 @@ public:
 	/**
 	 *
 	 */
-	explicit array(size_t size) : _size(size)
+	explicit
+	array(size_t size) : _size(size)
 	{
 		requires(size > 0);
 		if_debug(this->_data = NULL);
@@ -143,12 +163,14 @@ public:
 	/**
 	 *
 	 */
-	size_t size() const
+	size_t
+	size() const
 	{
 		return this->_size;
 	}
 
-	array operator-() const
+	array
+	operator-() const
 	{
 		array result(this->_size);
 
@@ -175,7 +197,8 @@ private:
 	/**
 	 *
 	 */
-	void _allocate()
+	void
+	_allocate()
 	{
 		requires(this->_data == NULL);
 
@@ -185,7 +208,8 @@ private:
 	/**
 	 *
 	 */
-	void _deallocate()
+	void
+	_deallocate()
 	{
 		requires(this->_data != NULL);
 
@@ -201,7 +225,8 @@ JFCPP_NAMESPACE_END
  *
  */
 template<typename T, size_t S>
-std::istream &operator>>(std::istream &s, JFCPP_NS()array<T, S> &a)
+std::istream &
+operator>>(std::istream &s, JFCPP_NS()array<T, S> &a)
 {
 	for (size_t i = 0, n = a.size(); i < n; ++i)
 	{
@@ -215,7 +240,8 @@ std::istream &operator>>(std::istream &s, JFCPP_NS()array<T, S> &a)
  *
  */
 template<typename T, size_t S>
-std::ostream &operator<<(std::ostream &s, const JFCPP_NS()array<T, S> &a)
+std::ostream &
+operator<<(std::ostream &s, const JFCPP_NS()array<T, S> &a)
 {
 	a.print(s);
 	return s;
