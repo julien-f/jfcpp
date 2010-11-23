@@ -39,6 +39,7 @@ JFCPP_NAMESPACE_BEGIN
  */
 template<typename T, size_t S = 0>
 class array : public operators::andable<array<T, S> >,
+              public operators::comparable<array<T, S> >,
               public operators::addable<array<T, S> >,
               public operators::dividable<array<T, S> >,
               public operators::equality_comparable<array<T, S> >,
@@ -110,6 +111,7 @@ private:
 template <typename T>
 class array<T, 0> : public operators::andable<array<T, 0> >,
                     public operators::addable<array<T, 0> >,
+                    public operators::comparable<array<T, 0> >,
                     public operators::dividable<array<T, 0> >,
                     public operators::equality_comparable<array<T, 0> >,
                     public operators::left_shiftable<array<T, 0> >,

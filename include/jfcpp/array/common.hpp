@@ -43,7 +43,8 @@ typedef value_type *pointer;
 /**
  *
  */
-reference at(size_t i)
+reference
+at(size_t i)
 {
 	if (i >= this->size())
 	{
@@ -52,7 +53,8 @@ reference at(size_t i)
 
 	return (*this)[i];
 }
-const_reference at(size_t i) const
+const_reference
+at(size_t i) const
 {
 	return const_cast<array *>(this)->at(i);
 }
@@ -60,11 +62,13 @@ const_reference at(size_t i) const
 /**
  *
  */
-iterator begin()
+iterator
+begin()
 {
 	return this->_data;
 }
-const_iterator begin() const
+const_iterator
+begin() const
 {
 	return this->_data;
 }
@@ -72,11 +76,13 @@ const_iterator begin() const
 /**
  *
  */
-iterator end()
+iterator
+end()
 {
 	return (this->_data + this->size());
 }
-const_iterator end() const
+const_iterator
+end() const
 {
 	return (this->_data + this->size());
 }
@@ -84,7 +90,8 @@ const_iterator end() const
 /**
  *
  */
-bool is_valid_index(size_t i) const
+bool
+is_valid_index(size_t i) const
 {
 	return (i < this->size());
 }
@@ -92,12 +99,14 @@ bool is_valid_index(size_t i) const
 /**
  *
  */
-void print(std::ostream &s) const
+void
+print(std::ostream &s) const
 {
 	this->print(s, ' ');
 }
 template <typename Separator>
-void print(std::ostream &s, const Separator &separator) const
+void
+print(std::ostream &s, const Separator &separator) const
 {
 	// More convenient than *this.
 	const array &self = *this;
@@ -117,11 +126,13 @@ void print(std::ostream &s, const Separator &separator) const
 /**
  *
  */
-reverse_iterator rbegin()
+reverse_iterator
+rbegin()
 {
 	return reverse_iterator(this->end());
 }
-const_reverse_iterator rbegin() const
+const_reverse_iterator
+rbegin() const
 {
 	return reverse_iterator(this->end());
 }
@@ -129,11 +140,13 @@ const_reverse_iterator rbegin() const
 /**
  *
  */
-reverse_iterator rend()
+reverse_iterator
+rend()
 {
 	return reverse_iterator(this->begin());
 }
-const_reverse_iterator rend() const
+const_reverse_iterator
+rend() const
 {
 	return reverse_iterator(this->begin());
 }
@@ -141,13 +154,15 @@ const_reverse_iterator rend() const
 /**
  *
  */
-reference operator[](size_t i)
+reference
+operator[](size_t i)
 {
 	requires(i < this->size());
 
 	return this->_data[i];
 }
-const_reference operator[](size_t i) const
+const_reference
+operator[](size_t i) const
 {
 	return const_cast<array &>(*this)[i];
 }
@@ -156,7 +171,8 @@ const_reference operator[](size_t i) const
  *
  */
 template <typename T2, size_t S2>
-bool operator==(const array<T2, S2> &a) const
+bool
+operator==(const array<T2, S2> &a) const
 {
 	return ((this->size() == a.size()) &&
 	        std::equal(this->begin(), this->end(), a.begin()));
@@ -165,22 +181,98 @@ bool operator==(const array<T2, S2> &a) const
 /**
  *
  */
-template <typename T2, size_t S2>
-bool operator<(const array<T2, S2> &a) const
+template <typename T2>
+bool
+operator<(const T2 &val) const
 {
-	return std::lexicographical_compare(this->begin(), this->end(),
-	                                    a.begin(), a .end());
+	const array &self = *this;
+
+	for (size_t i = 0; i < this->size(); ++i)
+	{
+		if (!(self[i] < val))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 /**
  *
  */
-array &operator=(const array &a)
+template <typename T2>
+bool
+operator<=(const T2 &val) const
+{
+	const array &self = *this;
+
+	for (size_t i = 0; i < this->size(); ++i)
+	{
+		if (!(self[i] <= val))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+bool
+operator<(const array<T2, S2> &a) const
+{
+	requires(this->size() == a.size());
+
+	const array &self = *this;
+
+	for (size_t i = 0; i < this->size(); ++i)
+	{
+		if (!(self[i] < a[i]))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ *
+ */
+template <typename T2, size_t S2>
+bool
+operator<=(const array<T2, S2> &a) const
+{
+	requires(this->size() == a.size());
+
+	const array &self = *this;
+
+	for (size_t i = 0; i < this->size(); ++i)
+	{
+		if (!(self[i] <= a[i]))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ *
+ */
+array &
+operator=(const array &a)
 {
 	return this->operator= <value_type, S>(a);
 }
 template <typename T2, size_t S2>
-array &operator=(const array<T2, S2> &a)
+array &
+operator=(const array<T2, S2> &a)
 {
 	requires(this->size() == a.size());
 
@@ -191,7 +283,8 @@ array &operator=(const array<T2, S2> &a)
 
 #define ARRAY_OPERATION(OP, FUNC_NAME) \
 template <typename T2, size_t S2> \
-array &operator OP##=(const array<T2, S2> &a) \
+array & \
+operator OP##=(const array<T2, S2> &a) \
 { \
 	requires(this->size() == a.size()); \
  \
@@ -201,7 +294,8 @@ array &operator OP##=(const array<T2, S2> &a) \
 	return *this; \
 } \
 template <typename T2> \
-array &operator OP##=(const T2 &s) \
+array & \
+operator OP##=(const T2 &s) \
 { \
 	algorithm::apply(this->begin(), this->end(), \
 	                 std::bind2nd(functional::FUNC_NAME##_assign<value_type, T2>(), s)); \
@@ -227,7 +321,8 @@ ARRAY_OPERATION(^, bit_xor)
  *
  */
 template <typename T2>
-array &operator=(const T2 &s)
+array &
+operator=(const T2 &s)
 {
 	std::fill(this->begin(), this->end(), s);
 

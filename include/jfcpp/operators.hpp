@@ -93,6 +93,38 @@ namespace operators
 		}
 	};
 
+	template <typename T1>
+	struct comparable
+	{
+		template <typename T2> friend
+		typename meta::enable_if<!meta::is_a<comparable<T2>, T2>::value, bool>::type
+		operator <(const T2 &lhs, const T1 &rhs)
+		{
+			return (rhs > lhs);
+		}
+
+		template <typename T2> friend
+		typename meta::enable_if<!meta::is_a<comparable<T2>, T2>::value, bool>::type
+		operator <=(const T2 &lhs, const T1 &rhs)
+		{
+			return (rhs >= lhs);
+		}
+
+		template <typename T2> friend
+		bool
+		operator >(const T1 &lhs, const T2 &rhs)
+		{
+			return !(lhs <= rhs);
+		}
+
+		template <typename T2> friend
+		bool
+		operator >=(const T1 &lhs, const T2 &rhs)
+		{
+			return !(lhs < rhs);
+		}
+	};
+
 #	undef JFCPP_BINARY_OPERATOR
 #	undef JFCPP_BINARY_OPERATOR_COMMUTATIVE
 } // namespace operators

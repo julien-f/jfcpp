@@ -21,6 +21,10 @@ int main()
 		assert(a[i] == 1);
 	}
 
+	assert(a < 2);
+	assert(!(a < 1));
+	assert(a > 0);
+
 	a += 1;
 	for (size_t i = 0; i < a.size(); ++i)
 	{
