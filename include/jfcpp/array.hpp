@@ -68,7 +68,7 @@ public:
 	 */
 	array(const array &val)
 	{
-		*this = a;
+		*this = val;
 	}
 
 	/**
