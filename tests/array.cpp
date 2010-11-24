@@ -67,6 +67,12 @@ int main()
 
 	assert(a != b);
 	assert(b != a);
+	assert(a < b);
+	assert(a <= b);
+	assert(b > a);
+	assert(b >= a);
+	assert(!(a > b));
+	assert(!(b < a));
 
 	a += b;
 	for (size_t i = 0; i < a.size(); ++i)
@@ -94,6 +100,8 @@ int main()
 
 	assert(a == b);
 	assert(b == a);
+	assert(a <= b);
+	assert(a >= b);
 
 	array<int, SIZE> c(-a);
 	for (size_t i = 0; i < c.size(); ++i)
