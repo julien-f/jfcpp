@@ -1,5 +1,5 @@
-PREFIX      := /usr/local
-INSTALL_DIR := $(PREFIX)/include
+prefix     := /usr/local
+includedir := $(prefix)/include
 
 .DEFAULT_GOAL := all
 .PHONY        := all install uninstall clean mrproper
@@ -12,21 +12,21 @@ RMDIR := rmdir --parents --ignore-fail-on-non-empty
 all:
 	@echo 'This is a set of C++ headers, there is nothing to compile ;)'
 	@echo
-	@echo 'Type “make install” to install at the default location (“'"$(INSTALL_DIR)"'”).'
-	@echo 'Type “make INSTALL_DIR=/some/directory” to install where you want.'
+	@echo 'Type “make install” to install at the default location (“$(prefix)”).'
+	@echo 'Type “make prefix=/some/directory install” to install somewhere else.'
 	@echo
 	@echo 'Type “make test” to compile and execute the available tests.'
 
 install:
-	$(MKDIR) -- '$(INSTALL_DIR)'
-	cp -r -- include/jfcpp/ '$(INSTALL_DIR)/jfcpp/'
+	$(MKDIR) -- '$(includedir)'
+	cp -r -- include/jfcpp/ '$(includedir)/'
 
 uninstall:
-	$(RM) -r -- '$(INSTALL_DIR)/jfcpp/'
-	$(RMDIR) -- '$(INSTALL_DIR)'
+	$(RM) -r -- '$(includedir)/jfcpp/'
+	$(RMDIR) -- '$(includedir)'
 
 clean-tests:
-	@$(MAKE) -C tests/ mrproper
+	@$(MAKE) -C tests/ distclean
 
 test:
 	@$(MAKE) -C tests/

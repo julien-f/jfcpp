@@ -106,7 +106,7 @@ COLOR_NONE_BOLD := \033[1m
 endif
 
 # Rules to always execute.
-.PHONY: all clean mrproper install uninstall
+.PHONY: all clean distclean install uninstall
 
 # Generic rule definition.
 define PROJECT_TPL
@@ -143,7 +143,7 @@ $$($(1)_INSTALL): $$($(1)_TARGET)
 	mkdir -p -- '$$($(1)_INSTALL_DIR)'
 	cp -f $$^ '$$($(1)_INSTALL)'
 
-.PHONY: install-$(1) uninstall-$(1) clean-$(1) mrproper-$(1)
+.PHONY: install-$(1) uninstall-$(1) clean-$(1) distclean-$(1)
 
 install: install-$(1)
 install-$(1): $$($(1)_INSTALL)
@@ -157,8 +157,8 @@ clean: clean-$(1)
 clean-$(1):
 	$(RM) -v $$($(1)_DEPS) $$($(1)_OBJECTS)
 
-mrproper: mrproper-$(1)
-mrproper-$(1): clean-$(1)
+distclean: distclean-$(1)
+distclean-$(1): clean-$(1)
 	$(RM) -v $$($(1)_TARGET)
 	rmdir --parents --ignore-fail-on-non-empty -- '$$(dir $$($(1)_TARGET))'
 endef
@@ -166,7 +166,7 @@ endef
 # Creates rules for each project.
 $(foreach project,$(PROJECTS),$(eval $(call PROJECT_TPL,$(project))))
 
-mrproper: clean-COMMON
+distclean: clean-COMMON
 clean: clean-COMMON
 clean-COMMON:
 	$(RM) -v $(COMMON_DEPS) $(COMMON_OBJECTS)
