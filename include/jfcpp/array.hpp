@@ -100,6 +100,12 @@ public:
 		return result;
 	}
 
+	void
+	swap(array &a)
+	{
+		std::swap_ranges(begin(), end(), a.begin());
+	}
+
 private:
 
 	/**
@@ -188,6 +194,12 @@ public:
 		}
 
 		return result;
+	}
+
+	void
+	swap(array &a)
+	{
+		std::swap(_data, a._data);
 	}
 
 private:

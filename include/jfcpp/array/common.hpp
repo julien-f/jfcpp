@@ -170,6 +170,22 @@ operator[](size_t i) const
 /**
  *
  */
+template <typename T2>
+bool
+operator==(const T2 &s) const
+{
+	const array &self = *this;
+
+	for (size_t i = 0; i < this->size(); ++i)
+	{
+		if (self[i] != s)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 template <typename T2, size_t S2>
 bool
 operator==(const array<T2, S2> &a) const
