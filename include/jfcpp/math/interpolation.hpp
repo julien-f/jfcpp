@@ -19,12 +19,19 @@ namespace interpolation
 	public:
 
 		/**
+		 * Default constructor.
+		 *
+		 * /!\: The object is not in a valid state.
+		 */
+		linear();
+
+		/**
 		 *
 		 *
 		 * @param y0
 		 * @param y1
 		 */
-		linear(TCD y0, TCD y1);
+		linear(const TCD &y0, const TCD &y1);
 
 		/**
 		 *
@@ -34,7 +41,25 @@ namespace interpolation
 		 * @param x1
 		 * @param y1
 		 */
-		linear(const TD &x0, TCD y0, const TD &x1, TCD y1);
+		linear(const TD &x0, const TCD &y0, const TD &x1, const TCD &y1);
+
+		/**
+		 *
+		 */
+		void
+		initialize(const TCD &y0, const TCD &y1);
+
+		/**
+		 *
+		 */
+		void
+		initialize(const TD &x0, const TCD &y0, const TD &x1, const TCD &y1);
+
+		/**
+		 *
+		 */
+		linear &
+		operator=(const linear &l);
 
 		/**
 		 *

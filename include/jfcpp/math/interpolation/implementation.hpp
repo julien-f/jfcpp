@@ -1,14 +1,34 @@
 template <typename TCD, typename TD>
-linear<TCD, TD>::linear(TCD y0, TCD y1) : _a(y1), _b(y0)
-{
-	// Simplified formala for x0 = 0 and x1 = 1.
+linear<TCD, TD>::linear()
+{}
 
-	_a -= y0;
+template <typename TCD, typename TD>
+linear<TCD, TD>::linear(const TCD &y0, const TCD &y1)
+{
+	initialize(y0, y1);
 }
 
 template <typename TCD, typename TD>
-linear<TCD, TD>::linear(const TD &x0, TCD y0, const TD &x1, TCD y1)
-	: _a(y1), _b(y0)
+linear<TCD, TD>::linear(const TD &x0, const TCD &y0,
+                        const TD &x1, const TCD &y1)
+{
+	initialize(x0, y0, x1, y1);
+}
+
+template <typename TCD, typename TD>
+void
+linear<TCD, TD>::initialize(const TCD &y0, const TCD &y1)
+{
+	// Simplified formala for x0 = 0 and x1 = 1.
+	_a = y1;
+	_a -= y0;
+	_b = y0;
+}
+
+template <typename TCD, typename TD>
+void
+linear<TCD, TD>::initialize(const TD &x0, const TCD &y0,
+                            const TD &x1, const TCD &y1)
 {
 	// Formula:
 	// y = (y1 - y0) / (x1 - x0) * x + (x1 * y0 - x0 * y1) / (x1 - x0)
@@ -17,6 +37,9 @@ linear<TCD, TD>::linear(const TD &x0, TCD y0, const TD &x1, TCD y1)
 	// _a = (y1 - y0) / (x1 - x0)
 	// _b = (x1 * y0 - x0 * y1) / (x1 - x0)
 
+	_a = y1;
+	_b = y0;
+
 	TCD tmp(x1);
 	tmp -= x0;
 
@@ -24,9 +47,20 @@ linear<TCD, TD>::linear(const TD &x0, TCD y0, const TD &x1, TCD y1)
 	_a /= tmp;
 
 	_b *= x1;
-	y1 *= x0;
+
+	tmp = y1;
+	tmp *= x0;
+
 	_b -= y1;
 	_b /= tmp;
+}
+
+template <typename TCD, typename TD>
+linear<TCD, TD> &
+linear<TCD, TD>::operator=(const linear<TCD, TD> &l)
+{
+	_a = l._a;
+	_b = l._b;
 }
 
 template <typename TCD, typename TD>
