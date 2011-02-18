@@ -48,10 +48,11 @@ linear<TCD, TD>::initialize(const TD &x0, const TCD &y0,
 
 	_b *= x1;
 
-	tmp = y1;
-	tmp *= x0;
-
-	_b -= y1;
+	{
+		TCD tmp(y1);
+		tmp *= x0;
+		_b -= tmp;
+	}
 	_b /= tmp;
 }
 
