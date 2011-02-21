@@ -31,6 +31,10 @@
 #include "functional.hpp"
 #include "operators.hpp"
 
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+#include <initializer_list>
+#endif
+
 JFCPP_NAMESPACE_BEGIN
 
 /**
@@ -77,6 +81,20 @@ public:
 	{
 		*this = val;
 	}
+
+	array(const size_t (&values)[S])
+	{
+		std::copy(values, values + S, begin());
+	}
+
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+	array(std::initializer_list<T> values)
+	{
+		requires(values.size() == size());
+
+		std::copy(values.begin(), values.end(), begin());
+	}
+#endif
 
 	/**
 	 *
@@ -165,6 +183,23 @@ public:
 		this->_allocate();
 		*this = a;
 	}
+
+	template <size_t S2>
+	array(const size_t (&values)[S2])
+		: _size(S2)
+	{
+		this->_allocate();
+		std::copy(values, values + S2, begin());
+	}
+
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+	array(std::initializer_list<T> values)
+		: _size(values.size())
+	{
+		this->_allocate();
+		std::copy(values.begin(), values.end(), begin());
+	}
+#endif
 
 	/**
 	 *
