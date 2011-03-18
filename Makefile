@@ -15,7 +15,11 @@ all:
 	@echo 'Type “make install” to install at the default location (“$(prefix)”).'
 	@echo 'Type “make prefix=/some/directory install” to install somewhere else.'
 	@echo
+	@echo 'There are some examples available in the “examples/” directory.'
 	@echo 'Type “make test” to compile and execute the available tests.'
+	@echo
+	@echo 'Before running the examples or the tests, be sure to run'
+	@echo '“git submodule update --init”.'
 
 install:
 	$(MKDIR) -- '$(includedir)'
