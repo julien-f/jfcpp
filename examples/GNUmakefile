@@ -1,4 +1,4 @@
-PROJECTS := \
+TARGETS := \
 	array\
 	array_view\
 	expression\
@@ -13,7 +13,7 @@ PROJECTS := \
 	ref
 
 # Default compilation flags.
-CXXFLAGS := -std=c++98 -I ../include/ -I ~/usr/include/
+CXXFLAGS := -std=c++98 -I ../include/ -I ~/usr/include/ -I ../tools/contracts/include/
 
 # Includes MyGreatMakefile
 include ../tools/mgm/mgm.mk

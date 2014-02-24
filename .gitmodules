@@ -1,3 +1,6 @@
+[submodule "tools/contracts"]
+	path = tools/contracts
+	url = https://github.com/julien-f/contracts
 [submodule "tools/mgm"]
 	path = tools/mgm
-	url = git://julien.isonoe.net/perso/mgm
+	url = https://github.com/julien-f/mgm

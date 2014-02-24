@@ -1,4 +1,4 @@
-PROJECTS := \
+TARGETS := \
 	array \
 	circular_buffer \
 	functional \
@@ -6,7 +6,7 @@ PROJECTS := \
 	meta
 
 # Default compilation flags.
-CXXFLAGS := -std=c++98 -I ../include/
+CXXFLAGS := -std=c++98 -I ../include/ -I ../tools/contracts/include/
 
 # Because these are unit tests (see contracts.h).
 DEBUG    := 1
